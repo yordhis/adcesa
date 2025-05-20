@@ -53,12 +53,12 @@
         </div>
     </div>
 
-    <div class="container-fluid border-top border-secondary p-0 text-secondary">
+    <div class="container-fluid border-top border-secondary p-0 text-white">
         <div class="copyright">
-            &copy; Copyright <strong><span>Adcesa 2023</span></strong>. Todos los derechos reservados
+            &copy; Copyright <strong><span>Adcesa 2025</span></strong>. Todos los derechos reservados
         </div>
         <div class="credits">
-            Diseñado por <a href="#" target="_blank" class="text-secondary">Ing. Eleanna Azuaje</a>
+            Diseñado por <a href="#" target="_blank" class="text-warning">Ing. Eleanna Azuaje</a>
         </div>
     </div>
 </footer>
