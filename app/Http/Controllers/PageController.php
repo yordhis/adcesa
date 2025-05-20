@@ -22,7 +22,7 @@ class PageController extends Controller
     {
         $niveles = Nivele::all();
         $respuesta = DataDev::$respuesta;
-        return view('page.index', compact('niveles', 'respuesta'));
+        return view('page.home.index', compact('niveles', 'respuesta'));
     }
 
     /**

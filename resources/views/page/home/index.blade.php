@@ -8,8 +8,7 @@
     @endif
 
     <!-- CAROUSEL -->
-    @include('page.partials.carousel')
+    @include('page.home.partials.carousel')
+    @include('page.home.partials.we')
 
-    <!-- CURSOS -->
-    @include('page.partials.cursos')
 @endsection
