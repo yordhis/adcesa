@@ -1,17 +1,17 @@
 <!-- Vertically centered Modal -->
-<button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#modalRegistrarProfesor">
-    <i class="bi bi-person-plus"></i> Registrar profesor
+<button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#modalRegistrarCliente">
+    <i class="bi bi-person-plus"></i> Registrar cliente
 </button>
 
-<div class="modal fade" id="modalRegistrarProfesor" tabindex="-1">
+<div class="modal fade" id="modalRegistrarCliente" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Registrar profesor</h5>
+                <h5 class="modal-title">Registrar cliente</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-start">
-                <form action="{{ route('admin.profesores.store') }}" method="post" class="row g-3 needs-validation" 
+                <form action="{{ route('admin.clientes.store') }}" method="post" class="row g-3 needs-validation" 
                 enctype="multipart/form-data"
                 novalidate>
                  @csrf

@@ -22,9 +22,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(30)->create();
         $this->call(UserSeeder::class);
-        $this->call(ProfesoreSeeder::class);
         $this->call(EstudianteSeeder::class);
         $this->call(DificultadeSeeder::class);
         $this->call(NiveleSeeder::class);

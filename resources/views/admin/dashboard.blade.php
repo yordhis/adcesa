@@ -13,11 +13,11 @@
                         <div class="card info-card sales-card rounded-3">
 
                             <div class="card-body">
-                                <h5 class="card-title">Grupos de Estudios</span></h5>
+                                <h5 class="card-title">Clientes</span></h5>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center ">
-                                        <i class="bi bi-ui-checks text-primary"></i>
+                                        <i class="bi bi-people-fill text-primary"></i>
                                     </div>
                                     <div class="ps-3">
                                         <h6>{{$dataTarjetas['grupos']}}</h6>
@@ -36,11 +36,11 @@
                         <div class="card info-card sales-card rounded-3">
 
                             <div class="card-body">
-                                <h5 class="card-title">Estudiantes</span></h5>
+                                <h5 class="card-title">Productos</span></h5>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center ">
-                                        <i class="bi bi-person-video3 text-danger"></i>
+                                        <i class="bi bi-box text-dark"></i>
                                     </div>
                                     <div class="ps-3">
                                         <h6>{{$dataTarjetas['estudiantes']}}</h6>
@@ -59,11 +59,11 @@
                         <div class="card info-card sales-card rounded-3">
 
                             <div class="card-body">
-                                <h5 class="card-title">Profesores</span></h5>
+                                <h5 class="card-title">Ventas</span></h5>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center ">
-                                        <i class="bi bi-person-vcard text-info"></i>
+                                        <i class="bi bi-cart-check-fill text-success"></i>
                                     </div>
                                     <div class="ps-3">
                                         <h6>{{$dataTarjetas['profesores']}}</h6>
@@ -82,11 +82,11 @@
                         <div class="card info-card sales-card rounded-3">
 
                             <div class="card-body">
-                                <h5 class="card-title">Cuotas Atrazadas</span></h5>
+                                <h5 class="card-title">Pedidos pendientes</span></h5>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center ">
-                                        <i class="bi bi-palette2 text-warning"></i>
+                                        <i class="bi bi-ui-checks-grid text-danger"></i>
                                     </div>
                                     <div class="ps-3">
                                         <h6>{{$dataTarjetas['cuotas']}}</h6>
@@ -109,11 +109,11 @@
                         <div class="card info-card sales-card rounded-3">
 
                             <div class="card-body">
-                                <h5 class="card-title">Pagos Recibidos | {{date('m/Y')}}</span></h5>
+                                <h5 class="card-title">Pedidos por entregar </span></h5>
 
                                 <div class="d-flex align-items-center">
                                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center ">
-                                        <i class="bi bi-cash text-success"></i>
+                                        <i class="bi bi-truck text-dark"></i>
                                     </div>
                                     <div class="ps-3">
                                         <h6>{{$dataTarjetas['pagos']}}</h6>

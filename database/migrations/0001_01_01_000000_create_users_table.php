@@ -13,10 +13,20 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 155)->nullable();
-            $table->string('rol', 55)->default(2);
+            $table->string('nombres', 155)->nullable();
+            $table->string('apellidos', 155)->nullable();
+            $table->string('cedula', 155)->nullable();
+            $table->string('nacionalidad', 155)->nullable();
+            $table->enum('sexo', ['M', 'F'])->nullable();
+            $table->string('telefono', 155)->nullable();
+            $table->string('direccion', 155)->nullable();
+            $table->string('pais', 155)->nullable();
+            $table->string('estado', 155)->nullable();
+            $table->string('ciudad', 155)->nullable(); // municipio
+            $table->string('rol', 55)->default(3); // 1: Admin, 2: Editor, 3: User
             $table->string('foto', 255)->default('/assets/img/avatar.png');
             $table->string('email')->unique();
+            $table->boolean('estatus')->default(true); // true: activo, false: inactivo
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

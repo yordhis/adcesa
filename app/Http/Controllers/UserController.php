@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\StoreUserWebRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\{
     User,
@@ -43,6 +44,7 @@ class UserController extends Controller
         }
     }
 
+    /** Solo registro de usuario para el sistema */
     public function store(StoreUserRequest $request)
     {
         try {
@@ -66,6 +68,34 @@ class UserController extends Controller
             return back()->with(compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
             $errorInfo = Helpers::getMensajeError($th, "Error al Registrar los datos de usuarios en el metodo store,");
+            return response()->view('errors.404', compact("errorInfo"), 404);
+        }
+    }
+
+    /** Registro de usuario desde la web */
+    public function register(StoreUserWebRequest $request)
+    {
+        try {
+            $estatusCreate = 0;
+
+            // Seteamos la foto
+            if (isset($request->file)) {
+                $request['foto'] = Helpers::setFile($request);
+            }
+            // Encriptamos la contraseña
+            $request['password'] = Hash::make($request['password']);
+
+            // Creamos el usuario
+            $estatusCreate = User::create($request->all());
+
+            $mensaje = $estatusCreate ? "El Usuario se Registró correctamente."
+                : "El nombre de Usuario ¡Ya existe!, Cambie el nombre.";
+            $estatus = $estatusCreate ? Response::HTTP_CREATED
+                : Response::HTTP_CONFLICT;
+
+            return back()->with(compact('mensaje', 'estatus'));
+        } catch (\Throwable $th) {
+            $errorInfo = Helpers::getMensajeError($th, "Error al Registrar los datos de usuarios,");
             return response()->view('errors.404', compact("errorInfo"), 404);
         }
     }

@@ -32,12 +32,12 @@
             </div>
 
             <div class="col-sm-3 col-xs-12 ">
-                @include('admin.profesores.partials.modalform')
+                @include('admin.clientes.partials.modalform')
             </div>
 
             <div class="col-sm-3 col-xs-12">
 
-                <form action="{{ route('admin.profesores.index') }}" method="post" class="row g-3 needs-validation"
+                <form action="{{ route('admin.clientes.index') }}" method="post" class="row g-3 needs-validation"
                     novalidate>
                     @csrf
                     @method('GET')
@@ -61,7 +61,7 @@
             </div>
 
             <div class="col-sm-6 col-xs-12">
-                <form action="{{ route('admin.profesores.index') }}" method="post">
+                <form action="{{ route('admin.clientes.index') }}" method="post">
                     @csrf
                     @method('GET')
                     <div class="input-group mb-3">
@@ -85,31 +85,30 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Cédula</th>
                             <th scope="col">Teléfono</th>
-                            <th scope="col">Grupos</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        @foreach ($profesores as $profesor)
-                            <tr class="{{ $profesor->estatus == 2 ? 'table-danger' : '' }}
-                                {{ $profesor->estatus == 0 ? 'table-secondary' : '' }}">
-                                <th scope="row">{{ $profesor->id }}</th>
-                                <td>{{ $profesor->nombre }}</td>
-                                <td>{{ $profesor->cedula }}</td>
-                                <td>{{ $profesor->telefono }}</td>
-                                <td>{{ 'Asignados ' . count($profesor->grupos_estudios) }}</td>
+                        @foreach ($clientes as $cliente)
+                            <tr class="{{ $cliente->estatus == 2 ? 'table-danger' : '' }}
+                                {{ $cliente->estatus == 0 ? 'table-secondary' : '' }}">
+                                <th scope="row">{{ $cliente->id }}</th>
+                                <td>{{ $cliente->nombres }}</td>
+                                <td>{{ $cliente->cedula }}</td>
+                                <td>{{ $cliente->telefono }}</td>
+                
 
 
                                 <td>
-                                    @include('admin.profesores.partials.modalver')
+                                    @include('admin.clientes.partials.modalver')
 
-                                    <a href="{{ route('admin.profesores.edit', $profesor->id) }}">
+                                    <a href="{{ route('admin.clientes.edit', $cliente->id) }}">
                                         <i class="bi bi-pencil text-warning"></i>
                                     </a>
 
 
-                                    @include('admin.profesores.partials.modal')
+                                    @include('admin.clientes.partials.modal')
 
 
                                 </td>
@@ -121,8 +120,8 @@
                         <tr>
 
                             <td colspan="7" class="text-center table-secondary">
-                                Total de profesores: {{ $profesores->total() }} |
-                                <a href="{{ route('admin.profesores.index') }}" class="text-primary">
+                                Total de clientes: {{ $clientes->total() }} |
+                                <a href="{{ route('admin.clientes.index') }}" class="text-primary">
                                     Ver todo
                                 </a>
                                 <br>
@@ -133,7 +132,7 @@
 
                 <!-- End Table with stripped rows -->
                 <div class="col-sm-6 col-xs-12">
-                    {{ $profesores->appends(['filtro' => $request->filtro])->links() }}
+                    {{ $clientes->appends(['filtro' => $request->filtro])->links() }}
                 </div>
 
             </div>

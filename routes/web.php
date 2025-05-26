@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    ClienteController,
     ConceptoController,
     CuotaController,
     UserController,
@@ -31,6 +32,11 @@ use App\Http\Controllers\{
 */
 Route::get('/', [PageController::class, 'index'])->name('page.index');
 
+/** Rutas de usuario logeado */
+Route::middleware('auth')->group(function () {
+    Route::get('/home', [PageController::class, 'index'])->name('page.home');
+});
+
 Route::controller(PageController::class)->group( function () {
     Route::get('/preinscripcion/{codigo_nivel?}', 'create')->name('page.preinscripcion.index');
     Route::get('/preinscripcion/estudiante/{codigo_nivel?}/{codigo_plan?}', 'createEstudiante')->name('page.preinscripcion.estudiante');
@@ -59,14 +65,15 @@ Route::middleware('auth')->group(function () {
     /** Panel principal */
     Route::get('/panel', [DashboardController::class, 'index'])->name('admin.panel.index');
 
+    /** Rutas de Profesor */
+    Route::resource('/clientes', ClienteController::class)->names('admin.clientes');
+
     /** Cuotas */ 
     Route::get('/cuotas', [CuotaController::class, 'index'])->name('admin.coutas.index');
     
     /** Usuarios */
     Route::resource('/users', UserController::class)->names('admin.users');
     
-    /** Rutas de Profesor */
-    Route::resource('/profesores', ProfesoreController::class)->names('admin.profesores');
     
     /** Rutas de Estudiante */
     Route::resource('/estudiantes', EstudianteController::class)->names('admin.estudiantes');

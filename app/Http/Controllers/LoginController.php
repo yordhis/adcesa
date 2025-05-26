@@ -8,33 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return view('login');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    /** Autenticación de usuario  */
     public function store(Request $request)
     {
         // Autenticamos al usuario
@@ -46,7 +25,11 @@ class LoginController extends Controller
         if (Auth::attempt($credenciales, $recuerdame)) {
             $request->session()->regenerate();
             // return "esta logeado";
-            return redirect()->intended('panel');
+            if (Auth::user()->rol == 3) {
+                return redirect()->intended('home');
+            } else {
+                return redirect()->intended('panel');
+            } 
         }
 
         return back()->withErrors([
@@ -54,54 +37,12 @@ class LoginController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    /** Cerrar sesión */
     public function logout(Request $request, Redirector $redirect)
     {
-      
-        // Eliminamos la session
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
         return $redirect->to('login');
     }
 }

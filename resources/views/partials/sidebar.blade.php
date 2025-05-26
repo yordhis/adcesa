@@ -15,7 +15,8 @@
         @if (Auth::user()->rol == 1 || Auth::user()->rol == 2)
             <!-- Start Components Nav | Panel -->
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('admin.panel.index') }}">
+                <a class="nav-link {{ url()->current() == route('admin.panel.index') ? 'text-primar collapse' : 'collapsed' }}"
+                    href="{{ route('admin.panel.index') }}">
                     <i class="bi bi-grid"></i>
                     <span>Panel</span>
                 </a>
@@ -23,8 +24,8 @@
 
             <!-- Start Components Nav | Clientes -->
             <li class="nav-item">
-                <a href="{{ route('admin.profesores.index') }}"
-                    class="nav-link  {{ $categoria == 'PROFESORES' ? 'text-warning collapse' : 'collapsed' }}">
+                <a href="{{ route('admin.clientes.index') }}"
+                    class="nav-link  {{ url()->current() == route('admin.clientes.index') ? 'text-primar collapse' : 'collapsed' }}">
                     <i class="bi bi-person-vcard"></i><span>Clientes</span>
                 </a>
             </li><!-- End Components Nav | Clientes -->
