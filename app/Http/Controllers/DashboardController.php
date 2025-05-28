@@ -20,20 +20,15 @@ class DashboardController extends Controller
 
     public function index()
     {
+        $respuesta = DataDev::$respuesta;
         $dataTarjetas = [
-            "grupos" => Grupo::where('estatus', 1)->count(),
-            "estudiantes" => GrupoEstudiante::where('estatus', 1)->count(),
-            "profesores" => Profesore::where('estatus', 1)->count(),
-            "cuotas" => Cuota::where('estatus', 0)
-            ->whereYear('fecha', date('Y'))
-            ->whereMonth('fecha','=' , date('m'))
-            ->whereDay('fecha','<', date('d'))
-            ->count(),
-            "pagos" => Pago::whereYear('fecha', date('Y'))
-            ->whereMonth('fecha', date('m'))
-            ->count()
+            "grupos" => 125,
+            "estudiantes" => 300,
+            "profesores" => 555,
+            "cuotas" => 10,
+            "pagos" => 100
         ];
 
-        return view('admin.dashboard', compact('dataTarjetas'));
+        return view('admin.dashboard', compact('dataTarjetas', 'respuesta'));
     }
 }
