@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Lista de profesores')
+@section('title', 'Lista de clientes')
 
 @section('content')
 
@@ -28,44 +28,21 @@
 
 
             <div class="col-12">
-                <h2> Lista de profesores</h2>
+                <h2> Lista de Clientes</h2>
             </div>
 
-            <div class="col-sm-3 col-xs-12 ">
+            <div class="col-sm-6 col-xs-12 ">
                 @include('admin.clientes.partials.modalform')
             </div>
 
-            <div class="col-sm-3 col-xs-12">
-
-                <form action="{{ route('admin.clientes.index') }}" method="post" class="row g-3 needs-validation"
-                    novalidate>
-                    @csrf
-                    @method('GET')
-
-                    <div class="input-group mb-3">
-                        <label for="validationCustom01" class="form-label"></label>
-                        <select class="form-select" id="validationCustom01" name="estatus" required>
-                            <option selected disabled>Seleccione filtro</option>
-                            <option value="1">Activos</option>
-                            <option value="2">Inactivos</option>
-                            <option value="3">Borrado temporal</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Please select a valid state.
-                        </div>
-                        <button class="btn btn-primary" type="submit" id="button-addon2">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-
+            <!-- Filtro de clientes -->
             <div class="col-sm-6 col-xs-12">
                 <form action="{{ route('admin.clientes.index') }}" method="post">
                     @csrf
                     @method('GET')
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="filtro" placeholder="Buscar" aria-label="Filtrar"
+                        <label for="filtro" class="text-primary p-2">Buscar</label>
+                        <input type="text" class="form-control" name="filtro" placeholder="Buscar por: Nombres, Cédula o E-mail" aria-label="Filtrar"
                             aria-describedby="button-addon2" required>
                         <button class="btn btn-primary" type="submit" id="button-addon2">
                             <i class="bi bi-search"></i>

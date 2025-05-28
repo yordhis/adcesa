@@ -15,6 +15,12 @@ class ClienteController extends Controller
         try {
             $respuesta = DataDev::$respuesta;
             $clientes = User::where('rol', 3)->paginate(12);
+            if ($request->filtro) {
+                return $request->filtro;
+                $clientes = User::where('rol', 3)
+                ->orWhere('nombres')
+                ->paginate(12);
+            }
             return view('admin.clientes.index', compact('clientes', 'request', 'respuesta'));
             
         } catch (\Throwable $th) {

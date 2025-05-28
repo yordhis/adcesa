@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\ValidarPermisos;
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,8 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
         apiPrefix: 'api/',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->appendToGroup('admin', [
+        Authenticate::class,
+        ValidarPermisos::class,
+    ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        
     })->create();

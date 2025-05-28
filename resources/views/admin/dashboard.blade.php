@@ -3,12 +3,16 @@
 @section('title', 'Panel Principal')
 
 @section('content')
+    @if (session('mensaje'))
+        @include('partials.alert')
+    @endif
+    <div id="alert"></div>
     <section class="section dashboard">
         <div class="row">
             <!-- Left side columns -->
             <div class="col-lg-12">
                 <div class="row">
-                    <!-- Sales Card -->
+                    <!-- Tarjeta de Clientes -->
                     <div class="col-sm-4">
                         <div class="card info-card sales-card rounded-3">
 
@@ -20,7 +24,7 @@
                                         <i class="bi bi-people-fill text-primary"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{$dataTarjetas['grupos']}}</h6>
+                                        <h6>{{ $dataTarjetas['grupos'] }}</h6>
                                         <span class="text-muted small pt-2 ps-1">Activos</span>
                                         {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
@@ -29,9 +33,9 @@
                             </div>
 
                         </div>
-                    </div><!-- End Sales Card -->
-                    
-                    <!-- Sales Card -->
+                    </div><!-- Fin Tarjeta de Clientes -->
+
+                    <!-- Tarjeta de Productos -->
                     <div class="col-sm-4">
                         <div class="card info-card sales-card rounded-3">
 
@@ -43,7 +47,7 @@
                                         <i class="bi bi-box text-dark"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{$dataTarjetas['estudiantes']}}</h6>
+                                        <h6>{{ $dataTarjetas['estudiantes'] }}</h6>
                                         <span class="text-muted small pt-2 ps-1">Activos</span>
                                         {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
@@ -52,9 +56,9 @@
                             </div>
 
                         </div>
-                    </div><!-- End Sales Card -->
+                    </div><!-- Fin Tarjeta de Productos-->
 
-                    <!-- Sales Card -->
+                    <!-- Tarjeta de Ventas -->
                     <div class="col-sm-4">
                         <div class="card info-card sales-card rounded-3">
 
@@ -66,7 +70,7 @@
                                         <i class="bi bi-cart-check-fill text-success"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{$dataTarjetas['profesores']}}</h6>
+                                        <h6>{{ $dataTarjetas['profesores'] }}</h6>
                                         <span class="text-muted small pt-2 ps-1">Activos</span>
                                         {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
@@ -75,9 +79,9 @@
                             </div>
 
                         </div>
-                    </div><!-- End Sales Card -->
+                    </div><!-- Fin Tarjeta de Ventas-->
 
-                    <!-- Sales Card -->
+                    <!-- Tarjeta de Pedidos pendientes -->
                     <div class="col-sm-4">
                         <div class="card info-card sales-card rounded-3">
 
@@ -89,11 +93,11 @@
                                         <i class="bi bi-ui-checks-grid text-danger"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{$dataTarjetas['cuotas']}}</h6>
+                                        <h6>{{ $dataTarjetas['cuotas'] }}</h6>
                                         <span class="text-muted small pt-2 ps-1">
                                             <a href="/cuotas" target="_self">
                                                 Ver lista
-                                            </a>    
+                                            </a>
                                         </span>
                                         {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
@@ -102,9 +106,9 @@
                             </div>
 
                         </div>
-                    </div><!-- End Sales Card -->
+                    </div><!-- Fin Tarjeta de Pedidos pendientes -->
 
-                    <!-- Sales Card -->
+                    <!-- Tarjeta de Pedidos por entregar -->
                     <div class="col-sm-4">
                         <div class="card info-card sales-card rounded-3">
 
@@ -116,7 +120,7 @@
                                         <i class="bi bi-truck text-dark"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{$dataTarjetas['pagos']}}</h6>
+                                        <h6>{{ $dataTarjetas['pagos'] }}</h6>
                                         <span class="text-muted small pt-2 ps-1">Activos</span>
                                         {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
@@ -125,33 +129,33 @@
                             </div>
 
                         </div>
-                    </div><!-- End Sales Card -->
+                    </div><!-- Fin Tarjeta de Pedidos por entregar -->
 
-                    <!-- Sales Card -->
+                    <!-- Tarjeta de Atender pedido -->
                     <div class="col-sm-4">
                         <div class="card info-card sales-card bg-primary rounded-3">
-                            <a href="{{ route('admin.inscripciones.index') }}" >
+                            <a href="{{ route('admin.inscripciones.index') }}">
                                 <div class="card-body">
                                     <h5 class="card-title"></span></h5>
-    
+
                                     <div class="d-flex align-items-center">
                                         <div class="ps-3">
-                                            <h2 class="text-warning">Procesar Pago</h6>
+                                            <h2 class="text-white">Atender pedidos</h6>
                                         </div>
-    
-                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center ">
-                                            <i class="bi bi-paypal text-primary"></i>
+
+                                        <div
+                                            class="card-icon rounded-circle d-flex align-items-center justify-content-center ">
+                                            <i class="bi bi-clipboard-fill text-primary"></i>
                                         </div>
                                     </div>
                                 </div>
                             </a>
 
                         </div>
-                    </div><!-- End Sales Card -->
-                   
+                    </div><!-- Fin Tarjeta de Atender pedido -->
                 </div>
             </div>
         </div>
     </section>
-    
+
 @endsection

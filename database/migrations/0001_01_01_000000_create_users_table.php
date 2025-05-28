@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('estado', 155)->nullable();
             $table->string('ciudad', 155)->nullable(); // municipio
             $table->string('rol', 55)->default(3); // 1: Admin, 2: Editor, 3: User
-            $table->string('foto', 255)->default('/assets/img/avatar.png');
+            $table->string('foto', 255)->nullable();
             $table->string('email')->unique();
             $table->boolean('estatus')->default(true); // true: activo, false: inactivo
             $table->timestamp('email_verified_at')->nullable();
