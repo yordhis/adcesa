@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permiso;
+use App\Models\Role;
 use App\Models\RolPermiso;
 use Illuminate\Database\Seeder;
 
@@ -14,48 +16,65 @@ class RolPermisoSeeder extends Seeder
      */
     public function run()
     {
-        $roles = [
-            "administrador" => 1,
-            "asistente" => 2
+
+        $permisosDeAdminitrador = [
+            "panel",
+            "clientes",
+            "proveedores",
+            "productos",
+            "categorias",
+            "marcas",
+            "materia prima",
+            "pagos",
+            "pedidos",
+            "configuraciones",
+            "cuentas bancarias",
+            "usuarios",
+            "permisos",
+            "roles",
+            "reportes",
         ];
 
-        $permososDeAdminitrador = [
-            "panel" => 1,
-            "profesores" => 2,
-            "estudiantes" => 3,
-            "niveles" => 4,
-            "planes" => 5,
-            "grupos" => 6,
-            "pagos" => 7,
-            "inscripciones" => 8,
-            "configuraciones" => 9,
-            "conceptos" => 10,
-            "usaurios" => 11,
+        $permisosDeGerente = [
+            "panel",
+            "clientes",
+            "proveedores",
+            "productos",
+            "categorias",
+            "marcas",
+            "materia prima",
+            "pagos",
+            "pedidos",
+            "configuraciones",
+            "cuentas bancarias",
+            "reportes",
         ];
 
-        $permososDeAsistente = [
-            "panel" => 1,
-            "profesores" => 2,
-            "estudiantes" => 3,
-            "niveles" => 4,
-            "planes" => 5,
-            "grupos" => 6,
-            "pagos" => 7,
-            "inscripciones" => 8
+        $permisosDeCliente = [
+            "tienda",
         ];
 
-        foreach ($permososDeAdminitrador as $key => $value) {
+        foreach ($permisosDeAdminitrador as $key => $value) {
             $permiso = new RolPermiso();
-            $permiso->id_rol = $roles['administrador'];
-            $permiso->id_permiso = $value;
+            $permiso->id_rol = Role::where('nombre', 'ADMINISTRADOR')->first()->id;
+            $permiso->id_permiso = Permiso::where('nombre', $value)->first()->id;
             $permiso->save();
         }
 
-        foreach ($permososDeAsistente as $key => $value) {
+        foreach ($permisosDeGerente as $key => $value) {
             $permiso = new RolPermiso();
-            $permiso->id_rol = $roles['asistente'];
-            $permiso->id_permiso = $value;
+            $permiso->id_rol = Role::where('nombre', 'GERENTE')->first()->id;
+            $permiso->id_permiso = Permiso::where('nombre', $value)->first()->id;
             $permiso->save();
         }
+        
+        foreach ($permisosDeCliente as $key => $value) {
+            $permiso = new RolPermiso();
+            $permiso->id_rol = Role::where('nombre', 'CLIENTE')->first()->id;
+            $permiso->id_permiso = Permiso::where('nombre', $value)->first()->id;
+            $permiso->save();
+        }
+
+        
     }
 }

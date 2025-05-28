@@ -22,8 +22,8 @@
                         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
                             <img src="{{ $usuario->foto }}" alt="Profile" class="rounded-circle">
-                            <h2>{{ $usuario->nombre }}</h2>
-                            <h5 class="fs-6">{{ $usuario->rol['nombre'] }}</h5>
+                            <h2>{{ $usuario->nombres }}</h2>
+                            <h5 class="fs-6">{{ $usuario->rol_nombre }}</h5>
                             <div class="social-links mt-2">
 
                                 <a href="{{ route('admin.users.edit', $usuario->id) }}" class="facebook">

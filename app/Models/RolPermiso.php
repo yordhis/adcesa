@@ -11,6 +11,7 @@ class RolPermiso extends Model
 
     protected $fillable = [
         "id_rol",
-        "id_permiso"
+        "id_permiso",
+        "estatus_rp"
     ];
 }

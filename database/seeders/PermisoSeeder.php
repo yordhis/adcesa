@@ -14,19 +14,23 @@ class PermisoSeeder extends Seeder
      */
     public function run()
     {
-
         $permisos = [
             "panel",
-            "profesores",
-            "estudiantes",
-            "niveles",
-            "planes",
-            "grupos",
+            "clientes",
+            "proveedores",
+            "productos",
+            "categorias",
+            "marcas",
+            "materia prima",
             "pagos",
-            "inscripciones",
+            "pedidos",
             "configuraciones",
-            "conceptos",
-            "usaurios",
+            "cuentas bancarias",
+            "usuarios",
+            "permisos",
+            "roles",
+            "reportes",
+            "tienda",
         ];
 
         foreach ($permisos as $key => $value) {
