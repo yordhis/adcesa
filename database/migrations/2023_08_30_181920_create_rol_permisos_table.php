@@ -17,6 +17,7 @@ class CreateRolPermisosTable extends Migration
             $table->id();
             $table->string("id_rol")->nullable();
             $table->string("id_permiso")->nullable();
+            $table->boolean("estatus_rp")->default(true);
             $table->timestamps();
         });
     }

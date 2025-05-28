@@ -23,12 +23,14 @@ class LoginController extends Controller
         $recuerdame = $request->filled('rememberMe');
 
         if (Auth::attempt($credenciales, $recuerdame)) {
+            /** Se regenera la seción o se crea */
             $request->session()->regenerate();
-            // return "esta logeado";
-            if (Auth::user()->rol == 3) {
-                return redirect()->intended('home');
-            } else {
+
+            /** Redireccionamos al usaurio segun su rol */
+            if (Auth::user()->rol < 3) {
                 return redirect()->intended('panel');
+            } else {
+                return redirect()->intended('home');
             } 
         }
 

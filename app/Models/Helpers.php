@@ -103,14 +103,23 @@ class Helpers extends Model
      * @param idRol string
      * @return permisos array
      */
-    public static function getPermisosUsuario($idRol)
+    public static function getPermisosUsuario($idRol): array
     {
-        $permisosArray = [];
-        $permisos = RolPermiso::where("id_rol", $idRol)->get();
-        foreach ($permisos as $permiso) {
-            array_push($permisosArray, Permiso::where('id', $permiso->id_permiso)->first()->nombre);
+        $rolPermisos = RolPermiso::where('id_rol', $idRol)
+            ->where('estatus_rp', 1)
+            ->join('permisos', 'permisos.id', '=', 'rol_permisos.id_permiso')
+            ->select(
+                'rol_permisos.*',
+                'permisos.nombre as permiso'
+            )
+            ->get();
+
+        $permisos = [];
+        foreach ($rolPermisos as $rol) {
+            array_push($permisos, $rol->permiso);
         }
-        return $permisosArray;
+
+        return $permisos;
     }
 
 
@@ -142,7 +151,10 @@ class Helpers extends Model
      * Esta funcion recibe la informacion del formulario y detecta cuales son los input que
      * contienen el prefijo @var dif_  o el quese le envie y las convierte en un array.
      *
-     * @param Request
+     * @param object $request Aqui vienen los input o entradas de la solicitud
+     * @param string $prefijo Esto se encarga de identificar los nombre de campos que se van a capturar
+     * 
+     * @return array Valores de los campos capturados en la solicitud
      */
     public static function getArrayInputs($request, $prefijo = "dif")
     {
