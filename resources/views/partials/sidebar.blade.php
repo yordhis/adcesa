@@ -24,15 +24,41 @@
 
 
 
-            <!-- Start Components Nav | Materia prima -->
+            <!-- Start Components Nav | insumos -->
             <li class="nav-item">
                 <a href="{{ route('admin.insumos.index') }}"
                     class="nav-link  {{ url()->current() == route('admin.insumos.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
                     <i
-                        class="bi bi-box {{ url()->current() == route('admin.insumos.index') ? 'text-white' : 'text-primary' }}"></i><span>Materia
-                        prima</span>
+                        class="bi bi-box {{ url()->current() == route('admin.insumos.index') ? 'text-white' : 'text-primary' }}"></i>
+                    <span>
+                        Insumos
+                    </span>
                 </a>
-            </li><!-- End Components Nav | Materia prima -->
+            </li><!-- End Components Nav | insumos -->
+
+            <!-- Start Components Nav | Categorias -->
+            <li class="nav-item">
+                <a href="{{ route('admin.categorias.index') }}"
+                    class="nav-link  {{ url()->current() == route('admin.categorias.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                    <i
+                        class="bi bi-tags {{ url()->current() == route('admin.categorias.index') ? 'text-white' : 'text-primary' }}"></i>
+                    <span>
+                        Categorias
+                    </span>
+                </a>
+            </li><!-- End Components Nav | Categorias -->
+
+            <!-- Start Components Nav | marcas -->
+            <li class="nav-item">
+                <a href="{{ route('admin.marcas.index') }}"
+                    class="nav-link  {{ url()->current() == route('admin.marcas.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                    <i
+                        class="bi bi-bookmarks {{ url()->current() == route('admin.marcas.index') ? 'text-white' : 'text-primary' }}"></i>
+                    <span>
+                        Marcas
+                    </span>
+                </a>
+            </li><!-- End Components Nav | marcas -->
         @endif
 
         @if (Auth::user()->rol == 1)

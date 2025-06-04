@@ -16,10 +16,4 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&display=swap" rel="stylesheet">
 
-@vite(['resources/sass/app.scss', 'resources/js/app.js'])
-{{-- <link href="{{ asset('/css/jquery-confirm.css') }}" rel="stylesheet"> --}}
-
-
-
-
-
+@vite(['resources/scss/app.scss', 'resources/js/app.js'])

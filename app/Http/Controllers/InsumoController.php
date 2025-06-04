@@ -23,7 +23,7 @@ class InsumoController extends Controller
     /** Método que crea un insumo */
     public function store(StoreInsumoRequest $request)
     {
-        //
+        return $request;
     }
 
     /**  Método que actualiza los datos de un insumo */

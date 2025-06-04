@@ -1,128 +1,129 @@
 <!-- Vertically centered Modal -->
 <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#modalRegistrarinsumo">
-    <i class="bi bi-box fs-3"></i> Crear insumo
+    <i class="bi bi-box"></i> Crear insumo
 </button>
 
 <div class="modal fade" id="modalRegistrarinsumo" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">Registrar insumo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-start">
-                <form action="{{ route('admin.insumos.store') }}" method="post" class="row g-3 needs-validation" 
-                enctype="multipart/form-data"
-                novalidate>
-                 @csrf
-                 @method('post')  
-                 
-                  <div class="col-12">
+                <form action="{{ route('admin.insumos.store') }}" method="post" 
+                    class="row g-3 needs-validation"
+                    enctype="multipart/form-data" novalidate>
+                    @csrf
+                    @method('post')
+
+                    <!-- Input Nombre -->
+                    <div class="col-12">
                         <label for="yourUsername" class="form-label">Nombre del insumo</label>
                         <div class="input-group has-validation">
-                          <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
-                            <i class="bi bi-people"></i>
-                          </span>
-                          <input type="text" name="nombre" class="form-control" id="nombre" 
-                          placeholder="Ingrese su nombres y apellidos"
-                          value="{{ old('nombre') ?? '' }}"
-                          required>
-                          <div class="invalid-feedback">Por favor, ingrese nombre! </div>
-                          @error('nombre')
-                            <div class="text-danger">{{ $message }}</div>
-                          @enderror
+                            <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
+                                <i class="bi bi-people"></i>
+                            </span>
+                            <input type="text" name="nombre" class="form-control" id="nombre"
+                                placeholder="Ingrese su nombres y apellidos" value="{{ old('nombre') ?? '' }}" required>
+                            <div class="invalid-feedback">Por favor, ingrese nombre! </div>
+                            @error('nombre')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
-                      </div>
-                     
-                      <div class="col-xs-12 col-sm-6">
-                        <label for="cantidad" class="form-label">Cédula</label>
-                        <input type="number" name="cantidad" class="form-control" id="cantidad" 
-                        placeholder="Ingrese número de cédula"
-                        value="{{ old('cantidad') ?? '' }}"
-                        required>
-                        <div class="invalid-feedback">Por favor, Ingrese número de cédula valido!</div>
+                    </div>
+
+                    <!-- Input Costo -->
+                    <div class="col-12">
+                        <label for="costo" class="form-label">Costo</label>
+                        <input type="number" step="any" name="costo" class="form-control" id="costo"
+                            placeholder="Ingrese costo" value="{{ old('costo') ?? '' }}" required>
+                        <div class="invalid-feedback">Por favor, Ingrese un costo valido!</div>
+                        @error('costo')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Input Precio -->
+                    <div class="col-12">
+                        <label for="precio" class="form-label">Precio</label>
+                        <input type="number" step="any" name="precio" class="form-control" id="precio"
+                            placeholder="Ingrese precio" value="{{ old('precio') ?? '' }}" required>
+                        <div class="invalid-feedback">Por favor, Ingrese un precio valido!</div>
+                        @error('precio')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Input Cantidad -->
+                    <div class="col-12">
+                        <label for="cantidad" class="form-label">Cantidad</label>
+                        <input type="number" step="any" name="cantidad" class="form-control" id="cantidad"
+                            placeholder="Ingrese cantidad" value="{{ old('cantidad') ?? '' }}" required>
+                        <div class="invalid-feedback">Por favor, Ingrese una cantidad valida!</div>
                         @error('cantidad')
-                          <div class="text-danger">{{ $message }}</div>
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
-                      </div>
+                    </div>
 
-                      <div class="col-12">
-                        <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="phone" name="telefono" class="form-control" id="telefono" 
-                        placeholder="Ingrese número de teléfono"
-                        value="{{ old('telefono') ?? ''}}"
-                        required>
-                        <div class="invalid-feedback">Por favor, Ingrese número de teléfono valido!</div>
-                        @error('telefono')
-                          <div class="text-danger">{{ $message }}</div>
+                    <!-- Input marcas -->
+                    <div class="col-12">
+                        <label for="marca" class="form-label">Marcas</label>
+                        <select class="form-select" name="marca" id="marca" required>
+                            <option selected disabled value="">Seleccione marca</option>
+                            @foreach ($marcas as $marca)
+                                @if (old('marca') == $marca->id)
+                                    <option value="{{ $marca->id }}" selected>{{ $marca->nombre }}</option>
+                                @endif
+                                <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor, seleccione una marca valida!.
+                        </div>
+                        @error('marca')
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
-                      </div>
+                    </div>
 
-                      <div class="col-12">
-                        <label for="correo" class="form-label">E-mail</label>
-                        <input type="email" name="correo" class="form-control" id="correo" 
-                        placeholder="Ingrese dirección de correo."
-                        value="{{ old('correo') ?? '' }}"
-                        required>
-                        <div class="invalid-feedback">Por favor, Ingrese dirección de correo!</div>
-                        @error('correo')
-                          <div class="text-danger">{{ $message }}</div>
+                    <!-- Input categorias -->
+                    <div class="col-12">
+                        <label for="categoria" class="form-label">Categorias</label>
+                        <select class="form-select" name="categoria" id="categoria" required>
+                            <option selected disabled value="">Seleccione categoria</option>
+                            @foreach ($categorias as $categoria)
+                                @if (old('categoria') == $categoria->id)
+                                    <option value="{{ $categoria->id }}" selected>{{ $categoria->nombre }}</option>
+                                @endif
+                                <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                            @endforeach
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor, seleccione una categoria valida!.
+                        </div>
+                        @error('categoria')
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
-                      </div>
+                    </div>
 
-                      <div class="col-12">
-                        <label for="nacimiento" class="form-label">Fecha de nacimiento</label>
-                        <input type="date" name="nacimiento" class="form-control" id="nacimiento" 
-                        placeholder="Ingrese fecha de nacimiento."
-                        value="{{  old('nacimiento') ?? '' }}"
-                        required>
-                        <div class="invalid-feedback">Por favor, ingrese fecha de nacimiento!</div>
-                        @error('nacimiento')
-                          <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                      </div>
-
-                      <div class="col-12">
-                        <label for="edad" class="form-label">Edad</label>
-                        <input type="number" name="edad" class="form-control" id="edad" 
-                        placeholder="Ingrese edad."
-                        value="{{ old('edad') ?? ''}}"
-                        required>
-                        <div class="invalid-feedback">Por favor, Ingrese edad!</div>
-                        @error('edad')
-                          <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                      </div>
-
-                      <div class="col-12">
-                        <label for="direccion" class="form-label">Dirección de habitación</label>
-                        <input type="text" name="direccion" class="form-control" id="direccion" 
-                        placeholder="Ingrese dirección de domicilio."
-                        value="{{  old('direccion') ?? '' }}"
-                        required>
-                        <div class="invalid-feedback">Por favor, Ingrese dirección!</div>
-                        @error('direccion')
-                          <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                      </div>
-
-                      <div class="col-12">
+                    <!-- Input imagen -->
+                    <div class="col-12">
                         <label for="file" class="form-label">Subir Foto (Opcional)</label>
                         <input type="file" name="file" class="form-control " id="file" accept="image/*">
-                        {{-- <div class="invalid-feedback">Ingrese una imagen valida</div> --}}
                         @error('file')
-                          <div class="text-danger">{{ $message }}</div>
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
-                      </div>
-    
-                 
+                    </div>
+
+                    <div class="col-12">
+                        <button class="btn btn-primary w-100" type="submit">Crear insumo</button>
+                    </div>
+
+                </form>
+
+
             </div>
             <div class="modal-footer">
-                <div class="col-12">
-                    <button class="btn btn-primary w-100" type="submit">Crear profesor</button>
-                  </div>
-                  
-                </form>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>

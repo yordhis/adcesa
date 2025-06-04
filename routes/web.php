@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    CategoriaController,
     ClienteController,
     UserController,
     DashboardController,
     PagoController,
     InsumoController,
     LoginController,
+    MarcaController,
     PageController,
     PermisoController,
     RoleController
@@ -22,16 +24,7 @@ use App\Http\Controllers\{
 
 Route::get('/', [PageController::class, 'index'])->name('page.index');
 
-Route::controller(PageController::class)->group(function () {
-    Route::get('/preinscripcion/{codigo_nivel?}', 'create')->name('page.preinscripcion.index');
-    Route::get('/preinscripcion/estudiante/{codigo_nivel?}/{codigo_plan?}', 'createEstudiante')->name('page.preinscripcion.estudiante');
-    Route::post('/preinscripcion/registrar/estudiante', 'store')->name('page.preinscripcion.estudiante.store');
-    Route::post('/preinscripcion/asignar/estudiante', 'asignarEstudianteExistente')->name('page.preinscripcion.asignar.estudiante');
-    Route::post('/preinscripcion/registrar/representante', 'storeRepresentante')->name('page.registrar.representante');
-    Route::get('/preinscripcion/asignar/representante', 'asignarRepresentante')->name('page.asignar.representante');
-});
-
-/** Rutas de usuario logeado */
+/** Rutas de usuario cliente logeado */
 Route::middleware('auth')->group(function () {
     Route::get('/home', [PageController::class, 'index'])->name('page.home');
 })->prefix('tienda');
@@ -67,8 +60,14 @@ Route::middleware(['admin'])->group(function () {
     /** Rutas de Clientes */
     Route::resource('/clientes', ClienteController::class)->names('admin.clientes');
 
-    /** Rutas de Niveles de estudio */
+    /** Rutas de Insumos */
     Route::resource('/insumos', InsumoController::class)->names('admin.insumos');
+
+    /** Rutas de Marcas */
+    Route::resource('/marcas', MarcaController::class)->names('admin.marcas');
+
+    /** Rutas de Categorias */
+    Route::resource('/categorias', CategoriaController::class)->names('admin.categorias');
 
     /** Rutas de Planes de pago */
     Route::resource('/pagos', PagoController::class)->names('admin.pagos');
