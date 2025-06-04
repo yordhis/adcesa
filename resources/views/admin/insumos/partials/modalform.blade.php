@@ -13,7 +13,7 @@
             <div class="modal-body text-start">
                 <form action="{{ route('admin.insumos.store') }}" method="post" 
                     class="row g-3 needs-validation"
-                    enctype="multipart/form-data" novalidate>
+                    enctype="multipart/form-data">
                     @csrf
                     @method('post')
 
@@ -25,8 +25,8 @@
                                 <i class="bi bi-people"></i>
                             </span>
                             <input type="text" name="nombre" class="form-control" id="nombre"
-                                placeholder="Ingrese su nombres y apellidos" value="{{ old('nombre') ?? '' }}" required>
-                            <div class="invalid-feedback">Por favor, ingrese nombre! </div>
+                                placeholder="Ingrese nombre del insumo" value="{{ old('nombre') ?? '' }}" required>
+                            <div class="invalid-feedback">Por favor, ingrese nombre del insumo! </div>
                             @error('nombre')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
