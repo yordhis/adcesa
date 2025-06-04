@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('insumos', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo_barra')->nullable();
+            $table->string('nombre', 255);
+            $table->decimal('precio');
+            $table->decimal('costo');
+            $table->decimal('cantidad');
+            $table->string('marca')->nullable();
+            $table->string('categoria')->nullable();
+            $table->string('imagen')->nullable();
+            $table->string('estatus')->default('ACTIVO');
+            $table->string('id_marca')->nullable();
+            $table->string('id_categoria')->nullable();
             $table->timestamps();
         });
     }

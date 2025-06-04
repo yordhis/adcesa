@@ -1,13 +1,3 @@
-@php
-    $url = explode('/', $_SERVER['REQUEST_URI']);
-    $categoria = strtoupper($url[1]);
-    if (isset($url[2])) {
-        $subcategoria = strtoupper($url[2]);
-    } else {
-        $subcategoria = 'LISTA';
-    }
-@endphp
-
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
 
@@ -15,9 +5,10 @@
         @if (Auth::user()->rol == 1 || Auth::user()->rol == 2)
             <!-- Start Components Nav | Panel -->
             <li class="nav-item">
-                <a class="nav-link {{ url()->current() == route('admin.panel.index') ? 'text-primar collapse' : 'collapsed' }}"
+                <a class="nav-link {{ url()->current() == route('admin.panel.index') ? 'bg-primary text-white collapse' : 'collapsed' }}"
                     href="{{ route('admin.panel.index') }}">
-                    <i class="bi bi-grid"></i>
+                    <i
+                        class="bi bi-grid {{ url()->current() == route('admin.panel.index') ? 'text-white' : 'text-primary' }}"></i>
                     <span>Panel</span>
                 </a>
             </li><!-- End Dashboard Nav | Panel-->
@@ -25,112 +16,73 @@
             <!-- Start Components Nav | Clientes -->
             <li class="nav-item">
                 <a href="{{ route('admin.clientes.index') }}"
-                    class="nav-link  {{ url()->current() == route('admin.clientes.index') ? 'text-primar collapse' : 'collapsed' }}">
-                    <i class="bi bi-person-vcard"></i><span>Clientes</span>
+                    class="nav-link  {{ url()->current() == route('admin.clientes.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                    <i
+                        class="bi bi-people {{ url()->current() == route('admin.clientes.index') ? 'text-white' : 'text-primary' }}"></i><span>Clientes</span>
                 </a>
             </li><!-- End Components Nav | Clientes -->
 
 
-            <!-- Start Components Nav | Productos compuestos -->
-            <li class="nav-item">
-                <a href="{{ route('admin.estudiantes.index') }}"
-                    class="nav-link  {{ $categoria == 'ESTUDIANTES' ? 'text-warning collapse' : 'collapsed' }}">
-                    <i class="bi bi-person-video3"></i><span>Productos Compuestos</span>
-                </a>
-            </li><!-- End Components Nav | Productos compuestos -->
-
 
             <!-- Start Components Nav | Materia prima -->
             <li class="nav-item">
-                <a href="{{ route('admin.niveles.index') }}"
-                    class="nav-link  {{ $categoria == 'NIVELES' ? 'text-warning collapse' : 'collapsed' }}">
-                    <i class="bi bi-controller"></i><span>Materia prima</span>
+                <a href="{{ route('admin.insumos.index') }}"
+                    class="nav-link  {{ url()->current() == route('admin.insumos.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                    <i
+                        class="bi bi-box {{ url()->current() == route('admin.insumos.index') ? 'text-white' : 'text-primary' }}"></i><span>Materia
+                        prima</span>
                 </a>
             </li><!-- End Components Nav | Materia prima -->
-
-
-            <!-- Start Components Nav | Pagos -->
-            <li class="nav-item">
-            <a class="nav-link {{ $categoria == 'PAGOS' ? 'collapse show' : 'collapsed' }}"
-                data-bs-target="#components-nav-7" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-paypal"></i><span>Pagos</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="components-nav-7" class="nav-content {{ $categoria == 'PAGOS' ? 'collapse show' : 'collapse' }} "
-                data-bs-parent=" #sidebar-nav">
-                <li>
-                    <a href="{{ route('admin.pagos.index') }}" 
-                        class="{{ $categoria == 'PAGOS' ? ($subcategoria == 'LISTA' ? 'active border rounded' : '') : '' }}">
-                        <i class="bi bi-circle"></i><span>Lista</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.pagos.create') }}" 
-                        class="{{ $categoria == 'PAGOS' ? ($subcategoria == 'CREATE' ? 'active border rounded' : '') : '' }}">
-                        <i class="bi bi-circle"></i><span>Procesar Pago</span>
-                    </a>
-                </li>
-
-            </ul>
-        </li><!-- End Components Nav | Pagos -->
         @endif
 
         @if (Auth::user()->rol == 1)
             <!-- Start Components Nav | configuraciones -->
             <li class="nav-item">
-                <a class="nav-link {{ ($categoria == 'CONCEPTOS' ? 'collapse show' : $categoria == 'USUARIOS') ? 'collapse show' : 'collapsed' }}"
+                <a class="nav-link 
+                    {{ url()->current() == route('admin.users.index') || url()->current() == route('admin.users.create')
+                        ? 'collapse show'
+                        : 'collapsed' }}
+                    
+                "
                     data-bs-target="#components-nav-10" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-gear"></i><span>Configuración</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav-10"
-                    class="nav-content {{ ($categoria == 'CONCEPTOS' ? 'collapse show' : $categoria == 'USUARIOS') ? 'collapse show' : 'collapse' }} "
+                    class="nav-content {{ url()->current() == route('admin.users.index') ? 'collapse show' : 'collapsed' }} "
                     data-bs-parent=" #sidebar-nav">
-
-                    <!-- Start Components Nav | Conceptos -->
-                    <li class="nav-item">
-                        {{-- conceptos de pago --}}
-                        <a class="nav-link {{ $categoria == 'CONCEPTOS' ? 'collapse show' : 'collapsed' }}"
-                            data-bs-target="#components-nav-12" data-bs-toggle="collapse" href="#">
-                            <i class="bi bi-paypal fs-3"></i><span>Definir conceptos de pago</span><i
-                                class="bi bi-chevron-down ms-auto"></i>
-                        </a>
-                        <ul id="components-nav-12"
-                            class="nav-content {{ $categoria == 'CONCEPTOS' ? 'collapse show' : 'collapse' }} "
-                            data-bs-parent=" #sidebar-nav-1">
-                            <li>
-                                <a href="{{ route('admin.conceptos.index') }}"
-                                    class="{{ $categoria == 'CONCEPTOS' ? ($subcategoria == 'LISTA' ? 'active border rounded' : '') : '' }}">
-                                    <i class="bi bi-circle"></i><span>Lista</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.conceptos.create') }}"
-                                    class="{{ $categoria == 'CONCEPTOS' ? ($subcategoria == 'CREATE' ? 'active border rounded' : '') : '' }}">
-                                    <i class="bi bi-circle"></i><span>Crear</span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li><!-- End Components Nav | Conceptos -->
 
                     <!-- Start Components Nav | usuarios -->
                     <li class="nav-item">
-                        <a class="nav-link {{ $categoria == 'USUARIOS' ? 'collapse show' : 'collapsed' }}"
+                        <a class="nav-link 
+                            {{ url()->current() == route('admin.users.index') || url()->current() == route('admin.users.create')
+                                ? 'bg-primary text-white collapse show'
+                                : 'collapsed' }}
+                             
+                            "
                             data-bs-target="#components-nav-1" data-bs-toggle="collapse" href="#">
-                            <i class="bi bi-people fs-3"></i><span>Usuarios</span><i
-                                class="bi bi-chevron-down ms-auto"></i>
+                            <i
+                                class="bi bi-people fs-5 {{ url()->current() == route('admin.users.index') || url()->current() == route('admin.users.create')
+                                    ? 'text-white'
+                                    : 'text-primary' }}"></i>
+                            <span>Usuarios</span>
+                            <i class="bi bi-chevron-down ms-auto"></i>
                         </a>
                         <ul id="components-nav-1"
-                            class="nav-content {{ $categoria == 'USUARIOS' ? 'collapse show' : 'collapse' }} "
+                            class="nav-content 
+                                {{ url()->current() == route('admin.users.index') || url()->current() == route('admin.users.create')
+                                    ? 'collapse show'
+                                    : 'collapse' }} 
+                                "
                             data-bs-parent=" #sidebar-nav-1">
                             <li>
                                 <a href="{{ route('admin.users.index') }}"
-                                    class="{{ $categoria == 'USUARIOS' ? ($subcategoria == 'LISTA' ? 'active border rounded' : '') : '' }}">
-                                    <i class="bi bi-circle"></i><span>Lista</span>
+                                    class="{{ url()->current() == route('admin.users.index') ? 'active border rounded' : '' }}">
+                                    <i class="bi bi-circle"></i><span>Lista </span>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('admin.users.create') }}"
-                                    class="{{ $categoria == 'USUARIOS' ? ($subcategoria == 'CREATE' ? 'active border rounded' : '') : '' }}">
+                                    class="{{ url()->current() == route('admin.users.create') ? 'active border rounded' : '' }}">
                                     <i class="bi bi-circle"></i><span>Crear</span>
                                 </a>
                             </li>

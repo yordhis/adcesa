@@ -29,7 +29,7 @@ class RolPermisoSeeder extends Seeder
             "pedidos",
             "configuraciones",
             "cuentas bancarias",
-            "usuarios",
+            "users",
             "permisos",
             "roles",
             "reportes",

@@ -60,34 +60,30 @@
                         <tr class="table-dark text-white">
                             <th scope="col">#</th>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Cédula</th>
-                            <th scope="col">Teléfono</th>
+                            <th scope="col">Costo</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Marca</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         @foreach ($insumos as $insumo)
-                            <tr class="{{ $insumo->estatus == 2 ? 'table-danger' : '' }}
-                                {{ $insumo->estatus == 0 ? 'table-secondary' : '' }}">
+                            <tr>
                                 <th scope="row">{{ $insumo->id }}</th>
-                                <td>{{ $insumo->nombres }}</td>
-                                <td>{{ $insumo->cedula }}</td>
-                                <td>{{ $insumo->telefono }}</td>
+                                <td>{{ $insumo->nombre }}</td>
+                                <td>{{ $insumo->costo }}</td>
+                                <td>{{ $insumo->precio }}</td>
+                                <td>{{ $insumo->cantidad }}</td>
+                                <td>{{ $insumo->categoria }}</td>
+                                <td>{{ $insumo->marca }}</td>
                 
-
-
                                 <td>
                                     @include('admin.insumos.partials.modalver')
 
-                                    <a href="{{ route('admin.insumos.edit', $insumo->id) }}">
-                                        <i class="bi bi-pencil text-warning"></i>
-                                    </a>
-
-
                                     @include('admin.insumos.partials.modal')
-
-
                                 </td>
                             </tr>
                         @endforeach

@@ -71,8 +71,6 @@ Route::middleware(['admin'])->group(function () {
     Route::resource('/insumos', InsumoController::class)->names('admin.insumos');
 
     /** Rutas de Planes de pago */
-    Route::get('/pagos/{cedula}/{codigo_inscripcion}', [PagoController::class, 'getPagoEstudiante'])->name('admin.pagos.process');
-    Route::get('/generarReciboDePago/{cedula_estudiante}/{codigo_inscripcion}/', [PagoController::class, 'recibopdf'])->name('admin.pagos.recibopdf');
     Route::resource('/pagos', PagoController::class)->names('admin.pagos');
 
 });

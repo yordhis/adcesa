@@ -134,7 +134,7 @@
                     <!-- Tarjeta de Atender pedido -->
                     <div class="col-sm-4">
                         <div class="card info-card sales-card bg-primary rounded-3">
-                            <a href="{{ route('admin.inscripciones.index') }}">
+                            <a href="{{ route('admin.clientes.index') }}">
                                 <div class="card-body">
                                     <h5 class="card-title"></span></h5>
 
