@@ -1,0 +1,11 @@
+// Iconos
+@import '../../node_modules/bootstrap-icons/font/bootstrap-icons.css';
+
+// Importa las funciones de Bootstrap (necesarias para las variables y mixins)
+@import "bootstrap/scss/functions";
+
+// Variable personalizadas
+@import './custom.scss';
+
+// Importa Bootstrap
+@import "bootstrap/scss/bootstrap";

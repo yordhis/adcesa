@@ -5,14 +5,8 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                /** Estilos globales */
-                'resources/sass/app.scss',
-                'resources/css/app.css', 
-                'resources/js/app.js',
-                
-                /** Estilos para los pdfs */
-                'resources/css/pdf.css',
-                'resources/js/pdf.js',
+                'resources/scss/app.scss', // Asegúrate de que apunte a tu archivo SCSS
+                'resources/js/app.js'
             ],
             refresh: true,
         }),

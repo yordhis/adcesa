@@ -1,7 +1,10 @@
-// import './bootstrap';
-import 'bootstrap'; // Importa Bootstrap
-import '../sass/app.scss'; // Importa tus estilos Sass
-import '../css/app.css';
+// Importa Bootstrap.js
+import 'bootstrap'; 
+
+// Importa el JavaScript de Bootstrap
+import * as bootstrap from 'bootstrap';
+window.bootstrap = bootstrap;
+
 import '../css/style.css';
 
 import.meta.glob([

@@ -7,41 +7,18 @@
     "file": "assets/bootstrap-icons-BtvjY1KL.woff2",
     "src": "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2"
   },
-  "resources/css/app.css": {
-    "file": "assets/app-zR5EsT1a.css",
-    "src": "resources/sass/app.scss",
-    "isEntry": true
-  },
-  "resources/css/pdf.css": {
-    "file": "assets/pdf-DEE8Pna6.css",
-    "src": "resources/css/pdf.css",
-    "isEntry": true
-  },
   "resources/js/app.js": {
-    "file": "assets/app-hA17N7lw.js",
+    "file": "assets/app-UfBTBrcd.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-BmMK2rqS.css"
-    ],
-    "assets": [
-      "assets/bootstrap-icons-BtvjY1KL.woff2",
-      "assets/bootstrap-icons-BOrJxbIo.woff"
+      "assets/app-Dktst1DP.css"
     ]
   },
-  "resources/js/pdf.js": {
-    "file": "assets/pdf-BK7NbhsH.js",
-    "name": "pdf",
-    "src": "resources/js/pdf.js",
-    "isEntry": true,
-    "css": [
-      "assets/pdf-DEE8Pna6.css"
-    ]
-  },
-  "resources/sass/app.scss": {
+  "resources/scss/app.scss": {
     "file": "assets/app-zR5EsT1a.css",
-    "src": "resources/sass/app.scss",
+    "src": "resources/scss/app.scss",
     "isEntry": true
   }
 }
