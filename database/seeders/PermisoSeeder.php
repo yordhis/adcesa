@@ -21,7 +21,7 @@ class PermisoSeeder extends Seeder
             "productos",
             "categorias",
             "marcas",
-            "materia prima",
+            "insumos",
             "pagos",
             "pedidos",
             "configuraciones",
