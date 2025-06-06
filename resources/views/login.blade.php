@@ -11,7 +11,7 @@
           <div class="d-flex justify-content-center pb-1" >
           
             <a href="{{ route('login.index') }}" >
-              <img src="{{ asset('/src/images/logo.png') }}" alt="logo" id="logo">
+              <img src="{{ asset('/assets/img/logo.png') }}" alt="logo" id="logo">
             </a>
           </div><!-- End Logo -->
 
