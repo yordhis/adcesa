@@ -8,9 +8,5 @@
       </div>
   </footer><!-- End Footer -->
 
-  <!-- Scripts -->
-  <script src="{{ asset('assets/js/partials/alert.js') }}" defer></script>
-  <script src="{{ asset('js/jquery.min.js') }}" defer></script>
-  <script src="{{ asset('js/jquery-confirm.js') }}" defer></script>
  
  

@@ -64,7 +64,7 @@
 </footer>
 
 {{-- boton de whatsapp --}}
-<a href="https://wa.me/5804125553073?text=Hola me gustaria saber más sobre Ustedes" target="_blank"
+<a href="https://wa.me/04140000000?text=Hola me gustaria saber más sobre Ustedes" target="_blank"
     class="btn-whatsapp">
     <i class="bi bi-whatsapp text-white"></i>
 </a>
