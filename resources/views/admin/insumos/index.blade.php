@@ -29,7 +29,7 @@
 
             <div class="col-sm-6 col-xs-12 ">
                 <!-- Formulario de registro de insumos -->
-                @include('admin.insumos.partials.modalform')
+                @include('admin.insumos.partials.modal-form-create')
                 @include('admin.marcas.partials.modalform')
                 @include('admin.categorias.partials.modalform')
             </div>
@@ -41,9 +41,32 @@
                     @method('GET')
                     <div class="input-group mb-3">
                         <label for="filtro" class="text-primary p-2">Buscar</label>
-                        <input type="text" class="form-control" name="filtro"
-                            placeholder="Buscar por: Nombre" aria-label="Filtrar"
-                            aria-describedby="button-addon2" required>
+                        <input type="text" class="form-control" name="filtro" placeholder="Buscar por: Nombre"
+                            aria-label="Filtrar" aria-describedby="button-addon2">
+                        <!-- Selector del limite a listar en la tabla -->
+                        <select name="limit" id="limit" class="form-select">
+                            @if ($request->limit)
+                                <option value="{{ $request->limit }}" selected>{{ $request->limit }}</option>
+                            @else
+                                <option disabled selected>Limite</option>
+                            @endif
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+
+                        <!-- Selector de Ordenar lista -->
+                        <select name="order" id="order" class="form-select">
+                            @if ($request->order)
+                                <option value="{{ $request->order }}" selected>
+                                    {{ $request->order == 'DESC' ? 'Z-A' : 'A-Z' }}</option>
+                            @else
+                                <option disabled selected>Ordenar por</option>
+                            @endif
+                            <option value="ASC">A-Z</option>
+                            <option value="DESC">Z-A</option>
+                        </select>
                         <button class="btn btn-primary" type="submit" id="button-addon2">
                             <i class="bi bi-search"></i>
                         </button>
@@ -59,31 +82,32 @@
                     <thead>
                         <tr class="table-dark text-white">
                             <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Costo</th>
+                            <th scope="col">Descripción</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Cantidad</th>
+                            <th scope="col">Unidad</th>
+                            <th scope="col">Stock</th>
                             <th scope="col">Categoria</th>
-                            <th scope="col">Marca</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        @foreach ($insumos as $insumo)
+                        @foreach ($insumos as $key => $insumo)
                             <tr>
-                                <th scope="row">{{ $insumo->id }}</th>
+                                <th scope="row">{{ ($insumos->currentPage() - 1) * $insumos->perPage() + $key + 1 }}</th>
                                 <td>{{ $insumo->nombre }}</td>
-                                <td>{{ $insumo->costo }}</td>
                                 <td>{{ $insumo->precio }}</td>
                                 <td>{{ $insumo->cantidad }}</td>
+                                <td>{{ $insumo->unidad }}</td>
+                                <td>{{ $insumo->stock . ' ' . $insumo->medida}}</td>
                                 <td>{{ $insumo->categoria }}</td>
-                                <td>{{ $insumo->marca }}</td>
 
                                 <td>
-                                    @include('admin.insumos.partials.modalver')
+                                    @include('admin.insumos.partials.modal-show')
 
-                                    @include('admin.insumos.partials.modal')
+                                    @include('admin.insumos.partials.modal-form-edit')
+                                    @include('admin.insumos.partials.modal-form-delete')
                                 </td>
                             </tr>
                         @endforeach

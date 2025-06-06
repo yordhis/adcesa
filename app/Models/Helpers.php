@@ -219,7 +219,7 @@ class Helpers extends Model
     {
         // Movemos la imagen a storage/app/public/imagenes
         return Storage::url(
-            Storage::putFile('imagenes', $request->file('file'), 'public')
+            Storage::putFile('imgs', $request->file('file'), 'public')
         );
     }
 

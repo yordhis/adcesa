@@ -18,10 +18,15 @@ return new class extends Migration
             $table->decimal('precio');
             $table->decimal('costo');
             $table->decimal('cantidad');
+            $table->string('medida'); // simbolo metros, pulgadas y centimetros.
+            $table->decimal('unidad'); // total de metros ... de cada unidad
+            $table->decimal('stock'); // total de metros... del insumo
             $table->string('marca')->nullable();
             $table->string('categoria')->nullable();
+            $table->string('almacen')->nullable();
             $table->string('imagen')->nullable();
             $table->string('estatus')->default('ACTIVO');
+            $table->string('id_almacen')->nullable();
             $table->string('id_marca')->nullable();
             $table->string('id_categoria')->nullable();
             $table->timestamps();

@@ -11,7 +11,7 @@ class UpdateInsumoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class UpdateInsumoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'codigo_barra' => 'max:191',
+            'nombre' => 'required|max:255',
+            'precio' => 'required|numeric',
+            'costo' => 'required|numeric',
+            'medida' => 'required',
+            'cantidad' => 'required|numeric',
+            'unidad' => 'required|numeric',
+            'stock' => 'required|numeric',
+            'imagen' => 'file|max:2048|mimes:jpg,bmp,png|dimensions:min_width=100,min_height=200',
+            'id_marca' => 'required',
+            'id_categoria' => 'required',
         ];
     }
 }

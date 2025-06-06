@@ -11,6 +11,7 @@ use App\Models\Helpers;
 use App\Models\Marca;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Nette\Utils\Strings;
 
 class InsumoController extends Controller
 {
@@ -20,19 +21,28 @@ class InsumoController extends Controller
     public function index(Request $request)
     {
         try {
+            $medidas = [
+                ['id' => 1, 'nombre' => 'METROS'],
+                ['id' => 2, 'nombre' => 'CENTIMETROS'],
+            ];
+            $almacenes = [
+                ['id' => 1, 'nombre' => 'Almacen A'],
+                ['id' => 2, 'nombre' => 'Almacen B'],
+            ];
+
             $marcas = Marca::orderBy('nombre', 'ASC')->get();
             $categorias = Categoria::orderBy('nombre', 'ASC')->get();
             if ($request->filtro || $request->order) {
                 $insumos = Insumo::where('nombre', 'like',  "%$request->filtro%")
-                ->orderBy('nombre', $request->input('order', 'ASC'))
-                ->paginate($request->input('limit', 12));
+                    ->orderBy('nombre', $request->input('order', 'ASC'))
+                    ->paginate($request->input('limit', 12));
                 $respuesta = DataDev::$respuesta;
-            }else{
+            } else {
                 $insumos = Insumo::orderBy('nombre', 'ASC')
-                ->paginate($request->input('limit', 12));
+                    ->paginate($request->input('limit', 12));
                 $respuesta = DataDev::$respuesta;
             }
-            return view('admin.insumos.index', compact('insumos','categorias', 'marcas','request', 'respuesta'));
+            return view('admin.insumos.index', compact('insumos', 'almacenes', 'medidas', 'categorias', 'marcas', 'request', 'respuesta'));
         } catch (\Throwable $th) {
             $mensaje = Helpers::getMensajeError($th, 'Error al retornar la vista de insumo');
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
@@ -47,11 +57,39 @@ class InsumoController extends Controller
     public function store(StoreInsumoRequest $request)
     {
         try {
+            /** Validar codigo de barra */
+            if ($request->codigo_barra) {
+                $codigoExiste = Insumo::where('codigo_barra', '=', $request->codigo_barra)->first();
+                if ($codigoExiste) {
+                    $mensaje = "Código de barra ya existe";
+                    $estatus = Response::HTTP_BAD_REQUEST;
+                    return back()->withInput($request->inputs)->with(compact('mensaje', 'estatus'));
+                }
+            }
+
+            /** Completar datos */
+            $request['codigo_barra'] = Strings::upper($request->codigo_barra ?? '');
+            $request['nombre'] = Strings::upper($request->nombre);
+            $request['marca'] = Marca::find($request->id_marca)->nombre;
+            $request['categoria'] = Marca::find($request->id_categoria)->nombre;
+            $request['almacen'] = $request->id_almacen == 1 ? 'ALMACEN A' : 'ALMACEN B'; // MODIFICAR
+
+            /** Insertamos la imagen y obtenermos la url para guardar en la DB */
+            if ($request->file) {
+                $request['imagen'] = Helpers::setFile($request);
+            }
+
+            /** Ejecutamos el guardado del insumo */
             Insumo::create($request->all());
-            $mensaje = "insumo creada correctamente";
+
+            /** Configuramos el mensaje de respuesta para el usuario */
+            $mensaje = "Insumo creado correctamente";
             $estatus = Response::HTTP_OK;
+
+            /** fin */
             return back()->with(compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
+            /** Mensaje de error en la misma vista */
             $mensaje = Helpers::getMensajeError($th, 'Error al crear insumo');
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
@@ -65,6 +103,32 @@ class InsumoController extends Controller
     public function update(UpdateInsumoRequest $request, Insumo $insumo)
     {
         try {
+            /** Validar codigo de barra */
+            if ($request->codigo_barra) {
+                if ($request->codigo_barra != $insumo->codigo_barra) {
+                    $codigoExiste = Insumo::where('codigo_barra', '=', $request->codigo_barra)->first();
+                    if ($codigoExiste) {
+                        $mensaje = "Código de barra ya existe";
+                        $estatus = Response::HTTP_BAD_REQUEST;
+                        return back()->withInput($request->inputs)->with(compact('mensaje', 'estatus'));
+                    }
+                }
+            }
+
+            /** Completar datos */
+            $request['codigo_barra'] = Strings::upper($request->codigo_barra ?? '');
+            $request['nombre'] = Strings::upper($request->nombre);
+            $request['marca'] = Marca::find($request->id_marca)->nombre;
+            $request['categoria'] = Marca::find($request->id_categoria)->nombre;
+            $request['almacen'] = $request->id_almacen == 1 ? 'ALMACEN A' : 'ALMACEN B'; // MODIFICAR
+
+
+            /** Verificamos si enviaron una imagen nueva */
+            if ($request->file) {
+                Helpers::removeFile($insumo->imagen);
+                $request['imagen'] = Helpers::setFile($request);
+            }
+
             $insumo->update($request->all());
             $mensaje = "Datos actualizados correctamente";
             $estatus = Response::HTTP_OK;

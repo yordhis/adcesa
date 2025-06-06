@@ -26,13 +26,14 @@ class StoreInsumoRequest extends FormRequest
             'nombre' => 'required|max:255|unique:insumos',
             'precio' => 'required|numeric',
             'costo' => 'required|numeric',
+            'medida' => 'required',
             'cantidad' => 'required|numeric',
-            'marca' => 'required|numeric',
-            'categoria' => 'required|numeric',
-            'imagen' => 'required|numeric',
-            'estatus' => 'required|numeric',
-            'id_marca' => 'required|numeric',
-            'id_categoria' => 'required|numeric',
+            'unidad' => 'required|numeric',
+            'stock' => 'required|numeric',
+            'imagen' => 'file|max:2048|mimes:jpg,bmp,png|dimensions:min_width=100,min_height=200',
+            'id_almacen' => 'required',
+            'id_marca' => 'required',
+            'id_categoria' => 'required',
         ];
     }
 }

@@ -2,7 +2,7 @@
         
 <!-- Vertically centered Modal -->
 <a type="button" class="mb-3" data-bs-toggle="modal" data-bs-target="#verticalycentered{{$insumo->id}}">
-    <i class="bi bi-trash text-primary"></i>
+    <i class="bi bi-trash fs-4 text-danger"></i>
 </a>
 
 <div class="modal fade" id="verticalycentered{{$insumo->id}}" tabindex="-1">

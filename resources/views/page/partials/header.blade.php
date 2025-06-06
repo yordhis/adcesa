@@ -2,7 +2,7 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-menu">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('page.index') }}">
-            <img src="{{ asset('/src/images/logo.png') }}" alt="logo" class="img-logo">
+            <img src="{{ asset('/assets/img/logo.png') }}" alt="logo" class="img-logo">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

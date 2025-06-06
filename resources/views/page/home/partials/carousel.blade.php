@@ -4,10 +4,10 @@
 
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="{{ asset('/src/images/b-1.png') }}" class="d-block w-100 img-banner" alt="Banner 1">
+        <img src="{{ asset('/assets/img/b-1.png') }}" class="d-block w-100 img-banner" alt="Banner 1">
       </div>
       <div class="carousel-item">
-        <img src="{{ asset('/src/images/b-2.png') }}" class="d-block w-100 img-banner" alt="Banner 2">
+        <img src="{{ asset('/assets/img/b-2.png') }}" class="d-block w-100 img-banner" alt="Banner 2">
       </div>
       {{-- <div class="carousel-item">
         <img src="{{ asset('/src/images/high 1.jpg') }}" class="d-block w-100 img-banner" alt="Banner 3">

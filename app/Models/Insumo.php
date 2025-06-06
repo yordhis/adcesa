@@ -16,10 +16,15 @@ class Insumo extends Model
         'precio',
         'costo',
         'cantidad',
+        'medida',
+        'unidad', // medidad de cada uno
+        'stock',
         'marca',
         'categoria',
+        'almacen',
         'imagen',
         'estatus',
+        'id_almacen',
         'id_marca',
         'id_categoria',
     ];

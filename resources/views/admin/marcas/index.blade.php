@@ -69,6 +69,7 @@
                             <option value="ASC">A-Z</option>
                             <option value="DESC">Z-A</option>
                         </select>
+                        
                         <button class="btn btn-primary" type="submit" id="button-addon2">
                             <i class="bi bi-search"></i>
                         </button>
