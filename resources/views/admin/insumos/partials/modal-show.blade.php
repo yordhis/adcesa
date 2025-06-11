@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body">
                 <div class="card align-items-center">
-                    <img src="{{ asset( $insumo->imagen ) }}"
+                    <img src="{{ asset( $insumo->imagen  ?? 'assets/img/producto.png' ) }}"
                         class="card-img-top w-100" alt="imagen-insumo">
                     <div class="card-body">
                         <h5 class="card-title fs-2">{{ $insumo->nombre }}</h5>
@@ -20,8 +20,8 @@
                         <p class="card-text"> <b>Costo:</b> {{ $insumo->costo }} </p>
                         <p class="card-text"> <b>Precio:</b> {{ $insumo->precio }} </p>
                         <p class="card-text"> <b>Cantidad:</b> {{ $insumo->cantidad }} </p>
-                        <p class="card-text"> <b>Unidad:</b> {{ $insumo->unidad }} </p>
-                        <p class="card-text"> <b>Medida:</b> {{ $insumo->medida }} </p>
+                        <p class="card-text"> <b>Medida/Unidad:</b> {{ $insumo->unidad }} </p>
+                        <p class="card-text"> <b>Tipo de Medida:</b> {{ $insumo->simbolo . ' - ' .$insumo->nombre_medida }} </p>
                         <p class="card-text"> <b>Stock:</b> {{ $insumo->stock }} </p>
                         <p class="card-text"> <b>Categoria:</b> {{ $insumo->categoria }} </p>
                         <p class="card-text"> <b>Marca:</b> {{ $insumo->marca }} </p>

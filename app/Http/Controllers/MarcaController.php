@@ -9,6 +9,7 @@ use App\Models\DataDev;
 use App\Models\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Nette\Utils\Strings;
 
 class MarcaController extends Controller
 {
@@ -20,12 +21,12 @@ class MarcaController extends Controller
         try {
             if ($request->filtro || $request->order) {
                 $marcas = Marca::where('nombre', 'like',  "%$request->filtro%")
-                ->orderBy('nombre', $request->input('order', 'ASC'))
-                ->paginate($request->input('limit', 12));
+                    ->orderBy('nombre', $request->input('order', 'ASC'))
+                    ->paginate($request->input('limit', 12));
                 $respuesta = DataDev::$respuesta;
-            }else{
+            } else {
                 $marcas = Marca::orderBy('nombre', 'ASC')
-                ->paginate($request->input('limit', 12));
+                    ->paginate($request->input('limit', 12));
                 $respuesta = DataDev::$respuesta;
             }
             return view('admin.marcas.index', compact('marcas', 'request', 'respuesta'));
@@ -43,6 +44,7 @@ class MarcaController extends Controller
     public function store(StoreMarcaRequest $request)
     {
         try {
+            $request['nombre'] = Strings::upper($request->nombre);
             Marca::create($request->all());
             $mensaje = "Marca creada correctamente";
             $estatus = Response::HTTP_OK;
@@ -61,6 +63,7 @@ class MarcaController extends Controller
     public function update(UpdateMarcaRequest $request, Marca $marca)
     {
         try {
+            $request['nombre'] = Strings::upper($request->nombre);
             $marca->update($request->all());
             $mensaje = "Datos actualizados correctamente";
             $estatus = Response::HTTP_OK;

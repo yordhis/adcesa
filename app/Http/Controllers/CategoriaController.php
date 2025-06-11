@@ -9,6 +9,7 @@ use App\Models\DataDev;
 use App\Models\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Nette\Utils\Strings;
 
 class CategoriaController extends Controller
 {
@@ -20,12 +21,12 @@ class CategoriaController extends Controller
         try {
             if ($request->filtro || $request->order) {
                 $categorias = Categoria::where('nombre', 'like',  "%$request->filtro%")
-                ->orderBy('nombre', $request->input('order', 'ASC'))
-                ->paginate($request->input('limit', 12));
+                    ->orderBy('nombre', $request->input('order', 'ASC'))
+                    ->paginate($request->input('limit', 12));
                 $respuesta = DataDev::$respuesta;
-            }else{
+            } else {
                 $categorias = categoria::orderBy('nombre', 'ASC')
-                ->paginate($request->input('limit', 12));
+                    ->paginate($request->input('limit', 12));
                 $respuesta = DataDev::$respuesta;
             }
             return view('admin.categorias.index', compact('categorias', 'request', 'respuesta'));
@@ -43,6 +44,7 @@ class CategoriaController extends Controller
     public function store(StoreCategoriaRequest $request)
     {
         try {
+            $request['nombre'] = Strings::upper($request->nombre);
             Categoria::create($request->all());
             $mensaje = "categoria creada correctamente";
             $estatus = Response::HTTP_OK;
@@ -61,6 +63,7 @@ class CategoriaController extends Controller
     public function update(UpdateCategoriaRequest $request, Categoria $categoria)
     {
         try {
+            $request['nombre'] = Strings::upper($request->nombre);
             $categoria->update($request->all());
             $mensaje = "Datos actualizados correctamente";
             $estatus = Response::HTTP_OK;

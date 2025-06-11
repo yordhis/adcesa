@@ -76,10 +76,10 @@
                         @enderror
                     </div>
 
-                       <!-- Input Cantidad -->
+                    <!-- Input Cantidad -->
                     <div class="col-sm-4 col-xs-12">
                         <label for="cantidad" class="form-label">Cantidad</label><span class="text-danger fs-4">*</span>
-                        <input type="number" step="any" name="cantidad" class="form-control" id="cantidad-edit"
+                        <input type="number" step="any" name="cantidad" class="form-control cantidad-edit" id=""
                             placeholder="Ingrese cantidad" value="{{ old('cantidad') ?? $insumo->cantidad }}" required>
                         <div class="invalid-feedback">Por favor, Ingrese una cantidad valida!</div>
                         @error('cantidad')
@@ -89,15 +89,14 @@
 
                     <!-- Input Medida -->
                     <div class="col-sm-4 col-xs-12">
-                        <label for="medida" class="form-label">Medidas</label><span
-                            class="text-danger fs-4">*</span>
+                        <label for="medida" class="form-label">Medidas</label><span class="text-danger fs-4">*</span>
                         <select class="form-select" name="medida" id="medida-edit" required>
-                            <option selected disabled value="">Seleccione medida</option>
+                            <option selected disabled value="">Seleccione medida </option>
                             @foreach ($medidas as $medida)
-                                @if (old('medida') == $medida['nombre'] || $insumo->medida == $medida['nombre'])
-                                    <option value="{{ $medida['nombre'] }}" selected>{{ $medida['nombre'] }}</option>
+                                @if (old('medida') == $medida['id'] || $insumo->medida == $medida['id'])
+                                    <option value="{{ $medida['id'] }}" selected>{{ $medida['simbolo'] . ' - ' . $medida['nombre'] }}</option>
                                 @endif
-                                <option value="{{ $medida['nombre'] }}">{{ $medida['nombre'] }}</option>
+                                <option value="{{ $medida['id'] }}">{{ $medida['simbolo'] . ' - ' . $medida['nombre'] }}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback">
@@ -112,7 +111,7 @@
                     <div class="col-sm-4 col-xs-12">
                         <label for="unidad" class="form-label">Unidad</label><span
                             class="text-danger fs-4">*</span>
-                        <input type="number" step="any" name="unidad" class="form-control" id="unidad-edit"
+                        <input type="number" step="any" name="unidad" class="form-control unidad-edit" id=""
                             placeholder="Ingrese unidad" value="{{ old('unidad') ?? $insumo->unidad }}" required>
                         <div class="invalid-feedback">Por favor, Ingrese una unidad valida!</div>
                         @error('unidad')
@@ -124,8 +123,9 @@
                     <div class="col-sm-4 col-xs-12">
                         <label for="stock" class="form-label">Existencia total</label><span
                             class="text-danger fs-4">*</span>
-                        <input type="number" step="any" class="form-control stock-edit" value="{{$insumo->stock}}" readonly>
-                        <input type="hidden" name="stock" value="{{$insumo->stock}}" class="stock-edit">
+                        <input type="number" step="any" class="form-control stock-edit"
+                            value="{{ $insumo->stock }}" readonly>
+                        <input type="hidden" name="stock" value="{{ $insumo->stock }}" class="stock-edit">
                         @error('stock')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -134,15 +134,16 @@
 
                     <!-- Input almacenes -->
                     <div class="col-12">
-                        <label for="id_almacen" class="form-label">almacenes</label><span
+                        <label for="id_almacen" class="form-label">almacenes </label><span
                             class="text-danger fs-4">*</span>
                         <select class="form-select" name="id_almacen" id="id_almacen" required>
-                            <option selected disabled value="">Seleccione almacen</option>
+                            <option disabled value="">Seleccione almacen</option>
                             @foreach ($almacenes as $almacen)
-                                @if (old('id_almacen') == $almacen['id'] || $insumo->id == $almacen['id'])
+                                @if (old('id_almacen') == $almacen['id'] || $insumo->id_almacen == $almacen['id'])
                                     <option value="{{ $almacen['id'] }}" selected>{{ $almacen['nombre'] }}</option>
+                                @else
+                                    <option value="{{ $almacen['id'] }}">{{ $almacen['nombre'] }}</option>
                                 @endif
-                                <option value="{{ $almacen['id'] }}">{{ $almacen['nombre'] }}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback">
@@ -155,7 +156,8 @@
 
                     <!-- Input marcas -->
                     <div class="col-12">
-                        <label for="id_marca" class="form-label">Marcas</label><span class="text-danger fs-4">*</span>
+                        <label for="id_marca" class="form-label">Marcas</label><span
+                            class="text-danger fs-4">*</span>
                         <select class="form-select" name="id_marca" id="id_marca" required>
                             <option selected disabled value="">Seleccione marca</option>
                             @foreach ($marcas as $marca)

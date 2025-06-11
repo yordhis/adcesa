@@ -22,10 +22,11 @@ class InsumoController extends Controller
     {
         try {
             $medidas = [
-                ['id' => 1, 'nombre' => 'METROS', 'simbolo' => 'm'],
-                ['id' => 2, 'nombre' => 'CENTIMETROS',  'simbolo' => 'cm'],
-                ['id' => 3, 'nombre' => 'METROS CUADRADOS', 'simbolo' => 'm2'],
-                ['id' => 4, 'nombre' => 'CENTIMETROS CUADRADOS', 'simbolo' => 'cm2'],
+                ['id' => 1, 'nombre' => 'METROS', 'simbolo' => 'M'],
+                ['id' => 2, 'nombre' => 'CENTIMETROS',  'simbolo' => 'CM'],
+                ['id' => 3, 'nombre' => 'METROS CUADRADOS', 'simbolo' => 'M2'],
+                ['id' => 4, 'nombre' => 'CENTIMETROS CUADRADOS', 'simbolo' => 'CM2'],
+                ['id' => 4, 'nombre' => 'UNIDAD', 'simbolo' => 'U'],
             ];
             $almacenes = [
                 ['id' => 1, 'nombre' => 'Almacen A'],
@@ -46,6 +47,15 @@ class InsumoController extends Controller
                 $respuesta = DataDev::$respuesta;
             }
 
+            foreach ($medidas as $key => $medida) {
+                foreach ($insumos as $key => $insumo) {
+                    if ($insumo->medida == $medida['id']) {
+                        $insumo['nombre_medida'] = $medida['nombre'];
+                        $insumo['simbolo'] = $medida['simbolo'];
+                    }
+                }
+            }
+
             return view('admin.insumos.index', compact('insumos', 'almacenes', 'medidas', 'categorias', 'marcas', 'request', 'respuesta'));
         } catch (\Throwable $th) {
             $mensaje = Helpers::getMensajeError($th, 'Error al retornar la vista de insumo');
@@ -61,6 +71,7 @@ class InsumoController extends Controller
     public function store(StoreInsumoRequest $request)
     {
         try {
+            // return $request->all();
             /** Validar codigo de barra */
             if ($request->codigo_barra) {
                 $codigoExiste = Insumo::where('codigo_barra', '=', $request->codigo_barra)->first();
@@ -75,7 +86,7 @@ class InsumoController extends Controller
             $request['codigo_barra'] = Strings::upper($request->codigo_barra ?? '');
             $request['nombre'] = Strings::upper($request->nombre);
             $request['marca'] = Marca::find($request->id_marca)->nombre;
-            $request['categoria'] = Marca::find($request->id_categoria)->nombre;
+            $request['categoria'] = Categoria::find($request->id_categoria)->nombre;
             $request['almacen'] = $request->id_almacen == 1 ? 'ALMACEN A' : 'ALMACEN B'; // MODIFICAR
 
             /** Insertamos la imagen y obtenermos la url para guardar en la DB */

@@ -3,13 +3,11 @@ if (window.location.pathname.includes('insumos')) {
     let inputsStock = document.querySelectorAll('.stock'),
     inputCantidad = document.querySelector('#cantidad'),
     inputUnidad = document.querySelector('#unidad'),
-    inputsStockEdit = document.querySelectorAll('.stock-edit'),
-    inputCantidadEdit = document.querySelector('#cantidad-edit'),
-    inputUnidadEdit = document.querySelector('#unidad-edit'),
+    inputCantidadEdit = document.querySelectorAll('.cantidad-edit'),
+    inputUnidadEdit = document.querySelectorAll('.unidad-edit'),
     total = 0,
     totalEdit = 0;
-
-
+    
     /** Create */
     inputCantidad.addEventListener('change', e => {
         if(inputUnidad.value > 0) total = inputCantidad.value * inputUnidad.value
@@ -21,15 +19,30 @@ if (window.location.pathname.includes('insumos')) {
     })
 
     /** Edit */
-    inputCantidadEdit.addEventListener('change', e => {
-        if(inputUnidadEdit.value > 0) totalEdit = inputCantidadEdit.value * inputUnidadEdit.value
-        inputsStockEdit.forEach(input => input.value = totalEdit )
-    })
-    inputUnidadEdit.addEventListener('change', e => {
-        if(inputCantidadEdit.value > 0) totalEdit = inputCantidadEdit.value * inputUnidadEdit.value
-        inputsStockEdit.forEach(input => input.value = totalEdit )
+    inputCantidadEdit.forEach(inputCantidad => {
+        const eventos = ['keyup', 'change']
+        eventos.forEach(event => {
+            inputCantidad.addEventListener(event, e => {
+                let targetValue = e.target.value,
+                unidadValue = e.target.parentElement.parentElement[8].value
+                e.target.parentElement.parentElement[9].value = (targetValue * unidadValue)
+                e.target.parentElement.parentElement[10].value = (targetValue * unidadValue)
+            })
+        });
     })
     
+    inputUnidadEdit.forEach(inputUnidad => {
+        const eventos = ['keyup', 'change']
+        eventos.forEach(event => {
+            inputUnidad.addEventListener(event, e => {
+                let targetValue = e.target.value,
+                cantidadValue = e.target.parentElement.parentElement[6].value
+                e.target.parentElement.parentElement[9].value = (targetValue * cantidadValue)
+                e.target.parentElement.parentElement[10].value = (targetValue * cantidadValue)
+            })
+        });
+    })
+
 
     
     

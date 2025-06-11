@@ -93,10 +93,10 @@
                         <select class="form-select" name="medida" id="medida" required>
                             <option selected disabled value="">Seleccione medida</option>
                             @foreach ($medidas as $medida)
-                                @if (old('medida') == $medida['nombre'])
-                                    <option value="{{ $medida['nombre-'] }}" selected>{{ $medida['nombre'] }}</option>
+                                @if (old('medida') == $medida['id'])
+                                    <option value="{{ $medida['id'] }}" selected>{{ $medida['simbolo'] . ' - ' . $medida['nombre'] }}</option>
                                 @endif
-                                <option value="{{ $medida['nombre'] }}">{{ $medida['nombre'] }}</option>
+                                <option value="{{ $medida['id'] }}">{{ $medida['simbolo'] . ' - ' . $medida['nombre']}}</option>
                             @endforeach
                         </select>
                         <div class="invalid-feedback">

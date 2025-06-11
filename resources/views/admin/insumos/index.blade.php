@@ -99,8 +99,8 @@
                                 <td>{{ $insumo->nombre }}</td>
                                 <td>{{ $insumo->precio }}</td>
                                 <td>{{ $insumo->cantidad }}</td>
-                                <td>{{ $insumo->unidad . ' ' . $insumo->medida }}</td>
-                                <td>{{ $insumo->stock . ' ' . $insumo->medida}}</td>
+                                <td>{{ $insumo->unidad . ' ' . $insumo->simbolo }}</td>
+                                <td>{{ $insumo->stock . ' ' . $insumo->simbolo }}</td>
                                 <td>{{ $insumo->categoria }}</td>
 
                                 <td>
