@@ -4,12 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserWebRequest extends FormRequest
+class UpdateUserWebRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
         return true;
     }
@@ -17,9 +19,9 @@ class StoreUserWebRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array
      */
-    public function rules(): array
+     public function rules(): array
     {
         return [
             'nombres' => 'required|string|max:255',
@@ -30,7 +32,7 @@ class StoreUserWebRequest extends FormRequest
             'telefono' => ['required', 'string', 'regex:/^0(4(12|14|16|24|26))[0-9]{7}$/', 'min:11', 'max:20'],
             'direccion' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|string|max:100',
-            'email' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|max:255',
             'password' => 'nullable|string|min:6',
             // Datos opcionales
             'ciudad' => 'nullable|string|max:100',

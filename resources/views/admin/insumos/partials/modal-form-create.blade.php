@@ -109,7 +109,7 @@
 
                     <!-- Input unidad -->
                     <div class="col-sm-4 col-xs-12">
-                        <label for="unidad" class="form-label">Unidad</label><span
+                        <label for="unidad" class="form-label">Medida/Unidad</label><span
                             class="text-danger fs-4">*</span>
                         <input type="number" step="any" name="unidad" class="form-control" id="unidad"
                             placeholder="Ingrese unidad" value="{{ old('unidad') ?? '' }}" required>

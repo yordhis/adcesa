@@ -28,7 +28,7 @@
                             </span>
                             <input type="text" name="codigo_barra" class="form-control text-uppercase"
                                 id="codigo_barra" placeholder="Ingrese codigo de barra"
-                                value="{{ $insumo->codigo_barra ?? old('codigo_barra') }}">
+                                value="{{ old('codigo_barra') ?? $insumo->codigo_barra }}">
                             <div class="invalid-feedback">Por favor, ingrese codigo de barra del insumo! </div>
                             @error('codigo_barra')
                                 <div class="text-danger">{{ $message }}</div>

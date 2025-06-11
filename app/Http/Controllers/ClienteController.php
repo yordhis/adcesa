@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserWebRequest;
+use App\Http\Requests\UpdateUserWebRequest;
 use App\Models\DataDev;
 use App\Models\Helpers;
 use App\Models\User;
@@ -13,20 +14,43 @@ use Nette\Utils\Strings;
 
 class ClienteController extends Controller
 {
- 
+
     public function index(Request $request)
     {
         try {
             $respuesta = DataDev::$respuesta;
-            if ($request->filtro) {
+            $clientes = [];
+            if ($request->filtro || $request->order) {
                 $clientes = User::where('rol', '=', 3)
-                ->orWhere('nombres', 'like',  "%$request->filtro%")
-                ->paginate(12);
-            }else{
-                 $clientes = User::where('rol', '=', 3)->paginate(12);
+                    ->where('nombres', 'like',  "%$request->filtro%")
+                    ->orderBy('nombres', $request->input('order', 'ASC'))
+                    ->paginate($request->input('limit', 12));
+
+                if (!count($clientes)) {
+                    $clientes = User::where('rol', '=', 3)
+                        ->where('apellidos', 'like',  "%$request->filtro%")
+                        ->orderBy('nombres', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                }
+                if (!count($clientes)) {
+                    $clientes = User::where('rol', '=', 3)
+                        ->where('email', 'like',  "%$request->filtro%")
+                        ->orderBy('nombres', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                }
+                if (!count($clientes)) {
+                    $clientes = User::where('rol', '=', 3)
+                        ->where('cedula', 'like',  "%$request->filtro%")
+                        ->orderBy('nombres', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                }
+            } else {
+                $clientes = User::where('rol', '=', 3)
+                    ->orderBy('nombres', 'ASC')
+                    ->paginate($request->input('limit', 12));
             }
+
             return view('admin.clientes.index', compact('clientes', 'request', 'respuesta'));
-            
         } catch (\Throwable $th) {
             $mensaje = 'Error al listar cliente.';
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
@@ -34,13 +58,13 @@ class ClienteController extends Controller
         }
     }
 
-     /**
-     * Método que crea las insumos
+    /**
+     * Método que crea cuentas de clientes
      */
     public function store(StoreUserWebRequest $request)
     {
         try {
-         
+
             /** Completar datos */
             $request['nombres'] = Strings::upper($request->nombres);
             $request['apellidos'] = Strings::upper($request->apellidos);
@@ -74,17 +98,70 @@ class ClienteController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Método que actualiza los datos de la insumo
+     */
+    public function update(UpdateUserWebRequest $request, $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            if($user){
+                /** Validar correo si se editó y que no se repita el correo */
+                if ($request->email) {
+                    if ($request->email != $user->email) {
+                        $emailExiste = User::where('email', '=', $request->email)->first();
+                        if ($emailExiste) {
+                            $mensaje = "E-mail ya registrado en otra cuenta, por favor intente con otro!";
+                            $estatus = Response::HTTP_BAD_REQUEST;
+                            return back()->withInput($request->inputs)->with(compact('mensaje', 'estatus'));
+                        }
+                    }
+                }
+    
+                /** Completar datos */
+                $request['nombres'] = Strings::upper($request->nombres);
+                $request['apellidos'] = Strings::upper($request->apellidos);
+                $request['direccion'] = Strings::upper($request->direccion);
+                $request['pais'] = Strings::upper($request->pais ?? '');
+                $request['estado'] = Strings::upper($request->estado ?? '');
+                $request['ciudad'] = Strings::upper($request->ciudad ?? '');
+    
+    
+                /** Verificamos si enviaron una imagen nueva */
+                if ($request->file) {
+                    Helpers::removeFile($user->foto);
+                    $request['foto'] = Helpers::setFile($request);
+                }
+
+                /** ejecutar la actualización */
+                $user->update($request->all());
+                $mensaje = "Datos actualizados correctamente";
+                $estatus = Response::HTTP_OK;
+                return back()->with(compact('mensaje', 'estatus'));
+
+            }else{
+                $mensaje = "Usuario no encontrado";
+                $estatus = Response::HTTP_NOT_FOUND;
+                return back()->with(compact('mensaje', 'estatus'));
+            }
+        } catch (\Throwable $th) {
+            $mensaje = Helpers::getMensajeError($th, 'Error al actualizar insumo');
+            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
+            return back()->with(compact('mensaje', 'estatus'));
+        }
+    }
+
+    /**
+     * Método que eliminas cuentas de usuarios clientes
      */
     public function destroy(string $id)
     {
         try {
             $cliente = User::findOrFail($id);
             $cliente->delete();
-    
+
             $mensaje = 'Cliente eliminado correctamente.';
             $estatus = Response::HTTP_OK;
-    
+
             // Redireccionar a la lista de clientes con un mensaje de éxito
             return back()->with(compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {

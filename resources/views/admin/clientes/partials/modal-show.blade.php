@@ -1,6 +1,6 @@
 <!-- Vertically centered Modal -->
 <a type="button" class="mb-3" data-bs-toggle="modal" data-bs-target="#modalVer{{ $cliente->id }}">
-    <i class="bi bi-eye "></i>
+    <i class="bi bi-eye"></i>
 </a>
 
 <div class="modal fade" id="modalVer{{ $cliente->id }}" tabindex="-1">
@@ -16,14 +16,29 @@
                         class="card-img-top w-25" alt="foto">
                     <div class="card-body">
                         <h5 class="card-title fs-2">{{ $cliente->nombres }} {{ $cliente->apellidos }}</h5>
-                        <p class="card-text"> <b>Cédula:</b> {{ $cliente->nacionalidad . '-' . $cliente->cedula }} </p>
+                        <p class="card-text"> <b>Cédula:</b> {{ $cliente->nacionalidad . '-' . number_format($cliente->cedula, 0, '', '.') }} </p>
                         <p class="card-text"> <b>Sexo:</b> {{ $cliente->sexo }} </p>
-                        <p class="card-text"> <b>Teléfono:</b> {{ $cliente->telefono }} </p>
-                        <p class="card-text"> <b>Correo:</b> {{ $cliente->email }} </p>
-                        <p class="card-text"> <b>Dirección:</b> {{ $cliente->direccion }} </p>
-                        <p class="card-text"> <b>País:</b> {{ $cliente->pais }} </p>
-                        <p class="card-text"> <b>Estado:</b> {{ $cliente->estado }} </p>
-                        <p class="card-text"> <b>Ciudad:</b> {{ $cliente->ciudad }} </p>
+                        <p class="card-text"> <b>Fecha de nacimiento:</b>
+                            {{ $cliente->fecha_nacimiento ? \Carbon\Carbon::parse($cliente->fecha_nacimiento)->format('d-m-Y') : 'No asignado' }}
+                        </p>
+                        <p class="card-text"> <b>Edad:</b>
+                            <span>{{ \Carbon\Carbon::parse($cliente->fecha_nacimiento)->age }}</span> Años</p>
+                        <p class="card-text"> <b>Teléfono:</b>
+                            @if ($cliente->telefono)
+                                {{ preg_replace('/^(\d{4})(\d{3})(\d{4})$/', '($1)-$2-$3', $cliente->telefono) }}
+                            @else
+                                No asignado
+                            @endif
+                        </p>
+                        <p class="card-text"> <b>Correo:</b> {{ $cliente->email ? $cliente->email : 'No asignado' }}
+                        </p>
+                        <p class="card-text"> <b>Dirección:</b>
+                            {{ $cliente->direccion ? $cliente->direccion : 'No asignado' }} </p>
+                        <p class="card-text"> <b>País:</b> {{ $cliente->pais ? $cliente->pais : 'No asignado' }} </p>
+                        <p class="card-text"> <b>Estado:</b> {{ $cliente->estado ? $cliente->estado : 'No asignado' }}
+                        </p>
+                        <p class="card-text"> <b>Ciudad:</b> {{ $cliente->ciudad ? $cliente->ciudad : 'No asignado' }}
+                        </p>
                         <p class="card-text"> <b>Estatus:</b> {{ $cliente->estatus ? 'Activo' : 'Inactivo' }} </p>
                     </div>
                 </div>

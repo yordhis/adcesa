@@ -41,7 +41,7 @@
                     @method('GET')
                     <div class="input-group mb-3">
                         <label for="filtro" class="text-primary p-2">Buscar</label>
-                        <input type="text" class="form-control" name="filtro" placeholder="Buscar por: Nombre"
+                        <input type="text" class="form-control w-50" name="filtro" placeholder="Buscar por: Nombre"
                             aria-label="Filtrar" aria-describedby="button-addon2">
                         <!-- Selector del limite a listar en la tabla -->
                         <select name="limit" id="limit" class="form-select">
@@ -85,8 +85,8 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Precio</th>
                             <th scope="col">Cantidad</th>
-                            <th scope="col">Unidad</th>
-                            <th scope="col">Stock</th>
+                            <th scope="col">Medida/Unidad</th>
+                            <th scope="col">Existencia Real</th>
                             <th scope="col">Categoria</th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -99,7 +99,7 @@
                                 <td>{{ $insumo->nombre }}</td>
                                 <td>{{ $insumo->precio }}</td>
                                 <td>{{ $insumo->cantidad }}</td>
-                                <td>{{ $insumo->unidad }}</td>
+                                <td>{{ $insumo->unidad . ' ' . $insumo->medida }}</td>
                                 <td>{{ $insumo->stock . ' ' . $insumo->medida}}</td>
                                 <td>{{ $insumo->categoria }}</td>
 

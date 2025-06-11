@@ -22,8 +22,10 @@ class InsumoController extends Controller
     {
         try {
             $medidas = [
-                ['id' => 1, 'nombre' => 'METROS'],
-                ['id' => 2, 'nombre' => 'CENTIMETROS'],
+                ['id' => 1, 'nombre' => 'METROS', 'simbolo' => 'm'],
+                ['id' => 2, 'nombre' => 'CENTIMETROS',  'simbolo' => 'cm'],
+                ['id' => 3, 'nombre' => 'METROS CUADRADOS', 'simbolo' => 'm2'],
+                ['id' => 4, 'nombre' => 'CENTIMETROS CUADRADOS', 'simbolo' => 'cm2'],
             ];
             $almacenes = [
                 ['id' => 1, 'nombre' => 'Almacen A'],
@@ -127,7 +129,7 @@ class InsumoController extends Controller
 
             /** Verificamos si enviaron una imagen nueva */
             if ($request->file) {
-                Helpers::removeFile($insumo->imagen);
+                $insumo->imagen ? Helpers::removeFile($insumo->imagen) : '';
                 $request['imagen'] = Helpers::setFile($request);
             }
 

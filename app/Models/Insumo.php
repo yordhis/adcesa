@@ -16,7 +16,7 @@ class Insumo extends Model
         'precio',
         'costo',
         'cantidad',
-        'medida',
+        'medida', // guardamos el id de la medida
         'unidad', // medidad de cada uno
         'stock',
         'marca',
