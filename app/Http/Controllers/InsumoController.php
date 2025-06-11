@@ -32,6 +32,7 @@ class InsumoController extends Controller
 
             $marcas = Marca::orderBy('nombre', 'ASC')->get();
             $categorias = Categoria::orderBy('nombre', 'ASC')->get();
+
             if ($request->filtro || $request->order) {
                 $insumos = Insumo::where('nombre', 'like',  "%$request->filtro%")
                     ->orderBy('nombre', $request->input('order', 'ASC'))
@@ -42,6 +43,7 @@ class InsumoController extends Controller
                     ->paginate($request->input('limit', 12));
                 $respuesta = DataDev::$respuesta;
             }
+
             return view('admin.insumos.index', compact('insumos', 'almacenes', 'medidas', 'categorias', 'marcas', 'request', 'respuesta'));
         } catch (\Throwable $th) {
             $mensaje = Helpers::getMensajeError($th, 'Error al retornar la vista de insumo');
@@ -119,7 +121,7 @@ class InsumoController extends Controller
             $request['codigo_barra'] = Strings::upper($request->codigo_barra ?? '');
             $request['nombre'] = Strings::upper($request->nombre);
             $request['marca'] = Marca::find($request->id_marca)->nombre;
-            $request['categoria'] = Marca::find($request->id_categoria)->nombre;
+            $request['categoria'] = Categoria::find($request->id_categoria)->nombre;
             $request['almacen'] = $request->id_almacen == 1 ? 'ALMACEN A' : 'ALMACEN B'; // MODIFICAR
 
 

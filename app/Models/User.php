@@ -28,6 +28,7 @@ class User extends Authenticatable
         'pais',
         'estado',
         'ciudad',
+        'fecha_nacimiento',
         'rol',
         'foto',
         'email',

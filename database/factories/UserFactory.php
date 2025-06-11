@@ -37,6 +37,7 @@ class UserFactory extends Factory
             'rol' => 3, // 3: Usuario cliente
             'foto' => '/assets/img/avatar.png',
             'estatus' => true, // true: activo
+            'fecha_nacimiento' => fake()->date(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('12345678'),
