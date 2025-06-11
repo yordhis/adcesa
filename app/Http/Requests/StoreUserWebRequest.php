@@ -24,16 +24,19 @@ class StoreUserWebRequest extends FormRequest
         return [
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'cedula' => 'nullable|string|max:20',
-            'telefono' => 'nullable|string|max:20',
-            'direccion' => 'nullable|string|max:255',
-            'pais' => 'nullable|string|max:100',
-            'estado' => 'nullable|string|max:100',
-            'ciudad' => 'nullable|string|max:100',
+            'cedula' => 'required|string|max:20',
+            'nacionalidad' => 'required|string|max:20',
+            'sexo' => 'required|string|max:20',
+            'telefono' => 'required|string|max:20',
+            'direccion' => 'required|string|max:255',
+            'fecha_nacimiento' => 'required|string|max:100',
             'email' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => 'nullable|string|min:6',
+            // Datos opcionales
+            'ciudad' => 'nullable|string|max:100', 
+            'estado' => 'nullable|string|max:100',
+            'pais' => 'nullable|string|max:100',
             'file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'rol' => 'required',
         ];
     }
 }

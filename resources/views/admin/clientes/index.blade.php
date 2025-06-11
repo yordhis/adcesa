@@ -25,14 +25,9 @@
     <section class="section">
         <div class="row">
 
-
-
-            <div class="col-12">
-                <h2> Lista de Clientes</h2>
-            </div>
-
+            <!-- Botón para abrir el modal formulario de registro de cliente -->
             <div class="col-sm-6 col-xs-12 ">
-                @include('admin.clientes.partials.modalform')
+                @include('admin.clientes.partials.modal-form-create')
             </div>
 
             <!-- Filtro de clientes -->
@@ -42,7 +37,8 @@
                     @method('GET')
                     <div class="input-group mb-3">
                         <label for="filtro" class="text-primary p-2">Buscar</label>
-                        <input type="text" class="form-control" name="filtro" placeholder="Buscar por: Nombres, Cédula o E-mail" aria-label="Filtrar"
+                        <input type="text" class="form-control" name="filtro"
+                            placeholder="Buscar por: Nombres, Cédula o E-mail" aria-label="Filtrar"
                             aria-describedby="button-addon2" required>
                         <button class="btn btn-primary" type="submit" id="button-addon2">
                             <i class="bi bi-search"></i>
@@ -62,30 +58,31 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Cédula</th>
                             <th scope="col">Teléfono</th>
+                            <th scope="col">E-mail</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
 
-                        @foreach ($clientes as $cliente)
-                            <tr class="{{ $cliente->estatus == 2 ? 'table-danger' : '' }}
+                        @foreach ($clientes as $key => $cliente)
+                            <tr
+                                class="{{ $cliente->estatus == 2 ? 'table-danger' : '' }}
                                 {{ $cliente->estatus == 0 ? 'table-secondary' : '' }}">
-                                <th scope="row">{{ $cliente->id }}</th>
-                                <td>{{ $cliente->nombres }}</td>
-                                <td>{{ $cliente->cedula }}</td>
+                                <th scope="row">{{ ($clientes->currentPage() - 1) * $clientes->perPage() + $key + 1 }}</th>
+                                <td>{{ $cliente->nombres . ' ' . $cliente->apellidos }}</td>
+                                <td>{{ $cliente->nacionalidad . '-'. $cliente->cedula }}</td>
                                 <td>{{ $cliente->telefono }}</td>
-                
-
+                                <td>{{ $cliente->email }}</td>
 
                                 <td>
-                                    @include('admin.clientes.partials.modalver')
+                                    @include('admin.clientes.partials.modal-show')
 
-                                    <a href="{{ route('admin.clientes.edit', $cliente->id) }}">
+                                    <a href="{{ route('admin.clientes.index', $cliente->id) }}">
                                         <i class="bi bi-pencil text-warning"></i>
                                     </a>
 
 
-                                    @include('admin.clientes.partials.modal')
+                                    @include('admin.clientes.partials.modal-delete')
 
 
                                 </td>
