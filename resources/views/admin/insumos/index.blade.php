@@ -34,7 +34,7 @@
                 @include('admin.categorias.partials.modalform')
             </div>
 
-            <!-- Filtro de insumos -->
+            <!-- Filtro de insumos  -->
             <div class="col-12">
                 <form action="{{ route('admin.insumos.index') }}" method="post" id="filtro">
                     @csrf
