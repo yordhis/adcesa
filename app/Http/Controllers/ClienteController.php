@@ -104,7 +104,7 @@ class ClienteController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            if($user){
+            if ($user) {
                 /** Validar correo si se editó y que no se repita el correo */
                 if ($request->email) {
                     if ($request->email != $user->email) {
@@ -116,7 +116,7 @@ class ClienteController extends Controller
                         }
                     }
                 }
-    
+
                 /** Completar datos */
                 $request['nombres'] = Strings::upper($request->nombres);
                 $request['apellidos'] = Strings::upper($request->apellidos);
@@ -124,8 +124,8 @@ class ClienteController extends Controller
                 $request['pais'] = Strings::upper($request->pais ?? '');
                 $request['estado'] = Strings::upper($request->estado ?? '');
                 $request['ciudad'] = Strings::upper($request->ciudad ?? '');
-    
-    
+
+
                 /** Verificamos si enviaron una imagen nueva */
                 if ($request->file) {
                     Helpers::removeFile($user->foto);
@@ -137,8 +137,7 @@ class ClienteController extends Controller
                 $mensaje = "Datos actualizados correctamente";
                 $estatus = Response::HTTP_OK;
                 return back()->with(compact('mensaje', 'estatus'));
-
-            }else{
+            } else {
                 $mensaje = "Usuario no encontrado";
                 $estatus = Response::HTTP_NOT_FOUND;
                 return back()->with(compact('mensaje', 'estatus'));
@@ -169,5 +168,25 @@ class ClienteController extends Controller
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
         }
+    }
+
+    public function create()
+    {
+        $mensaje = "¡Ruta no disponible!";
+        $estatus = Response::HTTP_NOT_FOUND;
+        return redirect()->route('admin.clientes.index')->with(compact('mensaje', 'estatus'));
+    }
+
+    public function show($userId)
+    {
+        $mensaje = "¡Ruta no disponible!";
+        $estatus = Response::HTTP_NOT_FOUND;
+        return redirect()->route('admin.clientes.index')->with(compact('mensaje', 'estatus'));
+    }
+    public function edit($userId)
+    {
+        $mensaje = "¡Ruta no disponible!";
+        $estatus = Response::HTTP_NOT_FOUND;
+        return redirect()->route('admin.clientes.index')->with(compact('mensaje', 'estatus'));
     }
 }

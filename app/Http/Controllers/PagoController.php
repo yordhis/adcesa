@@ -22,8 +22,6 @@ use Illuminate\Http\Response;
 class PagoController extends Controller
 {
 
-
-
     public function index(Request $request)
     {
         try {

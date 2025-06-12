@@ -177,4 +177,25 @@ class InsumoController extends Controller
             return back()->with(compact('mensaje', 'estatus'));
         }
     }
+
+
+    public function create()
+    {
+        $mensaje = "¡Ruta no disponible!";
+        $estatus = Response::HTTP_NOT_FOUND;
+        return redirect()->route('admin.insumos.index')->with(compact('mensaje', 'estatus'));
+    }
+
+    public function show($userId)
+    {
+        $mensaje = "¡Ruta no disponible!";
+        $estatus = Response::HTTP_NOT_FOUND;
+        return redirect()->route('admin.insumos.index')->with(compact('mensaje', 'estatus'));
+    }
+    public function edit($userId)
+    {
+        $mensaje = "¡Ruta no disponible!";
+        $estatus = Response::HTTP_NOT_FOUND;
+        return redirect()->route('admin.insumos.index')->with(compact('mensaje', 'estatus'));
+    }
 }

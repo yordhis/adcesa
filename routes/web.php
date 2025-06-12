@@ -12,6 +12,7 @@ use App\Http\Controllers\{
     MarcaController,
     PageController,
     PermisoController,
+    ProductoController,
     RoleController
 };
 
@@ -62,6 +63,9 @@ Route::middleware(['admin'])->group(function () {
 
     /** Rutas de Insumos */
     Route::resource('/insumos', InsumoController::class)->names('admin.insumos');
+
+    /** Rutas de productos */
+    Route::resource('/productos', ProductoController::class)->names('admin.productos');
 
     /** Rutas de Marcas */
     Route::resource('/marcas', MarcaController::class)->names('admin.marcas');
