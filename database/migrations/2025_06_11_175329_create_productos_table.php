@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('productos', function (Blueprint $table) {
             $table->id();
+            $table->string('codigo_barra')->nullable();
+            $table->string('nombre', 255);
+            $table->string('descripcion', 255)->nullable();
+            $table->string('tipo_producto', 255)->default(0); // 1: Compuesto | 0: No compuesto
+            $table->decimal('precio')->default(0);
+            $table->string('imagen');
+            $table->decimal('stock')->default(0); // total de metros... del insumo
+            $table->decimal('costo')->nullable();
+            $table->string('marca')->nullable();
+            $table->string('categoria')->nullable();
+            $table->string('almacen')->nullable();
+            $table->string('estatus')->default('ACTIVO'); // ACTIVOS | INACTIVO
+            $table->string('id_almacen')->nullable();
+            $table->string('id_marca')->nullable();
+            $table->string('id_categoria')->nullable();
             $table->timestamps();
         });
     }

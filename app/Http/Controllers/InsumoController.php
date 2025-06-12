@@ -35,16 +35,48 @@ class InsumoController extends Controller
 
             $marcas = Marca::orderBy('nombre', 'ASC')->get();
             $categorias = Categoria::orderBy('nombre', 'ASC')->get();
+            $respuesta = DataDev::$respuesta;
 
-            if ($request->filtro || $request->order) {
-                $insumos = Insumo::where('nombre', 'like',  "%$request->filtro%")
-                    ->orderBy('nombre', $request->input('order', 'ASC'))
-                    ->paginate($request->input('limit', 12));
-                $respuesta = DataDev::$respuesta;
+
+            if ($request->has('filtro')) {
+                if ($request->filtro && $request->id_categoria && $request->id_marca) {
+                    $insumos = Insumo::where('nombre', 'like',  "%$request->filtro%")
+                        ->where('id_marca', '=', $request->id_marca)
+                        ->where('id_categoria', '=', $request->id_categoria)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->filtro && $request->id_marca) {
+                    $insumos = Insumo::where('nombre', 'like',  "%$request->filtro%")
+                        ->where('id_marca', '=', $request->id_marca)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->filtro && $request->id_categoria) {
+                    $insumos = Insumo::where('nombre', 'like',  "%$request->filtro%")
+                        ->where('id_categoria', '=', $request->id_categoria)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->id_marca && $request->id_categoria) {
+                    $insumos = Insumo::where('id_categoria', '=', $request->id_categoria)
+                        ->where('id_marca', '=', $request->id_marca)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->id_marca || $request->id_categoria) {
+                    $insumos = Insumo::where('id_categoria', '=', $request->id_categoria)
+                        ->orWhere('id_marca', '=', $request->id_marca)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->filtro) {
+                    $insumos = Insumo::where('nombre', 'like',  "%$request->filtro%")
+                        ->orWhere('codigo_barra', $request->filtro )
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } else {
+                    $insumos = Insumo::orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                }
             } else {
-                $insumos = Insumo::orderBy('nombre', 'ASC')
+                $insumos = Insumo::orderBy('nombre', $request->input('order', 'ASC'))
                     ->paginate($request->input('limit', 12));
-                $respuesta = DataDev::$respuesta;
             }
 
             foreach ($medidas as $key => $medida) {
@@ -136,7 +168,6 @@ class InsumoController extends Controller
             $request['marca'] = Marca::find($request->id_marca)->nombre;
             $request['categoria'] = Categoria::find($request->id_categoria)->nombre;
             $request['almacen'] = $request->id_almacen == 1 ? 'ALMACEN A' : 'ALMACEN B'; // MODIFICAR
-
 
             /** Verificamos si enviaron una imagen nueva */
             if ($request->file) {
