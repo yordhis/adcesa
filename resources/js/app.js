@@ -6,9 +6,8 @@ import * as bootstrap from 'bootstrap';
 window.bootstrap = bootstrap;
 
 import '../css/style.css';
-import './insumo.js'; 
-import './utils/reset-filtro.js'; 
 import './main.js'; 
+import './insumo.js'; 
 import.meta.glob([
     '../images/**',
 ]);

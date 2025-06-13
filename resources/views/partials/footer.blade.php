@@ -8,5 +8,5 @@
       </div>
   </footer><!-- End Footer -->
 
- 
+ <script src="{{ asset('assets/js/utils/reset-filtro.js') }}"></script>
  

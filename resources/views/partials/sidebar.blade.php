@@ -24,6 +24,17 @@
 
 
 
+            <!-- Start Components Nav | productos -->
+            <li class="nav-item">
+                <a href="{{ route('admin.productos.index') }}"
+                    class="nav-link  {{ url()->current() == route('admin.productos.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                    <i
+                        class="bi bi-box-fill {{ url()->current() == route('admin.productos.index') ? 'text-white' : 'text-primary' }}"></i>
+                    <span>
+                        Productos
+                    </span>
+                </a>
+            </li><!-- End Components Nav | productos -->
             <!-- Start Components Nav | insumos -->
             <li class="nav-item">
                 <a href="{{ route('admin.insumos.index') }}"

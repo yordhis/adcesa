@@ -25,7 +25,7 @@ class StoreProductoRequest extends FormRequest
             'nombre' => 'required | max:255',
             'tipo_producto' => 'required | in:0,1',
             'precio' => 'required | numeric | min:0 | max:9999999',
-            'imagen' => 'required | image | mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'file' => 'required | image | mimes:jpeg,png,jpg,gif,svg|max:2048',
             'descripcion' => 'nullable | max:255',
             'codigo_barra' => 'nullable | max:191',
             'stock' => 'nullable | numeric | min:0 | max:9999999',

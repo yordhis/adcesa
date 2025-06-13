@@ -96,7 +96,7 @@ class ProductoController extends Controller
              */
             $request->tipo_producto ? $request['estatus'] = 'INACTIVO' : $request['estatus'] = 'ACTIVO';
 
-            return $request->all();
+   
 
             /** Insertamos la imagen y obtenermos la url para guardar en la DB */
             if ($request->file) {
@@ -172,10 +172,6 @@ class ProductoController extends Controller
     public function destroy(Producto $producto)
     {
         try {
-            return $producto;
-            /** Validamos que esta producto no este siendo usada */
-            // code
-
             /** Eliminamos */
             $producto->delete();
             $mensaje = "producto eliminada correctamente";
