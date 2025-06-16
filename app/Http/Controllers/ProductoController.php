@@ -127,6 +127,7 @@ class ProductoController extends Controller
     public function update(UpdateproductoRequest $request, producto $producto)
     {
         try {
+            return $request->all();
             /** Validar codigo de barra */
             if ($request->codigo_barra) {
                 if ($request->codigo_barra != $producto->codigo_barra) {

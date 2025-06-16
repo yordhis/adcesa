@@ -21,9 +21,9 @@
 
                     <!-- Input Tipo de producto -->
                     <div class="col-12">
-                        <label for="tipo_producto" class="form-label">Tipo de producto</label><span
+                        <label for="tipo_producto_edit" class="form-label">Tipo de producto</label><span
                             class="text-danger fs-4">*</span>
-                        <select class="form-select" name="tipo_producto" id="tipo_producto" required>
+                        <select class="form-select tipo_producto_edit" name="tipo_producto" required>
                             <option selected disabled value="">Seleccione el tipo</option>
                             @if ($producto->tipo_producto == 1)
                                 <option value="1" selected>Compuesto</option>
@@ -94,18 +94,18 @@
                     </div>
 
                     <!-- Input Costo -->
-                    @if (!$producto->tipo_producto)
-                        <div class="col-sm-4 col-xs-12">
-                            <label for="costo" class="form-label">Costo </label> <span
-                                class="text-danger fs-4">*</span>
-                            <input type="number" step="any" name="costo" class="form-control" id="costo"
-                                placeholder="Ingrese costo" value="{{ old('costo') ?? $producto->costo }}" required>
-                            <div class="invalid-feedback">Por favor, Ingrese un costo valido!</div>
-                            @error('costo')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    @endif
+
+                    <div class="col-sm-4 col-xs-12 {{ $producto->tipo_producto == 0 ? '' : 'd-none' }}">
+                        <label for="costo" class="form-label">Costo </label> <span class="text-danger fs-4">*</span>
+                        <input type="number" step="any" name="costo" class="form-control" id="costo"
+                            placeholder="Ingrese costo" value="{{ old('costo') ?? $producto->costo }}"
+                            {{ $producto->tipo_producto == 0 ? 'required' : 'disabled' }}>
+                        <div class="invalid-feedback">Por favor, Ingrese un costo valido!</div>
+                        @error('costo')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
 
                     <!-- Input Precio -->
                     <div class="col-sm-4 col-xs-12">
@@ -119,17 +119,18 @@
                     </div>
 
                     <!-- Input stock -->
-                    @if (!$producto->tipo_producto)
-                        <div class="col-sm-4 col-xs-12">
-                            <label for="stock" class="form-label">Existencia real</label><span
-                                class="text-danger fs-4">*</span>
-                            <input type="number" step="any" name="stock" class="form-control stock-edit"
-                                value="{{ $producto->stock }}">
-                            @error('stock')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    @endif
+
+                    <div class="col-sm-4 col-xs-12 {{ $producto->tipo_producto == 0 ? '' : 'd-none' }}">
+                        <label for="stock" class="form-label">Existencia real</label><span
+                            class="text-danger fs-4">*</span>
+                        <input type="number" step="any" name="stock" class="form-control stock-edit"
+                            value="{{ $producto->stock }}"
+                            {{ $producto->tipo_producto == 0 ? 'required' : 'disabled' }}>
+                        @error('stock')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
 
 
                     <!-- Input almacenes -->

@@ -184,5 +184,4 @@
 
     </section>
 
-<script src="{{ asset('assets/js/productos.js') }}"></script>
 @endsection
