@@ -25,6 +25,11 @@
                             class="text-danger fs-4">*</span>
                         <select class="form-select" name="tipo_producto" id="tipo_producto" required>
                             <option selected disabled value="">Seleccione el tipo</option>
+                            @if (old('tipo_producto') == 1)
+                                <option value="{{ old('tipo_producto') }}" selected>Compuesto</option>
+                            @elseif (old('tipo_producto') == 0)
+                                <option value="0" selected>No Compuesto</option>
+                            @endif
                             <option value="1">Compuesto</option>
                             <option value="0">No Compuesto</option>
                         </select>
@@ -72,14 +77,14 @@
 
                     <!-- Input Descripcion -->
                     <div class="col-12">
-                        <label for="yourUsername" class="form-label">Descripción del producto </label> 
+                        <label for="yourUsername" class="form-label">Descripción del producto </label>
                         <div class="input-group has-validation">
                             <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
                                 <i class="bi bi-box"></i>
                             </span>
                             <input type="text" name="descripcion" class="form-control text-uppercase"
                                 id="descripcion" placeholder="Ingrese descripción del producto"
-                                value="{{ old('descripcion') }}" >
+                                value="{{ old('descripcion') }}">
                             <div class="invalid-feedback">Por favor, ingrese descripción del producto! </div>
                         </div>
                         @error('descripcion')
@@ -113,8 +118,8 @@
                     <div class="col-sm-4 col-xs-12">
                         <label for="stock" class="form-label">Existencia real</label><span
                             class="text-danger fs-4">*</span>
-                        <input type="number" step="any" name="stock" class="form-control" id="input-stock-create"
-                            value="0">
+                        <input type="number" step="any" name="stock" class="form-control"
+                            id="input-stock-create" value="0">
 
                         @error('stock')
                             <div class="text-danger">{{ $message }}</div>

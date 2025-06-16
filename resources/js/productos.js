@@ -1,46 +1,80 @@
 if (window.location.pathname.includes('productos')) {
+    console.log('connected to script product');
 
-    let selectTipoProductoEdit = document.querySelectorAll('.tipo_producto_edit'),
-        selectTipoProductoCreate = document.getElementById('tipo_producto');
+    let selectTipoProductoCreate = document.getElementById('tipo_producto');
 
-    selectTipoProductoCreate.addEventListener('change', (e) => {
-        let tipoProducto = e.target.value;
-        let inputCosto = document.getElementById('input-costo-create'),
-            inputStock = document.getElementById('input-stock-create');
-        if (tipoProducto == 1) { // Producto
-            inputCosto.hidden = true;
-            inputStock.hidden = true
-            inputCosto.parentElement.classList.add('d-none')
-            inputStock.parentElement.classList.add('d-none')
-        } else if (tipoProducto == 0) { // Servicio
-            document.getElementById('input-costo-create').hidden = false;
-            document.getElementById('input-stock-create').hidden = false;
-            inputCosto.parentElement.classList.remove('d-none')
-            inputStock.parentElement.classList.remove('d-none')
+    /** renderiza el formulario segun el tipo de producto */
+    window.addEventListener('load', (e) => {
+        const formularioCreate = selectTipoProductoCreate.parentElement.parentElement
+        const tipoProductoCreate = selectTipoProductoCreate.value
+
+
+        if (tipoProductoCreate == 1) {
+            // input codigo barra
+            formularioCreate[3].disabled = true
+            formularioCreate[3].parentElement.parentElement.classList.add('d-none')
+            // input costo
+            formularioCreate[6].disabled = true
+            formularioCreate[6].parentElement.classList.add('d-none')
+            // input precio
+            formularioCreate[7].disabled = true
+            formularioCreate[7].parentElement.classList.add('d-none')
+            // input stock
+            formularioCreate[8].disabled = true
+            formularioCreate[8].parentElement.classList.add('d-none')
+            // input almacen
+            formularioCreate[9].disabled = true
+            formularioCreate[9].parentElement.classList.add('d-none')
+            // input marca
+            formularioCreate[10].disabled = true
+            formularioCreate[10].parentElement.classList.add('d-none')
         }
     });
 
-    /** Edit */
-    selectTipoProductoEdit.forEach(inputCantidad => {
-        inputCantidad.addEventListener('change', e => {
-            let tipoProducto = e.target.value,
-                formulario = e.target.parentElement.parentElement
-            if (tipoProducto == 1) { // Producto
-                  // input costo
-                formulario[6].disabled = true
-                formulario[6].parentElement.classList.add('d-none')
-                // input stock
-                formulario[8].disabled = true
-                formulario[8].parentElement.classList.add('d-none')
-            } else if (tipoProducto == 0) { // Servicio
-                // input costo
-                formulario[6].disabled = false
-                formulario[6].parentElement.classList.remove('d-none')
-                // input stock
-                formulario[8].disabled = false
-                formulario[8].parentElement.classList.remove('d-none')
-            }
-        })
+    /** Create */
+    selectTipoProductoCreate.addEventListener('change', (e) => {
+        let tipoProductoCreate = e.target.value,
+            formularioCreate = e.target.parentElement.parentElement
 
-    })
+        if (tipoProductoCreate == 1) { // Producto
+            // input codigo barra
+            formularioCreate[3].disabled = true
+            formularioCreate[3].parentElement.parentElement.classList.add('d-none')
+            // input costo
+            formularioCreate[6].disabled = true
+            formularioCreate[6].parentElement.classList.add('d-none')
+            // input precio
+            formularioCreate[7].disabled = true
+            formularioCreate[7].parentElement.classList.add('d-none')
+            // input stock
+            formularioCreate[8].disabled = true
+            formularioCreate[8].parentElement.classList.add('d-none')
+            // input almacen
+            formularioCreate[9].disabled = true
+            formularioCreate[9].parentElement.classList.add('d-none')
+            // input marca
+            formularioCreate[10].disabled = true
+            formularioCreate[10].parentElement.classList.add('d-none')
+        } else if (tipoProductoCreate == 0) { // Servicio
+            // input codigo barra
+            formularioCreate[3].disabled = false
+            formularioCreate[3].parentElement.parentElement.classList.remove('d-none')
+            // input costo
+            formularioCreate[6].disabled = false
+            formularioCreate[6].parentElement.classList.remove('d-none')
+            // input precio
+            formularioCreate[7].disabled = false
+            formularioCreate[7].parentElement.classList.remove('d-none')
+            // input stock
+            formularioCreate[8].disabled = false
+            formularioCreate[8].parentElement.classList.remove('d-none')
+            // input almacen
+            formularioCreate[9].disabled = false
+            formularioCreate[9].parentElement.classList.remove('d-none')
+            // input marca
+            formularioCreate[10].disabled = false
+            formularioCreate[10].parentElement.classList.remove('d-none')
+        }
+    });
+
 }

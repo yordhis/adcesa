@@ -19,7 +19,7 @@
                     @csrf
                     @method('PUT')
 
-                    <!-- Input Tipo de producto -->
+                    {{-- <!-- Input Tipo de producto -->
                     <div class="col-12">
                         <label for="tipo_producto_edit" class="form-label">Tipo de producto</label><span
                             class="text-danger fs-4">*</span>
@@ -39,7 +39,7 @@
                         @error('tipo_producto')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
                     <!-- Input Código de barra -->
                     <div class="col-12">
                         <label for="codigo-barra" class="form-label">Código de barra </label>
@@ -94,7 +94,6 @@
                     </div>
 
                     <!-- Input Costo -->
-
                     <div class="col-sm-4 col-xs-12 {{ $producto->tipo_producto == 0 ? '' : 'd-none' }}">
                         <label for="costo" class="form-label">Costo </label> <span class="text-danger fs-4">*</span>
                         <input type="number" step="any" name="costo" class="form-control" id="costo"
@@ -108,10 +107,11 @@
 
 
                     <!-- Input Precio -->
-                    <div class="col-sm-4 col-xs-12">
+                    <div class="col-sm-4 col-xs-12 {{ $producto->tipo_producto == 0 ? '' : 'd-none' }}">
                         <label for="precio" class="form-label">Precio</label> <span class="text-danger fs-4">*</span>
                         <input type="number" step="any" name="precio" class="form-control" id="precio"
-                            placeholder="Ingrese precio" value="{{ old('precio') ?? $producto->precio }}" required>
+                            placeholder="Ingrese precio" value="{{ old('precio') ?? $producto->precio }}" 
+                            {{ $producto->tipo_producto == 0 ? 'required' : 'disabled' }}>
                         <div class="invalid-feedback">Por favor, Ingrese un precio valido!</div>
                         @error('precio')
                             <div class="text-danger">{{ $message }}</div>
@@ -119,7 +119,6 @@
                     </div>
 
                     <!-- Input stock -->
-
                     <div class="col-sm-4 col-xs-12 {{ $producto->tipo_producto == 0 ? '' : 'd-none' }}">
                         <label for="stock" class="form-label">Existencia real</label><span
                             class="text-danger fs-4">*</span>
@@ -134,10 +133,11 @@
 
 
                     <!-- Input almacenes -->
-                    <div class="col-12">
+                    <div class="col-12 {{ $producto->tipo_producto == 0 ? '' : 'd-none' }}">
                         <label for="id_almacen" class="form-label">almacenes </label><span
                             class="text-danger fs-4">*</span>
-                        <select class="form-select" name="id_almacen" id="id_almacen" required>
+                        <select class="form-select" name="id_almacen" id="id_almacen" 
+                        {{ $producto->tipo_producto == 0 ? 'required' : 'disabled' }}>
                             <option disabled value="">Seleccione almacen</option>
                             @foreach ($almacenes as $almacen)
                                 @if (old('id_almacen') == $almacen['id'] || $producto->id_almacen == $almacen['id'])
@@ -157,10 +157,11 @@
                     </div>
 
                     <!-- Input marcas -->
-                    <div class="col-12">
+                    <div class="col-12 {{ $producto->tipo_producto == 0 ? '' : 'd-none' }}">
                         <label for="id_marca" class="form-label">Marcas</label><span
                             class="text-danger fs-4">*</span>
-                        <select class="form-select" name="id_marca" id="id_marca" required>
+                        <select class="form-select" name="id_marca" id="id_marca" 
+                        {{ $producto->tipo_producto == 0 ? 'required' : 'disabled' }}>
                             <option selected disabled value="">Seleccione marca</option>
                             @foreach ($marcas as $marca)
                                 @if (old('id_marca') == $marca->id || $producto->id_marca == $marca->id)

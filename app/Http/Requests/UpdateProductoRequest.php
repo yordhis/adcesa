@@ -23,8 +23,8 @@ class UpdateProductoRequest extends FormRequest
     {
         return [
             'nombre' => 'required | max:255',
-            'tipo_producto' => 'required | in:0,1',
-            'precio' => 'required | numeric | min:0 | max:9999999',
+            // 'tipo_producto' => 'required | in:0,1',
+            'precio' => 'nullable | numeric | min:0 | max:9999999',
             'file' => 'nullable | image | mimes:jpeg,png,jpg,gif,svg|max:2048',
             'descripcion' => 'nullable | max:255',
             'codigo_barra' => 'nullable | max:191',

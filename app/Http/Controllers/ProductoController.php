@@ -38,9 +38,42 @@ class ProductoController extends Controller
             $respuesta = DataDev::$respuesta;
 
             if ($request->filtro || $request->order) {
-                $productos = Producto::where('nombre', 'like',  "%$request->filtro%")
-                    ->orderBy('nombre', $request->input('order', 'ASC'))
-                    ->paginate($request->input('limit', 12));
+                if ($request->filtro && $request->id_categoria && $request->id_marca) {
+                    $productos = Producto::where('nombre', 'like',  "%$request->filtro%")
+                        ->where('id_marca', '=', $request->id_marca)
+                        ->where('id_categoria', '=', $request->id_categoria)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->filtro && $request->id_marca) {
+                    $productos = Producto::where('nombre', 'like',  "%$request->filtro%")
+                        ->where('id_marca', '=', $request->id_marca)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->filtro && $request->id_categoria) {
+                    $productos = Producto::where('nombre', 'like',  "%$request->filtro%")
+                        ->where('id_categoria', '=', $request->id_categoria)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->id_marca && $request->id_categoria) {
+                    $productos = Producto::where('id_categoria', '=', $request->id_categoria)
+                        ->where('id_marca', '=', $request->id_marca)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->id_marca || $request->id_categoria) {
+                    $productos = Producto::where('id_categoria', '=', $request->id_categoria)
+                        ->orWhere('id_marca', '=', $request->id_marca)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } elseif ($request->filtro) {
+                    $productos = Producto::where('nombre', 'like',  "%$request->filtro%")
+                        ->orWhere('codigo_barra', $request->filtro)
+                        ->orWhere('descripcion', $request->filtro)
+                        ->orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                } else {
+                    $productos = Producto::orderBy('nombre', $request->input('order', 'ASC'))
+                        ->paginate($request->input('limit', 12));
+                }
             } else {
                 $productos = Producto::orderBy('nombre', 'ASC')
                     ->paginate($request->input('limit', 12));
@@ -70,7 +103,16 @@ class ProductoController extends Controller
     public function store(StoreProductoRequest $request)
     {
         try {
-            // return $request->all();
+            /** Validar que la descripcion del producto no exista en otro producto */
+            if ($request->descripcion) {
+                $descripcionExiste = Producto::where('descripcion', '=', $request->descripcion)->first();
+                if ($descripcionExiste) {
+                    $mensaje = "La descripción ya existe";
+                    $estatus = Response::HTTP_BAD_REQUEST;
+                    return back()->withInput($request->inputs)->with(compact('mensaje', 'estatus'));
+                }
+            }
+
             /** Validar codigo de barra */
             if ($request->codigo_barra) {
                 $codigoExiste = Producto::where('codigo_barra', '=', $request->codigo_barra)->first();
@@ -85,7 +127,7 @@ class ProductoController extends Controller
             $request['codigo_barra'] = Strings::upper($request->codigo_barra ?? '');
             $request['nombre'] = Strings::upper($request->nombre);
             $request['descripcion'] = Strings::upper($request->descripcion ?? '');
-            $request['marca'] = Marca::find($request->id_marca)->nombre;
+            $request['marca'] = Marca::find($request->id_marca)->nombre ?? '';
             $request['categoria'] = Categoria::find($request->id_categoria)->nombre;
             $request['almacen'] = $request->id_almacen == 1 ? 'ALMACEN A' : 'ALMACEN B'; // MODIFICAR
 
@@ -96,7 +138,7 @@ class ProductoController extends Controller
              */
             $request->tipo_producto ? $request['estatus'] = 'INACTIVO' : $request['estatus'] = 'ACTIVO';
 
-   
+
 
             /** Insertamos la imagen y obtenermos la url para guardar en la DB */
             if ($request->file) {
@@ -127,7 +169,18 @@ class ProductoController extends Controller
     public function update(UpdateproductoRequest $request, producto $producto)
     {
         try {
-            return $request->all();
+            /** Validar que la nombre del producto no exista en otro producto */
+            if ($request->nombre) {
+                if ($request->nombre != $producto->nombre) {
+                    $nombreExiste = Producto::where('nombre', '=', $request->nombre)->first();
+                    if ($nombreExiste) {
+                        $mensaje = "El nombre ya existe";
+                        $estatus = Response::HTTP_BAD_REQUEST;
+                        return back()->withInput($request->inputs)->with(compact('mensaje', 'estatus'));
+                    }
+                }
+            }
+
             /** Validar codigo de barra */
             if ($request->codigo_barra) {
                 if ($request->codigo_barra != $producto->codigo_barra) {
@@ -141,11 +194,11 @@ class ProductoController extends Controller
             }
 
             /** Completar datos */
-            $request['codigo_barra'] = Strings::upper($request->codigo_barra ?? '');
-            $request['nombre'] = Strings::upper($request->nombre);
-            $request['descripcion'] = Strings::upper($request->descripcion ?? '');
-            $request['marca'] = Marca::find($request->id_marca)->nombre;
             $request['categoria'] = Categoria::find($request->id_categoria)->nombre;
+            $request['nombre'] = Strings::upper($request->nombre);
+            $request['codigo_barra'] = Strings::upper($request->codigo_barra ?? '');
+            $request['descripcion'] = Strings::upper($request->descripcion ?? '');
+            $request['marca'] = Marca::find($request->id_marca)->nombre ?? '';
             $request['almacen'] = $request->id_almacen == 1 ? 'ALMACEN A' : 'ALMACEN B'; // MODIFICAR
 
 
