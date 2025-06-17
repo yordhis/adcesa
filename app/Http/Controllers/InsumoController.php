@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Insumo;
 use App\Http\Requests\StoreInsumoRequest;
 use App\Http\Requests\UpdateInsumoRequest;
+use App\Models\Almacen;
 use App\Models\Categoria;
 use App\Models\DataDev;
 use App\Models\Helpers;
 use App\Models\Marca;
+use App\Models\Medida;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Nette\Utils\Strings;
@@ -21,17 +23,8 @@ class InsumoController extends Controller
     public function index(Request $request)
     {
         try {
-            $medidas = [
-                ['id' => 1, 'nombre' => 'METROS', 'simbolo' => 'M'],
-                ['id' => 2, 'nombre' => 'CENTIMETROS',  'simbolo' => 'CM'],
-                ['id' => 3, 'nombre' => 'METROS CUADRADOS', 'simbolo' => 'M2'],
-                ['id' => 4, 'nombre' => 'CENTIMETROS CUADRADOS', 'simbolo' => 'CM2'],
-                ['id' => 4, 'nombre' => 'UNIDAD', 'simbolo' => 'U'],
-            ];
-            $almacenes = [
-                ['id' => 1, 'nombre' => 'Almacen A'],
-                ['id' => 2, 'nombre' => 'Almacen B'],
-            ];
+            $medidas = Medida::orderBy('nombre', 'ASC')->get();
+            $almacenes = Almacen::orderBy('nombre', 'ASC')->get();
 
             $marcas = Marca::orderBy('nombre', 'ASC')->get();
             $categorias = Categoria::orderBy('nombre', 'ASC')->get();

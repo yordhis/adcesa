@@ -10,13 +10,13 @@ import './insumo.js';
 import './productos.js';
 import './utils/reset-filtro.js'
 import './utils/activar-desactivar-input.js'
-import './main.js'; 
 import.meta.glob([
-    '../images/**',
+  '../images/**',
 ]);
 
 import $ from 'jquery';
-  window.$ = $;
+window.$ = $;
 import 'jquery-confirm';
 import 'jquery-confirm/dist/jquery-confirm.min.css';
+import './main.js'; 
 

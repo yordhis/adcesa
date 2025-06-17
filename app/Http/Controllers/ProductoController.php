@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Producto;
 use App\Http\Requests\StoreProductoRequest;
 use App\Http\Requests\UpdateProductoRequest;
+use App\Models\Almacen;
 use App\Models\Categoria;
 use App\Models\DataDev;
 use App\Models\Helpers;
+use App\Models\Insumo;
+use App\Models\InsumoToProducto;
 use App\Models\Marca;
+use App\Models\Medida;
+use App\Models\Variante;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Nette\Utils\Strings;
@@ -21,17 +26,9 @@ class ProductoController extends Controller
     public function index(Request $request)
     {
         try {
-            $medidas = [
-                ['id' => 1, 'nombre' => 'METROS', 'simbolo' => 'M'],
-                ['id' => 2, 'nombre' => 'CENTIMETROS',  'simbolo' => 'CM'],
-                ['id' => 3, 'nombre' => 'METROS CUADRADOS', 'simbolo' => 'M2'],
-                ['id' => 4, 'nombre' => 'CENTIMETROS CUADRADOS', 'simbolo' => 'CM2'],
-                ['id' => 4, 'nombre' => 'UNIDAD', 'simbolo' => 'U'],
-            ];
-            $almacenes = [
-                ['id' => 1, 'nombre' => 'Almacen A'],
-                ['id' => 2, 'nombre' => 'Almacen B'],
-            ];
+            $medidas = Medida::orderBy('nombre', 'ASC')->get();
+            $almacenes = Almacen::orderBy('nombre', 'ASC')->get();
+            $insumos = Insumo::orderBy('nombre', 'ASC')->get();
 
             $marcas = Marca::orderBy('nombre', 'ASC')->get();
             $categorias = Categoria::orderBy('nombre', 'ASC')->get();
@@ -88,7 +85,22 @@ class ProductoController extends Controller
                 }
             }
 
-            return view('admin.productos.index', compact('productos', 'almacenes', 'medidas', 'categorias', 'marcas', 'request', 'respuesta'));
+            foreach ($productos as $key => $producto) {
+               $producto['variantes'] = Variante::where('id_producto', '=', $producto->id)->get();
+               $producto['insumos'] = InsumoToProducto::where('id_producto', '=', $producto->id)->get();
+
+               foreach ($producto['insumos'] as $key => $insumo) {
+                   $insumo['nombre'] = Insumo::find($insumo->id_insumo)->nombre;
+               }
+
+               foreach ($producto['variantes'] as $key => $variante) {
+                   $variante['area'] = $variante->alto * $variante->ancho;
+                   $variante['medida'] = $medidas->find($variante->id_medida)->nombre;
+                   $variante['simbolo'] = $medidas->find($variante->id_medida)->simbolo;
+               }
+            }
+         
+            return view('admin.productos.index', compact('productos', 'almacenes', 'insumos', 'medidas', 'categorias', 'marcas', 'request', 'respuesta'));
         } catch (\Throwable $th) {
             $mensaje = Helpers::getMensajeError($th, 'Error al retornar la vista de productos');
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;

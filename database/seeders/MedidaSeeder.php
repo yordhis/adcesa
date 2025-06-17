@@ -16,8 +16,6 @@ class MedidaSeeder extends Seeder
         $medidas = [
             ['nombre' => 'METROS', 'simbolo' => 'M'],
             ['nombre' => 'CENTIMETROS',  'simbolo' => 'CM'],
-            ['nombre' => 'METROS CUADRADOS', 'simbolo' => 'M2'],
-            ['nombre' => 'CENTIMETROS CUADRADOS', 'simbolo' => 'CM2'],
             ['nombre' => 'UNIDAD', 'simbolo' => 'U'],
         ];
 

@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Variante;
-use App\Http\Requests\StoreVarianteRequest;
-use App\Http\Requests\UpdateVarianteRequest;
+use App\Models\InsumoToProducto;
+use App\Http\Requests\StoreInsumoToProductoRequest;
+use App\Http\Requests\UpdateInsumoToProductoRequest;
 use App\Models\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Nette\Utils\Strings;
 
-class VarianteController extends Controller
+class InsumoToProductoController extends Controller
 {
 
 
@@ -18,15 +17,15 @@ class VarianteController extends Controller
     /**
      * Método que crea las variantes
      */
-    public function store(StoreVarianteRequest $request)
+    public function store(StoreInsumoToProductoRequest $request)
     {
         try {
-            Variante::create($request->all());
-            $mensaje = "Variante creada correctamente";
+            InsumoToProducto::create($request->all());
+            $mensaje = "Insumo asignado correctamente";
             $estatus = Response::HTTP_OK;
             return back()->with(compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
-            $mensaje = Helpers::getMensajeError($th, 'Error al crear variante');
+            $mensaje = Helpers::getMensajeError($th, 'Error al asignar insumo al producto');
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
         }
@@ -36,15 +35,15 @@ class VarianteController extends Controller
     /**
      * Método que actualiza los datos de la variante
      */
-    public function update(UpdateVarianteRequest $request, Variante $variante)
+    public function update(UpdateInsumoToProductoRequest $request, InsumoToProducto $insumoToProducto)
     {
         try {
-            $variante->update($request->all());
+            $insumoToProducto->update($request->all());
             $mensaje = "Datos actualizados correctamente";
             $estatus = Response::HTTP_OK;
             return back()->with(compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
-            $mensaje = Helpers::getMensajeError($th, 'Error al actualizar variante');
+            $mensaje = Helpers::getMensajeError($th, 'Error al actualizar asignacion de insumo');
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
         }
@@ -54,17 +53,17 @@ class VarianteController extends Controller
      * Método que elimina la variante
      * si no esta relacionada
      */
-    public function destroy(Variante $variante)
+    public function destroy(InsumoToProducto $insumoToProducto)
     {
         try {
 
             /** Eliminamos */
-            $variante->delete();
-            $mensaje = "Variante eliminada correctamente";
+            $insumoToProducto->delete();
+            $mensaje = "Insumo desasignado correctamente";
             $estatus = Response::HTTP_OK;
             return back()->with(compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
-            $mensaje = Helpers::getMensajeError($th, 'Error al eliminar variante');
+            $mensaje = Helpers::getMensajeError($th, 'Error al eliminar asignacion de insumo');
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
         }

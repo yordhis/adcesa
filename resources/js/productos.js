@@ -1,7 +1,10 @@
 if (window.location.pathname.includes('productos')) {
     console.log('connected to script product');
 
-    let selectTipoProductoCreate = document.getElementById('tipo_producto');
+    let selectTipoProductoCreate = document.getElementById('tipo_producto'),
+        inputAncho = document.querySelectorAll('.input-ancho'),
+        selectMedida = document.querySelectorAll('.select-medida'),
+        inputAlto = document.querySelectorAll('.input-alto');
 
     /** renderiza el formulario segun el tipo de producto */
     window.addEventListener('load', (e) => {
@@ -76,5 +79,36 @@ if (window.location.pathname.includes('productos')) {
             formularioCreate[10].parentElement.classList.remove('d-none')
         }
     });
+
+    const calcularArea = (e) => {
+        
+        const formularioVariante = e.target.parentElement.parentElement.parentElement.parentElement;
+        const medidas = formularioVariante[6].children
+        let medida;
+
+        for (const key in medidas) {
+            if (Object.prototype.hasOwnProperty.call(medidas, key)) {
+                const element = medidas[key];
+                console.log(element.value);
+                if(element.value == formularioVariante[6].value) medida = element
+            }
+        }
+        
+        formularioVariante[7].value =  (formularioVariante[3].value *  formularioVariante[4].value) + ' ' 
+        + medida.innerText + ' ^2 ' ;
+    }
+    /** Calcular área */
+    inputAncho.forEach(input => {
+        input.addEventListener('input', calcularArea);
+    });
+    inputAlto.forEach(input => {
+        input.addEventListener('input', calcularArea);
+    });
+
+    selectMedida.forEach(input => {
+        input.addEventListener('input', calcularArea);
+    });
+
+
 
 }

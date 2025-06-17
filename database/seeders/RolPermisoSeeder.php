@@ -35,6 +35,7 @@ class RolPermisoSeeder extends Seeder
             "almacens",
             "variantes",
             "medidas",
+            "insumostoproductos",
             "reportes",
         ];
 
@@ -53,6 +54,7 @@ class RolPermisoSeeder extends Seeder
             "almacens",
             "variantes",
             "medidas",
+            "insumostoproductos",
             "reportes",
         ];
 
@@ -75,7 +77,7 @@ class RolPermisoSeeder extends Seeder
         }
 
         foreach ($permisosDeCliente as $key => $value) {
-         
+
             $permiso = new RolPermiso();
             $permiso->id_rol = Role::where('nombre', 'CLIENTE')->first()->id;
             $permiso->id_permiso = Permiso::where('nombre', $value)->first()->id;

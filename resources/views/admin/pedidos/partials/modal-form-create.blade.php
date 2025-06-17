@@ -1,23 +1,45 @@
 <!-- Vertically centered Modal -->
-<button type="button" class="btn btn-warning text-white" data-bs-toggle="modal" data-bs-target="#modalRegistrarinsumo">
-    <i class="bi bi-box"></i> Crear insumo
+<button type="button" class="btn btn-success " data-bs-toggle="modal" data-bs-target="#modalRegistrarproducto">
+    <i class="bi bi-box-fill"></i> Crear producto
 </button>
 
-<div class="modal fade" id="modalRegistrarinsumo" tabindex="-1">
+<div class="modal fade" id="modalRegistrarproducto" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Registrar insumo</h5>
+                <h5 class="modal-title">Registrar producto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-start">
                 <p class="text-center text-info">
                     Llene todos los campos obligatorios señalados con un <b class="text-danger fs-6">(*)</b>
                 </p>
-                <form action="{{ route('admin.insumos.store') }}" method="post" class="row g-3 needs-validation"
+                <form action="{{ route('admin.productos.store') }}" method="post" class="row g-3 needs-validation"
                     enctype="multipart/form-data">
                     @csrf
                     @method('post')
+
+                    <!-- Input Tipo de producto -->
+                    <div class="col-12">
+                        <label for="tipo_producto" class="form-label">Tipo de producto</label><span
+                            class="text-danger fs-4">*</span>
+                        <select class="form-select" name="tipo_producto" id="tipo_producto" required>
+                            <option selected disabled value="">Seleccione el tipo</option>
+                            @if (old('tipo_producto') == 1)
+                                <option value="{{ old('tipo_producto') }}" selected>Compuesto</option>
+                            @elseif (old('tipo_producto') == 0)
+                                <option value="0" selected>No Compuesto</option>
+                            @endif
+                            <option value="1">Compuesto</option>
+                            <option value="0">No Compuesto</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor, seleccione una almacen valida!.
+                        </div>
+                        @error('tipo_producto')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
                     <!-- Input Código de barra -->
                     <div class="col-12">
@@ -29,7 +51,7 @@
                             <input type="text" name="codigo_barra" class="form-control text-uppercase"
                                 id="codigo_barra" placeholder="Ingrese codigo de barra"
                                 value="{{ old('codigo_barra') ?? '' }}">
-                            <div class="invalid-feedback">Por favor, ingrese codigo de barra del insumo! </div>
+                            <div class="invalid-feedback">Por favor, ingrese codigo de barra del producto! </div>
                             @error('codigo_barra')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -38,17 +60,34 @@
 
                     <!-- Input Nombre -->
                     <div class="col-12">
-                        <label for="yourUsername" class="form-label">Nombre del insumo </label> <span
+                        <label for="yourUsername" class="form-label">Nombre del producto </label> <span
                             class="text-danger fs-4">*</span>
                         <div class="input-group has-validation">
                             <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
                                 <i class="bi bi-box"></i>
                             </span>
                             <input type="text" name="nombre" class="form-control text-uppercase" id="nombre"
-                                placeholder="Ingrese nombre del insumo" value="{{ old('nombre') }}" required>
-                            <div class="invalid-feedback">Por favor, ingrese nombre del insumo! </div>
+                                placeholder="Ingrese nombre del producto" value="{{ old('nombre') }}" required>
+                            <div class="invalid-feedback">Por favor, ingrese nombre del producto! </div>
                         </div>
                         @error('nombre')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Input Descripcion -->
+                    <div class="col-12">
+                        <label for="yourUsername" class="form-label">Descripción del producto </label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
+                                <i class="bi bi-box"></i>
+                            </span>
+                            <input type="text" name="descripcion" class="form-control text-uppercase"
+                                id="descripcion" placeholder="Ingrese descripción del producto"
+                                value="{{ old('descripcion') }}">
+                            <div class="invalid-feedback">Por favor, ingrese descripción del producto! </div>
+                        </div>
+                        @error('descripcion')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
@@ -56,8 +95,8 @@
                     <!-- Input Costo -->
                     <div class="col-sm-4 col-xs-12">
                         <label for="costo" class="form-label">Costo </label> <span class="text-danger fs-4">*</span>
-                        <input type="number" step="any" name="costo" class="form-control" id="costo"
-                            placeholder="Ingrese costo" value="{{ old('costo') ?? '' }}" required>
+                        <input type="number" step="any" name="costo" class="form-control" id="input-costo-create"
+                            placeholder="Ingrese costo" value="{{ old('costo') ?? '' }}">
                         <div class="invalid-feedback">Por favor, Ingrese un costo valido!</div>
                         @error('costo')
                             <div class="text-danger">{{ $message }}</div>
@@ -75,56 +114,13 @@
                         @enderror
                     </div>
 
-                    <!-- Input Cantidad -->
-                    <div class="col-sm-4 col-xs-12">
-                        <label for="cantidad" class="form-label">Cantidad</label><span class="text-danger fs-4">*</span>
-                        <input type="number" step="any" name="cantidad" class="form-control" id="cantidad"
-                            placeholder="Ingrese cantidad" value="{{ old('cantidad') ?? '' }}" required>
-                        <div class="invalid-feedback">Por favor, Ingrese una cantidad valida!</div>
-                        @error('cantidad')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Input Medida -->
-                    <div class="col-sm-4 col-xs-12">
-                        <label for="medida" class="form-label">Medidas</label><span
-                            class="text-danger fs-4">*</span>
-                        <select class="form-select" name="id_medida" id="medida" required>
-                            <option selected disabled value="">Seleccione medida</option>
-                            @foreach ($medidas as $medida)
-                                @if (old('medida') == $medida['id'])
-                                    <option value="{{ $medida['id'] }}" selected>{{ $medida['simbolo'] . ' - ' . $medida['nombre'] }}</option>
-                                @endif
-                                <option value="{{ $medida['id'] }}">{{ $medida['simbolo'] . ' - ' . $medida['nombre']}}</option>
-                            @endforeach
-                        </select>
-                        <div class="invalid-feedback">
-                            Por favor, seleccione una medida valida!.
-                        </div>
-                        @error('medida')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Input unidad -->
-                    <div class="col-sm-4 col-xs-12">
-                        <label for="unidad" class="form-label">Medida/Unidad</label><span
-                            class="text-danger fs-4">*</span>
-                        <input type="number" step="any" name="unidad" class="form-control" id="unidad"
-                            placeholder="Ingrese unidad" value="{{ old('unidad') ?? '' }}" required>
-                        <div class="invalid-feedback">Por favor, Ingrese una unidad valida!</div>
-                        @error('unidad')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-
                     <!-- Input stock -->
                     <div class="col-sm-4 col-xs-12">
-                        <label for="stock" class="form-label">Existencia total</label><span
+                        <label for="stock" class="form-label">Existencia real</label><span
                             class="text-danger fs-4">*</span>
-                        <input type="number" step="any" class="form-control stock" value="0" readonly>
-                        <input type="hidden" name="stock" value="0" class="stock">
+                        <input type="number" step="any" name="stock" class="form-control"
+                            id="input-stock-create" value="0">
+
                         @error('stock')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -196,7 +192,8 @@
 
                     <!-- Input imagen -->
                     <div class="col-12">
-                        <label for="file" class="form-label">Subir Foto</label>
+                        <label for="file" class="form-label">Subir Foto</label><span
+                            class="text-danger fs-4">*</span>
                         <input type="file" name="file" class="form-control " id="file" accept="image/*">
                         @error('file')
                             <div class="text-danger">{{ $message }}</div>
@@ -204,7 +201,7 @@
                     </div>
 
                     <div class="col-12">
-                        <button class="btn btn-primary w-100" type="submit">Crear insumo</button>
+                        <button class="btn btn-primary w-100" type="submit">Crear producto</button>
                     </div>
 
                 </form>

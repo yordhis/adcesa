@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     DashboardController,
     PagoController,
     InsumoController,
+    InsumoToProductoController,
     LoginController,
     MarcaController,
     MedidaController,
@@ -81,6 +82,9 @@ Route::middleware(['admin'])->group(function () {
 
     /** Rutas de variantes */
     Route::resource('/variantes', VarianteController::class)->names('admin.variantes');
+
+    /** Rutas de insumostoproductos */
+    Route::resource('/insumostoproductos', InsumoToProductoController::class)->names('admin.insumostoproductos');
 
     /** Rutas de Categorias */
     Route::resource('/categorias', CategoriaController::class)->names('admin.categorias');

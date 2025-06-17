@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('descripcion', 255)->nullable();
             $table->string('tipo_producto', 255)->default(0); // 1: Compuesto | 0: No compuesto
             $table->decimal('precio')->default(0);
-            $table->string('imagen');
+            $table->string('imagen')->nullable();
             $table->decimal('stock')->default(0); // total de metros... del insumo
             $table->decimal('costo')->nullable();
             $table->string('marca')->nullable();

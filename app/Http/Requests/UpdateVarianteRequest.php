@@ -11,7 +11,7 @@ class UpdateVarianteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class UpdateVarianteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "id_producto" => "required",
+            "id_medida"  => "required",
+            "ancho"  => "required | numeric | max: 999999 | min: 1",
+            "alto"  => "required | numeric | max: 999999 | min: 1",
+            "precio"  => "required | numeric | max: 999999 | min: 1",
         ];
     }
 }

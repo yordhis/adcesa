@@ -33,6 +33,7 @@ class PermisoSeeder extends Seeder
             "almacens",
             "variantes",
             "medidas",
+            "insumostoproductos",
             "tienda",
         ];
 

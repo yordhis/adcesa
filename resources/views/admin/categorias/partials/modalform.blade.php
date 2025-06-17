@@ -1,6 +1,6 @@
 <!-- Vertically centered Modal -->
 <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#modalRegistrarCategoria">
-    <i class="bi bi-bookmarks"></i> Crear categoria
+    <i class="bi bi-tags"></i> Crear categoria
 </button>
 
 <div class="modal fade" id="modalRegistrarCategoria" tabindex="-1">

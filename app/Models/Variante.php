@@ -12,6 +12,7 @@ class Variante extends Model
 
     protected $fillable = [
         "id_producto",
+        "id_medida",
         "ancho",
         "alto",
         "precio"

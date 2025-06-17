@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('variantes', function (Blueprint $table) {
+        Schema::create('insumo_to_productos', function (Blueprint $table) {
             $table->id();
             $table->string('id_producto');
-            $table->string('id_medida');
-            $table->double('ancho');
-            $table->double('alto');
-            $table->double('precio');
+            $table->string('id_insumo');
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('variantes');
+        Schema::dropIfExists('insumo_to_productos');
     }
 };
