@@ -10,6 +10,18 @@
         @if (session('mensaje'))
             @include('partials.alert')
         @endif
+        <!-- Sección de alertas de errores de formularios -->
+        <div class="col-12">
+            @if ($errors->any())
+                <div class="alert alert-danger text-start">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
 
         <section class="section register d-flex flex-column align-items-center justify-content-center ">
             <div class="container">
@@ -45,17 +57,16 @@
                                         @enderror
                                     </div>
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Nombre</label>
+                                        <label for="yourUsername" class="form-label">>Nombres y Apellidos</label>
                                         <div class="input-group has-validation">
-                                            <span class="input-group-text text-white bg-primary"
-                                                id="inputGroupPrepend">@</span>
-                                            <input type="text" name="nombre" class="form-control" id="yourUsername"
-                                                placeholder="Ingrese su nombre de usuario"
-                                                value="{{ old('nombre') ?? '' }}" required>
+                                      
+                                            <input type="text" name="nombres" class="form-control" id="yourUsername"
+                                                placeholder="Ingrese >Nombres y Apellidos" value="{{ old('nombres') ?? '' }}"
+                                                required>
                                             <div class="invalid-feedback">Por favor ingrese su nombre de usuario! </div>
 
                                         </div>
-                                        @error('nombre')
+                                        @error('nombres')
                                             <div class="text-danger"> {{ $message }} </div>
                                         @enderror
                                     </div>
@@ -76,7 +87,7 @@
                                         <select name="rol" id="rol" class="form-select" required>
                                             <option disabled selected>Seleccione un rol</option>
                                             @foreach ($roles as $rol)
-                                                @if(old('rol'))
+                                                @if (old('rol'))
                                                     @if (old('rol') == $rol->id)
                                                         <option value="{{ $rol->id }}" selected>{{ $rol->nombre }}
                                                         </option>
@@ -109,6 +120,10 @@
 
                                     <div class="col-12">
                                         <button class="btn btn-primary w-100" type="submit">Crear usuario</button>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <a class="btn btn-outline-danger w-100" href="{{ route('admin.users.index') }}">Volver a la lista</a>
                                     </div>
 
                                 </form>

@@ -12,6 +12,18 @@
             @include('partials.alert')
         @endif
 
+        <!-- Sección de alertas de errores de formularios -->
+        <div class="col-12">
+            @if ($errors->any())
+                <div class="alert alert-danger text-start">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
 
         <section class="section register d-flex flex-column align-items-center justify-content-center ">
             <div class="container">
@@ -32,8 +44,10 @@
                                     enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
                                     @csrf
                                     @method('put')
+
+                                    <!-- E-mail o usuario -->
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Email de acceso</label>
+                                        <label for="yourUsername" class="form-label">E-mail o usuario</label>
                                         <div class="input-group has-validation">
                                             <span class="input-group-text text-white bg-primary"
                                                 id="inputGroupPrepend">@</span>
@@ -46,29 +60,32 @@
                                             <div class="text-danger"> {{ $message }} </div>
                                         @enderror
                                     </div>
+
+                                    <!-- Nombres y Apellidos -->
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Nombre de usuario</label>
+                                        <label for="yourUsername" class="form-label">Nombres y Apellidos</label>
                                         <div class="input-group has-validation">
-                                            <span class="input-group-text text-white bg-primary"
-                                                id="inputGroupPrepend">@</span>
-                                            <input type="text" name="nombre" class="form-control" id="yourUsername"
-                                                placeholder="Ingrese su nombre de usuario"
-                                                value="{{ old('nombre') ?? $user->nombre }}" required>
+                                            <input type="text" name="nombres" class="form-control" id="yourUsername"
+                                                placeholder="Ingrese Nombres y Apellidos"
+                                                value="{{ old('nombres') ?? $user->nombres }}" required>
                                             <div class="invalid-feedback">Por favor ingrese su nombre de usuario! </div>
                                         </div>
-                                        @error('nombre')
+                                        @error('nombres')
                                             <div class="text-danger"> {{ $message }} </div>
                                         @enderror
                                     </div>
 
-
+                                    <!-- Nueva Contraseña -->
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Nueva Contrseña</label>
+                                        <label for="yourPassword" class="form-label">Nueva Contraseña</label>
                                         <div class="input-group">
+                                            <!-- Input Bombilla -->
                                             <input type="password" name="password" class="form-control bg-muted"
-                                                id="inputCedula" placeholder="Ingrese nueva contraseña"
+                                                id="input-lightbulb" placeholder="Ingrese nueva contraseña"
                                                 value="{{ old('password') }}" disabled readonly required>
-                                            <button type="button" class="btn btn-warning" id="activarEdicionDeCedula">
+
+                                            <!-- Boton interruptor -->
+                                            <button type="button" class="btn btn-warning" id="btn-switch">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
                                         </div>
@@ -78,6 +95,7 @@
                                         @enderror
                                     </div>
 
+                                    <!-- Roles del usuario -->
                                     <div class="col-12">
                                         <label for="yourName" class="form-label">Rol del usuario</label>
                                         <select name="rol" id="rol" class="form-select" required>
@@ -107,6 +125,7 @@
                                         @enderror
                                     </div>
 
+                                    <!-- Subir Foto (Opcional) -->
                                     <div class="col-sm-12">
                                         <label for="foto" class="form-label">Subir Foto (Opcional)</label>
                                         <input type="file" name="file" class="form-control " id="foto">
@@ -115,6 +134,8 @@
                                             <div class="text-danger"> {{ $message }} </div>
                                         @enderror
                                     </div>
+
+                                    <!-- Foto Actual -->
                                     <div class="col-sm-12">
                                         <label for="foto" class="form-label">Foto Actual</label>
                                         <img src="{{ $user->foto }}" class="rounded mx-auto d-block" width="200"
@@ -125,9 +146,13 @@
 
 
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="submit">Editar usuario</button>
+                                        <button class="btn btn-primary w-100" type="submit">Actualizar datos</button>
                                     </div>
 
+                                    <div class="col-12">
+                                        <a class="btn btn-outline-danger w-100"
+                                            href="{{ route('admin.users.index') }}">Volver a la lista</a>
+                                    </div>
                                 </form>
 
                             </div>

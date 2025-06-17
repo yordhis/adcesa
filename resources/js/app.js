@@ -9,6 +9,7 @@ import '../css/style.css';
 import './insumo.js'; 
 import './productos.js';
 import './utils/reset-filtro.js'
+import './utils/activar-desactivar-input.js'
 import './main.js'; 
 import.meta.glob([
     '../images/**',
