@@ -14,4 +14,6 @@ class InsumoToProducto extends Model
         "id_producto",
         "id_insumo"
     ];
+
+    protected $table = 'insumo_to_productos';
 }

@@ -6,6 +6,7 @@ use App\Models\InsumoToProducto;
 use App\Http\Requests\StoreInsumoToProductoRequest;
 use App\Http\Requests\UpdateInsumoToProductoRequest;
 use App\Models\Helpers;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -21,6 +22,7 @@ class InsumoToProductoController extends Controller
     {
         try {
             InsumoToProducto::create($request->all());
+            Producto::where('id', $request->input('id_producto'))->update(["estatus" => "ACTIVO"]);
             $mensaje = "Insumo asignado correctamente";
             $estatus = Response::HTTP_OK;
             return back()->with(compact('mensaje', 'estatus'));
@@ -53,12 +55,21 @@ class InsumoToProductoController extends Controller
      * Método que elimina la variante
      * si no esta relacionada
      */
-    public function destroy(InsumoToProducto $insumoToProducto)
+    public function destroy( $id )
     {
         try {
-
+            $insumoToProducto = InsumoToProducto::find($id);
             /** Eliminamos */
             $insumoToProducto->delete();
+
+            /** verificamos si el producto tienen almenos un 
+             * insumo asignado sino para desactivar el producto */
+            $insumosDelProducto = InsumoToProducto::where('id_producto', $insumoToProducto->id_producto)->get();
+
+            if (!count($insumosDelProducto)) {
+                Producto::where('id', $insumoToProducto->id_producto)->update(["estatus" => "INACTIVO"]);
+            }
+
             $mensaje = "Insumo desasignado correctamente";
             $estatus = Response::HTTP_OK;
             return back()->with(compact('mensaje', 'estatus'));

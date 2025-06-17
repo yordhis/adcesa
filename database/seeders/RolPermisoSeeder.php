@@ -35,7 +35,7 @@ class RolPermisoSeeder extends Seeder
             "almacens",
             "variantes",
             "medidas",
-            "insumostoproductos",
+            "insumotoproductos",
             "reportes",
         ];
 
@@ -54,7 +54,7 @@ class RolPermisoSeeder extends Seeder
             "almacens",
             "variantes",
             "medidas",
-            "insumostoproductos",
+            "insumotoproductos",
             "reportes",
         ];
 

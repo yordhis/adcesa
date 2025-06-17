@@ -136,6 +136,12 @@ class Helpers extends Model
         return $codigo;
     }
 
+    public static function generarCodigoPedidoUnico($prefijo = 'PED', $longitud = 8)
+    {
+        $codigo = $prefijo . strtoupper(bin2hex(random_bytes($longitud / 2)));
+        return $codigo;
+    }
+
     public static function getMensajeError($e, $mensaje)
     {
         $errorInfo = $mensaje . " ("

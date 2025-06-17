@@ -1,13 +1,13 @@
 <!-- Vertically centered Modal -->
-<a type="button" class="mb-3" data-bs-toggle="modal" data-bs-target="#modalCrearVariante{{ $producto->id }}">
-    <i class="bi bi-node-plus fs-4"></i>
+<a type="button" class="mb-3" data-bs-toggle="modal" data-bs-target="#modalProcesarPago{{ $pedido->id }}">
+    <i class="bi bi-paypall fs-4"></i>
 </a>
 
-<div class="modal fade" id="modalCrearVariante{{ $producto->id }}" tabindex="-1">
+<div class="modal fade" id="modalProcesarPago{{ $pedido->id }}" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title">Crear Variante para {{ $producto->nombre }}</h5>
+                <h5 class="modal-title">Crear Variante para {{ $pedido->nombre }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -17,8 +17,8 @@
                     @csrf
                     @method('post')
 
-                    <!-- input id_producto -->
-                    <input type="hidden" name="id_producto" value="{{ $producto->id }}">
+                    <!-- input id_pedido -->
+                    <input type="hidden" name="id_pedido" value="{{ $pedido->id }}">
 
                     <div class="row g-2">
                         <!-- Ancho -->
@@ -94,7 +94,7 @@
                     </thead>
                     <tbody>
 
-                        @foreach ($producto->variantes as $variante)
+                        @foreach ($pedido->variantes as $variante)
                             <tr>
                                 
                                 <td>{{ $variante->ancho }}</td>
@@ -118,7 +118,7 @@
                         <tr>
 
                             <td colspan="8" class="text-center table-secondary">
-                                Total de variantes: {{ count($producto->variantes) }}
+                                Total de variantes: {{ count($pedido->variantes) }}
                             </td>
                         </tr>
                     </tfoot>

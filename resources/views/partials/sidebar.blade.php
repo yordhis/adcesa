@@ -22,6 +22,15 @@
                 </a>
             </li><!-- End Components Nav | Clientes -->
 
+            <!-- Start Components Nav | pedidos -->
+            <li class="nav-item">
+                <a href="{{ route('admin.pedidos.index') }}"
+                    class="nav-link  {{ url()->current() == route('admin.pedidos.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                    <i
+                        class="bi bi-cart-check-fill {{ url()->current() == route('admin.pedidos.index') ? 'text-white' : 'text-primary' }}"></i><span>Pedidos</span>
+                </a>
+            </li><!-- End Components Nav | Pedidos -->
+
 
 
             <!-- Start Components Nav | productos -->

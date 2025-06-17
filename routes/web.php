@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     MarcaController,
     MedidaController,
     PageController,
+    PedidoController,
     PermisoController,
     ProductoController,
     RoleController,
@@ -84,12 +85,15 @@ Route::middleware(['admin'])->group(function () {
     Route::resource('/variantes', VarianteController::class)->names('admin.variantes');
 
     /** Rutas de insumostoproductos */
-    Route::resource('/insumostoproductos', InsumoToProductoController::class)->names('admin.insumostoproductos');
+    Route::resource('/insumotoproductos', InsumoToProductoController::class)->names('admin.insumostoproductos');
 
     /** Rutas de Categorias */
     Route::resource('/categorias', CategoriaController::class)->names('admin.categorias');
 
-    /** Rutas de Planes de pago */
+    /** Rutas de Pagos */
     Route::resource('/pagos', PagoController::class)->names('admin.pagos');
+
+    /** Rutas de Pedidos */
+    Route::resource('/pedidos', PedidoController::class)->names('admin.pedidos');
 
 });
