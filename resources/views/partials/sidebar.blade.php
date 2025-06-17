@@ -127,6 +127,30 @@
                         </ul>
                     </li><!-- End Components Nav | usuarios -->
 
+                    <!-- Start Components Nav | almacenes -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.almacenes.index') }}"
+                            class="nav-link  {{ url()->current() == route('admin.almacenes.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                            <i
+                                class="bi bi-shop-window fs-5 {{ url()->current() == route('admin.almacenes.index') ? 'text-white' : 'text-primary' }}"></i>
+                            <span>
+                                Almacenes
+                            </span>
+                        </a>
+                    </li><!-- End Components Nav | almacenes -->
+
+                    <!-- Start Components Nav | medidas -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.medidas.index') }}"
+                            class="nav-link  {{ url()->current() == route('admin.medidas.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                            <i
+                                class="bi bi-rulers fs-5 {{ url()->current() == route('admin.medidas.index') ? 'text-white' : 'text-primary' }}"></i>
+                            <span>
+                                Medidas
+                            </span>
+                        </a>
+                    </li><!-- End Components Nav | medidas -->
+
                 </ul>
             </li><!-- End Components Nav | configuraciones -->
         @endif

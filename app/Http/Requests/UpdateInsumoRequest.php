@@ -26,11 +26,11 @@ class UpdateInsumoRequest extends FormRequest
             'nombre' => 'required|max:255',
             'precio' => 'required|numeric|max:9999999',
             'costo' => 'required|numeric|max:9999999',
-            'medida' => 'required', // Assuming 'medida' is an ID for a measurement type
             'cantidad' => 'required|numeric|max:9999999',
             'unidad' => 'required|numeric|max:9999999',
             'stock' => 'required|numeric|max:9999999',
             'imagen' => 'file|max:2048|mimes:jpg,bmp,png|dimensions:min_width=100,min_height=200',
+            'id_medida' => 'required', // Assuming 'medida' is an ID for a measurement type
             'id_marca' => 'required',
             'id_categoria' => 'required',
         ];

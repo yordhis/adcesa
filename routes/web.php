@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    AlmacenController,
     CategoriaController,
     ClienteController,
     UserController,
@@ -10,10 +11,12 @@ use App\Http\Controllers\{
     InsumoController,
     LoginController,
     MarcaController,
+    MedidaController,
     PageController,
     PermisoController,
     ProductoController,
-    RoleController
+    RoleController,
+    VarianteController
 };
 
 
@@ -69,6 +72,15 @@ Route::middleware(['admin'])->group(function () {
 
     /** Rutas de Marcas */
     Route::resource('/marcas', MarcaController::class)->names('admin.marcas');
+
+    /** Rutas de Almacenes */
+    Route::resource('/almacens', AlmacenController::class)->names('admin.almacenes');
+
+    /** Rutas de Medidas */
+    Route::resource('/medidas', MedidaController::class)->names('admin.medidas');
+
+    /** Rutas de variantes */
+    Route::resource('/variantes', VarianteController::class)->names('admin.variantes');
 
     /** Rutas de Categorias */
     Route::resource('/categorias', CategoriaController::class)->names('admin.categorias');

@@ -124,16 +124,17 @@ class UserController extends Controller
     {
 
         try {
-            
+      
             // Validamos si se envio una foto
             if (isset($request->file)) {
-                // Eliminamos la imagen anterior
-                $fotoActual = explode('/', $user->foto);
-                if ($fotoActual[count($fotoActual) - 1] != 'default.jpg') {
+                // Eliminamos la foto vieja
+                if($user->foto){
                     Helpers::removeFile($user->foto);
                 }
-                // Insertamos la nueva imagen o archivo
+
+                // Insertamos la nueva foto
                 $request['foto'] = Helpers::setFile($request);
+
             } else {
                 $request['foto'] = $user->foto;
             }
@@ -152,8 +153,9 @@ class UserController extends Controller
                 return back()->with( compact('mensaje', 'estatus') );
             
         } catch (\Throwable $th) {
-            $errorInfo = Helpers::getMensajeError($th, "Error de al intentar Actualizar un usuario,");
-            return response()->view('errors.404', compact("errorInfo"), 404);
+            $mensaje = Helpers::getMensajeError($th, "Error de al intentar Actualizar un usuario,");
+            $estatus = Response::HTTP_BAD_REQUEST;
+            return back()->with(compact("mensaje", "estatus"));
         }
     }
 

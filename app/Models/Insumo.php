@@ -15,15 +15,15 @@ class Insumo extends Model
         'nombre',
         'precio',
         'costo',
-        'cantidad',
-        'medida', // guardamos el id de la medida
+        'cantidad', // cantidad del lote
         'unidad', // medidad de cada uno
-        'stock',
+        'stock', // existencia real
         'marca',
         'categoria',
         'almacen',
         'imagen',
         'estatus',
+        'id_medida', 
         'id_almacen',
         'id_marca',
         'id_categoria',

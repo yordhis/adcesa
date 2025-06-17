@@ -35,9 +35,9 @@ class StoreUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'nombre.required' => 'El nombre es requerido',
-            'nombre.string' => 'El nombre debe ser un texto',
-            'nombre.max' => 'El nombre no debe exceder los 255 caracteres',
+            'nombres.required' => 'El nombre es requerido',
+            'nombres.string' => 'El nombre debe ser un texto',
+            'nombres.max' => 'El nombre no debe exceder los 255 caracteres',
             'email.required' => 'El email o usuario es requerido',
             'email.string' => 'El email o usuario debe ser un texto',
             'email.max' => 'El email o usuario no debe exceder los 255 caracteres',

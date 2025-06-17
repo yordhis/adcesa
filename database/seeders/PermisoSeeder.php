@@ -25,11 +25,14 @@ class PermisoSeeder extends Seeder
             "pagos",
             "pedidos",
             "configuraciones",
-            "cuentas bancarias",
+            "cuentas",
             "users",
             "permisos",
             "roles",
             "reportes",
+            "almacens",
+            "variantes",
+            "medidas",
             "tienda",
         ];
 

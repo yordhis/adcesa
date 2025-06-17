@@ -28,10 +28,13 @@ class RolPermisoSeeder extends Seeder
             "pagos",
             "pedidos",
             "configuraciones",
-            "cuentas bancarias",
+            "cuentas",
             "users",
             "permisos",
             "roles",
+            "almacens",
+            "variantes",
+            "medidas",
             "reportes",
         ];
 
@@ -46,7 +49,10 @@ class RolPermisoSeeder extends Seeder
             "pagos",
             "pedidos",
             "configuraciones",
-            "cuentas bancarias",
+            "cuentas",
+            "almacens",
+            "variantes",
+            "medidas",
             "reportes",
         ];
 
@@ -67,14 +73,13 @@ class RolPermisoSeeder extends Seeder
             $permiso->id_permiso = Permiso::where('nombre', $value)->first()->id;
             $permiso->save();
         }
-        
+
         foreach ($permisosDeCliente as $key => $value) {
+         
             $permiso = new RolPermiso();
             $permiso->id_rol = Role::where('nombre', 'CLIENTE')->first()->id;
             $permiso->id_permiso = Permiso::where('nombre', $value)->first()->id;
             $permiso->save();
         }
-
-        
     }
 }

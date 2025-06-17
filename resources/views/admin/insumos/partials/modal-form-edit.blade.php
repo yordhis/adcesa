@@ -90,7 +90,7 @@
                     <!-- Input Medida -->
                     <div class="col-sm-4 col-xs-12">
                         <label for="medida" class="form-label">Medidas</label><span class="text-danger fs-4">*</span>
-                        <select class="form-select" name="medida" id="medida-edit" required>
+                        <select class="form-select" name="id_medida" id="medida-edit" required>
                             <option selected disabled value="">Seleccione medida </option>
                             @foreach ($medidas as $medida)
                                 @if (old('medida') == $medida['id'] || $insumo->medida == $medida['id'])
