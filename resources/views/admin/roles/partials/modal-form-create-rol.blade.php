@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body text-start">
                 <form action="{{ route('admin.roles.store') }}" method="post" class="row g-3 needs-validation"
-                    enctype="multipart/form-data" novalidate>
+                    enctype="multipart/form-data">
                     @csrf
                     @method('post')
 
@@ -25,17 +25,18 @@
                             <input type="text" name="nombre" class="form-control" id="nombre"
                                 placeholder="Ingrese nombre del rol" value="{{ old('nombre') ?? '' }}" required>
                             <div class="invalid-feedback">Por favor, ingrese nombre del rol! </div>
-                            @error('nombre')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
                         </div>
+                        @error('nombre')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <hr>
                     <p class="text-dark fs-3">Asigne Permisos:</p>
                     <div class="d-flex align-content-start flex-wrap">
                         @foreach ($permisos as $permiso)
                             <div class="form-check form-switch m-2">
-                                <input class="form-check-input check_permisos" name="per_{{ $permiso->nombre }}" value="{{ $permiso->id }}" type="checkbox" id="{{ $permiso->id }}">
+                                <input class="form-check-input check_permisos" name="per_{{ $permiso->nombre }}"
+                                    value="{{ $permiso->id }}" type="checkbox" id="{{ $permiso->id }}">
                                 <label class="form-check-label" for="{{ $permiso->id }}">{{ $permiso->nombre }}</label>
                             </div>
                         @endforeach

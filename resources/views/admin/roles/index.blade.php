@@ -32,8 +32,8 @@
             </div>
 
             <div class="col-sm-6 col-xs-12 ">
-                @include('admin.roles.partials.modalform')
-                @include('admin.roles.partials.modalformPermisos')
+                @include('admin.roles.partials.modal-form-create-rol')
+                @include('admin.roles.partials.modal-form-create-permisos')
             </div>
 
             <!-- Filtro de clientes -->
@@ -71,10 +71,10 @@
                                 <td>{{ $rol->nombre }}</td>
 
                                 <td>
-                                    @include('admin.roles.partials.modalver')
+                                    @include('admin.roles.partials.modal-edit')
 
                                     @if ($rol->id > 3)
-                                        @include('admin.roles.partials.modal')
+                                        @include('admin.roles.partials.modal-delete')
                                     @endif
                                 </td>
                             </tr>

@@ -6,10 +6,12 @@ use App\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Models\DataDev;
+use App\Models\Helpers;
 use App\Models\Permiso;
 use App\Models\RolPermiso;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Nette\Utils\Strings;
 
 class RoleController extends Controller
 {
@@ -44,18 +46,85 @@ class RoleController extends Controller
 
     public function store(StoreRoleRequest $request)
     {
-        //
+        try {
+            $request['nombre'] = Strings::upper($request->nombre);
+            /** crear el rol */
+            $rol = Role::create($request->all());
+
+            /** convertimos los input permisos en array para poder recorrerlos */
+            $permisosArray = Helpers::getArrayInputs($request->all(), 'per');
+
+            /** asignamos los permisos al rol */
+            foreach ($permisosArray as $permisoId) {
+                RolPermiso::create([
+                    'id_rol' => $rol->id,
+                    'id_permiso' => $permisoId
+                ]);
+            }
+
+            $mensaje = 'Rol creado exitosamente.';
+            $estatus = Response::HTTP_CREATED;
+            return back()->with(compact('mensaje', 'estatus'));
+        } catch (\Throwable $th) {
+            $mensaje = 'Error al listar roles.';
+            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
+            return back()->with(compact('mensaje', 'estatus'));
+        }
     }
 
 
+    /**
+     * Método que actualiza los datos del rol
+     */
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        try {
+            $request['nombre'] = Strings::upper($request->nombre);
+            $role->update($request->all());
+
+            /** eliminamos todos los permisos */
+            RolPermiso::where('id_rol', '=', $role->id)->delete();
+            
+            /** Volvemos a asignar los permisos */
+            $permisosArray = Helpers::getArrayInputs($request->all(), 'per');
+            foreach ($permisosArray as $permisoId) {
+                RolPermiso::create([
+                    'id_rol' => $role->id,
+                    'id_permiso' => $permisoId
+                ]);
+            }
+
+            $mensaje = "Datos actualizados correctamente";
+            $estatus = Response::HTTP_OK;
+            return back()->with(compact('mensaje', 'estatus'));
+        } catch (\Throwable $th) {
+            $mensaje = Helpers::getMensajeError($th, 'Error al actualizar marca');
+            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
+            return back()->with(compact('mensaje', 'estatus'));
+        }
     }
 
+    /**
+     * Método que elimina la marca
+     * si no esta relacionada
+     */
     public function destroy(Role $role)
     {
-        //
+        try {
+            // eliminar permisos asignados al rol
+            RolPermiso::where('id_rol', '=', $role->id)->delete();
+
+            /** Eliminamos */
+            $role->delete();
+
+            $mensaje = "Rol eliminado correctamente";
+            $estatus = Response::HTTP_OK;
+            return back()->with(compact('mensaje', 'estatus'));
+        } catch (\Throwable $th) {
+            $mensaje = Helpers::getMensajeError($th, 'Error al eliminar rol');
+            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
+            return back()->with(compact('mensaje', 'estatus'));
+        }
     }
 
     public function create()
