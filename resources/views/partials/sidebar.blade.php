@@ -136,6 +136,18 @@
                         </ul>
                     </li><!-- End Components Nav | usuarios -->
 
+                    <!-- Start Components Nav | roles y permisos -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.roles.index') }}"
+                            class="nav-link  {{ url()->current() == route('admin.roles.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                            <i
+                                class="bi bi-key fs-5 {{ url()->current() == route('admin.roles.index') ? 'text-white' : 'text-primary' }}"></i>
+                            <span>
+                                Roles y Permisos
+                            </span>
+                        </a>
+                    </li><!-- End Components Nav | roles y permisos -->
+
                     <!-- Start Components Nav | almacenes -->
                     <li class="nav-item">
                         <a href="{{ route('admin.almacenes.index') }}"

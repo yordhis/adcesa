@@ -29,8 +29,11 @@
 
             <div class="col-12 my-3">
                 <!-- Formulario de registro de pedidos -->
-                @include('admin.pedidos.partials.modal-form-create')
-          
+                {{-- @include('admin.pedidos.partials.modal-form-create') --}}
+                <a href="{{ route('admin.pedidos.create') }}" class="btn btn-success ">
+                    <i class="bi bi-cart-check-fill"></i> Crear pedido
+                </a>
+
             </div>
 
             <!-- Filtro de pedidos  -->
@@ -42,7 +45,7 @@
                         <label for="filtro" class="text-primary p-2">Buscar</label>
                         <!-- #### FILTRO #### -->
                         <input type="text" class="form-control w-50" name="filtro" value="{{ $request->filtro ?? '' }}"
-                            placeholder="Buscar por: Descripcion o código de barra" aria-label="Filtrar"
+                            placeholder="Buscar por: cliente, email, cédula o código de pedido" aria-label="Filtrar"
                             aria-describedby="button-addon2">
 
                         <!-- Selector del limite a listar en la tabla -->

@@ -94,6 +94,8 @@ Route::middleware(['admin'])->group(function () {
     Route::resource('/pagos', PagoController::class)->names('admin.pagos');
 
     /** Rutas de Pedidos */
+    Route::post('/pedidos/buscar-cliente', [PedidoController::class, 'buscarCliente'])->name('admin.pedidos.buscar.cliente');
+    Route::post('/pedidos/buscar-producto', [PedidoController::class, 'buscarProducto'])->name('admin.pedidos.buscar.producto');
     Route::resource('/pedidos', PedidoController::class)->names('admin.pedidos');
 
 });

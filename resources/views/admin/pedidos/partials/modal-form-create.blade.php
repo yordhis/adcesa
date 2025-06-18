@@ -4,7 +4,7 @@
 </button>
 
 <div class="modal fade" id="modalRegistrarPedidos" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">Registrar pedido</h5>
@@ -20,15 +20,15 @@
                     @method('post')
 
                     <!-- Input Nombres -->
-                    <div class="col-12">
-                        <label for="yourUsername" class="form-label">Nombre del cliente </label> <span
+                    <div class="col-4">
+                        <label for="yourUsername" class="form-label">Buscar y cargar cliente al pedido </label> <span
                             class="text-danger fs-4">*</span>
                         <div class="input-group has-validation">
                             <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
-                                <i class="bi bi-box"></i>
+                                <i class="bi bi-search"></i>
                             </span>
                             <input type="text" name="nombres_cliente" class="form-control text-uppercase" id="nombre"
-                                placeholder="Ingrese nombre del pedido" value="{{ old('nombres_cliente') }}" required>
+                                placeholder="Buscar cliente por: nombre, email o cédula" value="{{ old('nombres_cliente') }}" required>
                             <div class="invalid-feedback">Por favor, ingrese nombre del pedido! </div>
                         </div>
                         @error('nombres_cliente')
@@ -37,8 +37,8 @@
                     </div>
 
                     <!-- Input Apellidos -->
-                    <div class="col-12">
-                        <label for="yourUsername" class="form-label">Apellidos del cliente </label> <span
+                    <div class="col-6">
+                        <label for="yourUsername" class="form-label">Seleccione servicio </label> <span
                             class="text-danger fs-4">*</span>
                         <div class="input-group has-validation">
                             <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
