@@ -57,11 +57,11 @@
                                         @enderror
                                     </div>
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">>Nombres y Apellidos</label>
+                                        <label for="yourUsername" class="form-label">Nombres y Apellidos</label>
                                         <div class="input-group has-validation">
                                       
                                             <input type="text" name="nombres" class="form-control" id="yourUsername"
-                                                placeholder="Ingrese >Nombres y Apellidos" value="{{ old('nombres') ?? '' }}"
+                                                placeholder="Ingrese Nombres y Apellidos" value="{{ old('nombres') ?? '' }}"
                                                 required>
                                             <div class="invalid-feedback">Por favor ingrese su nombre de usuario! </div>
 

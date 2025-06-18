@@ -4,7 +4,7 @@
 </button>
 
 <div class="modal fade" id="modalRegistrarRol" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title">Crear rol</h5>
@@ -31,16 +31,18 @@
                         @enderror
                     </div>
                     <hr>
-                    <p class="text-dark fs-3">Asigne Permisos:</p>
-                    <div class="d-flex align-content-start flex-wrap">
-                        @foreach ($permisos as $permiso)
-                            <div class="form-check form-switch m-2">
-                                <input class="form-check-input check_permisos" name="per_{{ $permiso->nombre }}"
-                                    value="{{ $permiso->id }}" type="checkbox" id="{{ $permiso->id }}">
-                                <label class="form-check-label" for="{{ $permiso->id }}">{{ $permiso->nombre }}</label>
-                            </div>
-                        @endforeach
-
+                    <div class="col-12" >
+                        <p class="text-dark fs-3">Asigne Permisos:</p>
+                        <div class="">
+                            @foreach ($permisos as $permiso)
+                                <div class="form-check form-switch m-2">
+                                    <input class="form-check-input check_permisos" name="per_{{ $permiso->nombre }}"
+                                        value="{{ $permiso->id }}" type="checkbox" id="{{ $permiso->id }}">
+                                    <label class="form-check-label"
+                                        for="{{ $permiso->id }}">{{ $permiso->nombre }}</label>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
 
 

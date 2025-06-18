@@ -32,7 +32,7 @@ class RoleController extends Controller
                     )
                     ->get();
             }
-
+            $roles;
             $permisos = Permiso::where('estatus', 1)->get();
 
             return view('admin.roles.index', compact('roles', 'permisos', 'respuesta', 'request'));
@@ -53,20 +53,21 @@ class RoleController extends Controller
 
             /** convertimos los input permisos en array para poder recorrerlos */
             $permisosArray = Helpers::getArrayInputs($request->all(), 'per');
-
             /** asignamos los permisos al rol */
-            foreach ($permisosArray as $permisoId) {
-                RolPermiso::create([
-                    'id_rol' => $rol->id,
-                    'id_permiso' => $permisoId
-                ]);
+            if ($permisosArray) {
+                foreach ($permisosArray as $permisoId) {
+                    RolPermiso::create([
+                        'id_rol' => $rol->id,
+                        'id_permiso' => $permisoId
+                    ]);
+                }
             }
 
             $mensaje = 'Rol creado exitosamente.';
             $estatus = Response::HTTP_CREATED;
             return back()->with(compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
-            $mensaje = 'Error al listar roles.';
+            $mensaje = 'Error al crear un roles.';
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
         }
@@ -79,14 +80,15 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role)
     {
         try {
+
             $request['nombre'] = Strings::upper($request->nombre);
             $role->update($request->all());
-
+            
             /** eliminamos todos los permisos */
             RolPermiso::where('id_rol', '=', $role->id)->delete();
             
-            /** Volvemos a asignar los permisos */
             $permisosArray = Helpers::getArrayInputs($request->all(), 'per');
+            /** Volvemos a asignar los permisos */
             foreach ($permisosArray as $permisoId) {
                 RolPermiso::create([
                     'id_rol' => $role->id,
