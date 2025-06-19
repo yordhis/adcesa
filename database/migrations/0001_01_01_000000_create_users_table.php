@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('pais', 155)->nullable();
             $table->string('estado', 155)->nullable();
             $table->string('ciudad', 155)->nullable(); // municipio
-            $table->string('rol', 55)->default(3); // 1: Admin, 2: Editor, 3: User
+            $table->string('rol', 55)->nullable();
             $table->string('foto', 255)->nullable();
             $table->string('fecha_nacimiento', 255)->nullable();
             $table->string('email')->unique();

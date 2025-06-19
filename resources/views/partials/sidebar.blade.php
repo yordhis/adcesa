@@ -2,7 +2,9 @@
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-        @if (Auth::user()->rol == 1 || Auth::user()->rol == 2)
+
+
+        @if (array_key_exists('panel', session('permisos')))
             <!-- Start Components Nav | Panel -->
             <li class="nav-item">
                 <a class="nav-link {{ url()->current() == route('admin.panel.index') ? 'bg-primary text-white collapse' : 'collapsed' }}"
@@ -12,7 +14,9 @@
                     <span>Panel</span>
                 </a>
             </li><!-- End Dashboard Nav | Panel-->
+        @endif
 
+        @if (array_key_exists('clientes', session('permisos')))
             <!-- Start Components Nav | Clientes -->
             <li class="nav-item">
                 <a href="{{ route('admin.clientes.index') }}"
@@ -21,7 +25,9 @@
                         class="bi bi-people {{ url()->current() == route('admin.clientes.index') ? 'text-white' : 'text-primary' }}"></i><span>Clientes</span>
                 </a>
             </li><!-- End Components Nav | Clientes -->
+        @endif
 
+        @if (array_key_exists('pedidos', session('permisos')))
             <!-- Start Components Nav | pedidos -->
             <li class="nav-item">
                 <a href="{{ route('admin.pedidos.index') }}"
@@ -30,9 +36,9 @@
                         class="bi bi-cart-check-fill {{ url()->current() == route('admin.pedidos.index') ? 'text-white' : 'text-primary' }}"></i><span>Pedidos</span>
                 </a>
             </li><!-- End Components Nav | Pedidos -->
+        @endif
 
-
-
+        @if (array_key_exists('productos', session('permisos')))
             <!-- Start Components Nav | productos -->
             <li class="nav-item">
                 <a href="{{ route('admin.productos.index') }}"
@@ -44,6 +50,9 @@
                     </span>
                 </a>
             </li><!-- End Components Nav | productos -->
+        @endif
+
+        @if (array_key_exists('insumos', session('permisos')))
             <!-- Start Components Nav | insumos -->
             <li class="nav-item">
                 <a href="{{ route('admin.insumos.index') }}"
@@ -55,7 +64,9 @@
                     </span>
                 </a>
             </li><!-- End Components Nav | insumos -->
+        @endif
 
+        @if (array_key_exists('categorias', session('permisos')))
             <!-- Start Components Nav | Categorias -->
             <li class="nav-item">
                 <a href="{{ route('admin.categorias.index') }}"
@@ -67,7 +78,9 @@
                     </span>
                 </a>
             </li><!-- End Components Nav | Categorias -->
+        @endif
 
+        @if (array_key_exists('marcas', session('permisos')))
             <!-- Start Components Nav | marcas -->
             <li class="nav-item">
                 <a href="{{ route('admin.marcas.index') }}"
@@ -81,11 +94,15 @@
             </li><!-- End Components Nav | marcas -->
         @endif
 
-        @if (Auth::user()->rol == 1)
+        @if (array_key_exists('configuraciones', session('permisos')))
             <!-- Start Components Nav | configuraciones -->
             <li class="nav-item">
                 <a class="nav-link 
-                    {{ url()->current() == route('admin.users.index') || url()->current() == route('admin.users.create')
+                    {{ url()->current() == route('admin.users.index') ||
+                    url()->current() == route('admin.users.create') ||
+                    url()->current() == route('admin.roles.index') ||
+                    url()->current() == route('admin.almacenes.index') ||
+                    url()->current() == route('admin.medidas.index')
                         ? 'collapse show'
                         : 'collapsed' }}
                     
@@ -94,84 +111,97 @@
                     <i class="bi bi-gear"></i><span>Configuración</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav-10"
-                    class="nav-content {{ url()->current() == route('admin.users.index') ? 'collapse show' : 'collapsed' }} "
+                    class="nav-content {{ url()->current() == route('admin.users.index') ||
+                    url()->current() == route('admin.users.create') ||
+                    url()->current() == route('admin.roles.index') ||
+                    url()->current() == route('admin.almacenes.index') ||
+                    url()->current() == route('admin.medidas.index')
+                        ? 'collapse show'
+                        : 'collapse' }} "
                     data-bs-parent=" #sidebar-nav">
 
-                    <!-- Start Components Nav | usuarios -->
-                    <li class="nav-item">
-                        <a class="nav-link 
+                    @if (array_key_exists('users', session('permisos')))
+                        <!-- Start Components Nav | usuarios -->
+                        <li class="nav-item">
+                            <a class="nav-link 
                             {{ url()->current() == route('admin.users.index') || url()->current() == route('admin.users.create')
                                 ? 'bg-primary text-white collapse show'
                                 : 'collapsed' }}
                              
                             "
-                            data-bs-target="#components-nav-1" data-bs-toggle="collapse" href="#">
-                            <i
-                                class="bi bi-people fs-5 {{ url()->current() == route('admin.users.index') || url()->current() == route('admin.users.create')
-                                    ? 'text-white'
-                                    : 'text-primary' }}"></i>
-                            <span>Usuarios</span>
-                            <i class="bi bi-chevron-down ms-auto"></i>
-                        </a>
-                        <ul id="components-nav-1"
-                            class="nav-content 
+                                data-bs-target="#components-nav-1" data-bs-toggle="collapse" href="#">
+                                <i
+                                    class="bi bi-people fs-5 {{ url()->current() == route('admin.users.index') || url()->current() == route('admin.users.create')
+                                        ? 'text-white'
+                                        : 'text-primary' }}"></i>
+                                <span>Usuarios</span>
+                                <i class="bi bi-chevron-down ms-auto"></i>
+                            </a>
+                            <ul id="components-nav-1"
+                                class="nav-content 
                                 {{ url()->current() == route('admin.users.index') || url()->current() == route('admin.users.create')
                                     ? 'collapse show'
                                     : 'collapse' }} 
                                 "
-                            data-bs-parent=" #sidebar-nav-1">
-                            <li>
-                                <a href="{{ route('admin.users.index') }}"
-                                    class="{{ url()->current() == route('admin.users.index') ? 'active border rounded' : '' }}">
-                                    <i class="bi bi-circle"></i><span>Lista </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('admin.users.create') }}"
-                                    class="{{ url()->current() == route('admin.users.create') ? 'active border rounded' : '' }}">
-                                    <i class="bi bi-circle"></i><span>Crear</span>
-                                </a>
-                            </li>
+                                data-bs-parent=" #sidebar-nav-1">
+                                <li>
+                                    <a href="{{ route('admin.users.index') }}"
+                                        class="{{ url()->current() == route('admin.users.index') ? 'active border rounded' : '' }}">
+                                        <i class="bi bi-circle"></i><span>Lista </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.users.create') }}"
+                                        class="{{ url()->current() == route('admin.users.create') ? 'active border rounded' : '' }}">
+                                        <i class="bi bi-circle"></i><span>Crear</span>
+                                    </a>
+                                </li>
 
-                        </ul>
-                    </li><!-- End Components Nav | usuarios -->
+                            </ul>
+                        </li><!-- End Components Nav | usuarios -->
+                    @endif
 
-                    <!-- Start Components Nav | roles y permisos -->
-                    <li class="nav-item">
-                        <a href="{{ route('admin.roles.index') }}"
-                            class="nav-link  {{ url()->current() == route('admin.roles.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
-                            <i
-                                class="bi bi-key fs-5 {{ url()->current() == route('admin.roles.index') ? 'text-white' : 'text-primary' }}"></i>
-                            <span>
-                                Roles y Permisos
-                            </span>
-                        </a>
-                    </li><!-- End Components Nav | roles y permisos -->
+                    @if (array_key_exists('roles', session('permisos')))
+                        <!-- Start Components Nav | roles y permisos -->
+                        <li class="nav-item">
+                            <a href="{{ route('admin.roles.index') }}"
+                                class="nav-link  {{ url()->current() == route('admin.roles.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                                <i
+                                    class="bi bi-key fs-5 {{ url()->current() == route('admin.roles.index') ? 'text-white' : 'text-primary' }}"></i>
+                                <span>
+                                    Roles y Permisos
+                                </span>
+                            </a>
+                        </li><!-- End Components Nav | roles y permisos -->
+                    @endif
 
-                    <!-- Start Components Nav | almacenes -->
-                    <li class="nav-item">
-                        <a href="{{ route('admin.almacenes.index') }}"
-                            class="nav-link  {{ url()->current() == route('admin.almacenes.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
-                            <i
-                                class="bi bi-shop-window fs-5 {{ url()->current() == route('admin.almacenes.index') ? 'text-white' : 'text-primary' }}"></i>
-                            <span>
-                                Almacenes
-                            </span>
-                        </a>
-                    </li><!-- End Components Nav | almacenes -->
+                    @if (array_key_exists('almacens', session('permisos')))
+                        <!-- Start Components Nav | almacenes -->
+                        <li class="nav-item">
+                            <a href="{{ route('admin.almacenes.index') }}"
+                                class="nav-link  {{ url()->current() == route('admin.almacenes.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                                <i
+                                    class="bi bi-shop-window fs-5 {{ url()->current() == route('admin.almacenes.index') ? 'text-white' : 'text-primary' }}"></i>
+                                <span>
+                                    Almacenes
+                                </span>
+                            </a>
+                        </li><!-- End Components Nav | almacenes -->
+                    @endif
 
-                    <!-- Start Components Nav | medidas -->
-                    <li class="nav-item">
-                        <a href="{{ route('admin.medidas.index') }}"
-                            class="nav-link  {{ url()->current() == route('admin.medidas.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
-                            <i
-                                class="bi bi-rulers fs-5 {{ url()->current() == route('admin.medidas.index') ? 'text-white' : 'text-primary' }}"></i>
-                            <span>
-                                Medidas
-                            </span>
-                        </a>
-                    </li><!-- End Components Nav | medidas -->
-
+                    @if (array_key_exists('medidas', session('permisos')))
+                        <!-- Start Components Nav | medidas -->
+                        <li class="nav-item">
+                            <a href="{{ route('admin.medidas.index') }}"
+                                class="nav-link  {{ url()->current() == route('admin.medidas.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                                <i
+                                    class="bi bi-rulers fs-5 {{ url()->current() == route('admin.medidas.index') ? 'text-white' : 'text-primary' }}"></i>
+                                <span>
+                                    Medidas
+                                </span>
+                            </a>
+                        </li><!-- End Components Nav | medidas -->
+                    @endif
                 </ul>
             </li><!-- End Components Nav | configuraciones -->
         @endif

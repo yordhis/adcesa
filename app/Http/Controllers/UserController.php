@@ -49,14 +49,13 @@ class UserController extends Controller
     {
         try {
             $estatusCreate = 0;
-
             // Seteamos la foto
             if (isset($request->file)) {
                 $request['foto'] = Helpers::setFile($request);
             }
             // Encriptamos la contraseña
             $request['password'] = Hash::make($request['password']);
-
+            
             // Creamos el usuario
             $estatusCreate = User::create($request->all());
 

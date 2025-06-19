@@ -37,15 +37,30 @@ class RolPermisoSeeder extends Seeder
             "medidas",
             "insumotoproductos",
             "reportes",
+            "tienda",
         ];
 
-        $permisosDeGerente = [
+        $permisosDeGerenteComercial = [
             "panel",
             "clientes",
             "proveedores",
             "productos",
             "categorias",
             "marcas",
+            "insumos",
+            "pagos",
+            "pedidos",
+            "variantes",
+            "medidas",
+            "insumotoproductos",
+            "reportes",
+            "tienda",
+        ];
+
+        $permisosDeGerente = [
+            "panel",
+            "clientes",
+            "productos",
             "insumos",
             "pagos",
             "pedidos",
@@ -56,6 +71,7 @@ class RolPermisoSeeder extends Seeder
             "medidas",
             "insumotoproductos",
             "reportes",
+            "tienda",
         ];
 
         $permisosDeCliente = [
@@ -72,6 +88,13 @@ class RolPermisoSeeder extends Seeder
         foreach ($permisosDeGerente as $key => $value) {
             $permiso = new RolPermiso();
             $permiso->id_rol = Role::where('nombre', 'GERENTE')->first()->id;
+            $permiso->id_permiso = Permiso::where('nombre', $value)->first()->id;
+            $permiso->save();
+        }
+
+        foreach ($permisosDeGerenteComercial as $key => $value) {
+            $permiso = new RolPermiso();
+            $permiso->id_rol = Role::where('nombre', 'GERENTE COMERCIAL')->first()->id;
             $permiso->id_permiso = Permiso::where('nombre', $value)->first()->id;
             $permiso->save();
         }

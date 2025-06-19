@@ -75,7 +75,14 @@ class Helpers extends Model
      */
     public static function getUsuarios()
     {
-        $usuarios = User::where('rol', '<', 3)->get();
+        $usuarios = User::join('roles', 'roles.id', '=', 'users.rol')
+        ->select(
+            'users.*',
+            'roles.nombre as rol_nombre'
+        )
+        ->where('roles.nombre', '!=', 'CLIENTE')
+        ->orderBy('users.created_at', 'desc')
+        ->get();
         foreach ($usuarios as $key => $usuario) {
             $usuarios[$key] = self::getUsuario($usuario->id);
         }

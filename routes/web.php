@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/entrar', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::get('/login', [LoginController::class, 'index'])->name('login.index')->middleware('guest');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout.get');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 /*

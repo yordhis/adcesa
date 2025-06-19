@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RolPermiso;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,15 @@ class LoginController extends Controller
 
         if (Auth::attempt($credenciales, $recuerdame)) {
             /** Se regenera la seción o se crea */
+            /** OPTENEMOS LOS PERMISOS DEL USUARIO */
+             $request->session()->put('permisos', RolPermiso::where('id_rol', Auth::user()->rol)
+             ->join('permisos', 'rol_permisos.id_permiso', '=', 'permisos.id')
+             ->select(
+                'rol_permisos.id_permiso',
+                'permisos.nombre',
+                'permisos.id',
+             )
+             ->pluck('permisos.id', 'permisos.nombre')->toArray());
             $request->session()->regenerate();
 
             /** Redireccionamos al usaurio segun su rol */
@@ -43,6 +53,7 @@ class LoginController extends Controller
     public function logout(Request $request, Redirector $redirect)
     {
         Auth::logout();
+        session('permisos', null);
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return $redirect->to('login');

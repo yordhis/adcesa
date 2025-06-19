@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserWebRequest;
 use App\Http\Requests\UpdateUserWebRequest;
 use App\Models\DataDev;
 use App\Models\Helpers;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,31 +22,41 @@ class ClienteController extends Controller
             $respuesta = DataDev::$respuesta;
             $clientes = [];
             if ($request->filtro || $request->order) {
-                $clientes = User::where('rol', '=', 3)
+                $clientes = User::join('roles', 'roles.id', '=', 'users.rol')
+                    ->select('users.*', 'roles.nombre as rol_nombre')
+                    ->where('roles.nombre', '=', 'CLIENTE') // Rol de cliente
                     ->where('nombres', 'like',  "%$request->filtro%")
                     ->orderBy('nombres', $request->input('order', 'ASC'))
                     ->paginate($request->input('limit', 12));
 
                 if (!count($clientes)) {
-                    $clientes = User::where('rol', '=', 3)
+                    $clientes = User::join('roles', 'roles.id', '=', 'users.rol')
+                        ->select('users.*', 'roles.nombre as rol_nombre')
+                        ->where('roles.nombre', '=', 'CLIENTE') // Rol de cliente
                         ->where('apellidos', 'like',  "%$request->filtro%")
                         ->orderBy('nombres', $request->input('order', 'ASC'))
                         ->paginate($request->input('limit', 12));
                 }
                 if (!count($clientes)) {
-                    $clientes = User::where('rol', '=', 3)
+                    $clientes = User::join('roles', 'roles.id', '=', 'users.rol')
+                        ->select('users.*', 'roles.nombre as rol_nombre')
+                        ->where('roles.nombre', '=', 'CLIENTE') // Rol de cliente
                         ->where('email', 'like',  "%$request->filtro%")
                         ->orderBy('nombres', $request->input('order', 'ASC'))
                         ->paginate($request->input('limit', 12));
                 }
                 if (!count($clientes)) {
-                    $clientes = User::where('rol', '=', 3)
+                    $clientes = User::join('roles', 'roles.id', '=', 'users.rol')
+                        ->select('users.*', 'roles.nombre as rol_nombre')
+                        ->where('roles.nombre', '=', 'CLIENTE') // Rol de cliente
                         ->where('cedula', 'like',  "%$request->filtro%")
                         ->orderBy('nombres', $request->input('order', 'ASC'))
                         ->paginate($request->input('limit', 12));
                 }
             } else {
-                $clientes = User::where('rol', '=', 3)
+                $clientes = User::join('roles', 'roles.id', '=', 'users.rol')
+                    ->select('users.*', 'roles.nombre as rol_nombre')
+                    ->where('roles.nombre', '=', 'CLIENTE') // Rol de cliente
                     ->orderBy('nombres', 'ASC')
                     ->paginate($request->input('limit', 12));
             }
@@ -73,6 +84,7 @@ class ClienteController extends Controller
             $request['estado'] = Strings::upper($request->estado ?? '');
             $request['ciudad'] = Strings::upper($request->ciudad ?? '');
             $request['password'] = Hash::make(12345678);
+            $request['rol'] = Role::where('nombre', 'CLIENTE')->first()->id;
 
 
             /** Insertamos la imagen y obtenermos la url para guardar en la DB */

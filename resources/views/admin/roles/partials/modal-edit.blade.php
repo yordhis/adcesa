@@ -1,6 +1,6 @@
 <!-- Vertically centered Modal -->
 <a type="button" class="mb-3" data-bs-toggle="modal" data-bs-target="#modalVer{{ $rol->id }}">
-    <i class="bi bi-pencil fs-3 text-dark"></i>
+    <i class="bi bi-pencil fs-3 text-warning"></i>
 </a>
 
 <div class="modal fade" id="modalVer{{ $rol->id }}" tabindex="-1">
@@ -20,19 +20,21 @@
                             @csrf
                             @method('PUT')
                             <div class="col-12">
-                                <label for="nombre" class="form-label">Cambiar nombre</label>
-                                <div class="input-group has-validation">
-                                    <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
-                                        <i class="bi bi-person-rolodex"></i>
-                                    </span>
-                                    <input type="text" name="nombre" class="form-control" id="nombre"
-                                        placeholder="Ingrese nombre del rol" value="{{ old('nombre') ?? $rol->nombre }}"
-                                        required>
-                                    <div class="invalid-feedback">Por favor, ingrese nombre del rol! </div>
-                                </div>
-                                @error('nombre')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                @if ($rol->nombre != 'CLIENTE')
+                                    <label for="nombre" class="form-label">Cambiar nombre</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
+                                            <i class="bi bi-person-rolodex"></i>
+                                        </span>
+                                        <input type="text" name="nombre" class="form-control" id="nombre"
+                                            placeholder="Ingrese nombre del rol"
+                                            value="{{ old('nombre') ?? $rol->nombre }}" required>
+                                        <div class="invalid-feedback">Por favor, ingrese nombre del rol! </div>
+                                    </div>
+                                    @error('nombre')
+                                        <div class="text-danger">{{ $message }}</div>
+                                    @enderror
+                                @endif
                             </div>
                             <p class="text-dark fs-3">Permisos:</p>
                             <div class="col-sm-6 col-xs-12">

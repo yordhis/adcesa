@@ -9,6 +9,7 @@ use App\Models\DataDev;
 use App\Models\Helpers;
 use App\Models\Permiso;
 use App\Models\RolPermiso;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Nette\Utils\Strings;
@@ -113,6 +114,14 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         try {
+            /** Validamos que el rol no este en uso */
+            $rolEnUso = User::where('rol', $role->id)->exists();
+            if (!$rolEnUso) {
+                $mensaje = "No se puede eliminar el rol porque está en uso.";
+                $estatus = Response::HTTP_CONFLICT;
+                return back()->with(compact('mensaje', 'estatus'));
+            }
+
             // eliminar permisos asignados al rol
             RolPermiso::where('id_rol', '=', $role->id)->delete();
 

@@ -17,6 +17,7 @@ class DataDev
             "201" => "bg-success",
             "301" => "bg-warning",
             "401" => "bg-warning",
+            "409" => "bg-warning",
             "400" => "bg-danger",
             "404" => "bg-danger",
             "500" => "bg-danger"
@@ -27,6 +28,7 @@ class DataDev
             "301" => "bi bi-exclamation-triangle me-1",
             "400" => "bi bi-exclamation-octagon me-1",
             "401" => "bi bi-exclamation-octagon me-1",
+            "409" => "bi bi-exclamation-octagon me-1",
             "404" => "bi bi-exclamation-octagon me-1",
             "500" => "bi bi-exclamation-octagon me-1"
         ]

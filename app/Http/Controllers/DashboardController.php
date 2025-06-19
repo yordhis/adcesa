@@ -14,12 +14,15 @@ use App\Models\{
     Pago,
     Profesore
 };
+use Illuminate\Container\Attributes\Auth;
 
 class DashboardController extends Controller
 {
 
     public function index()
     {
+        // return session('permisos');
+        // return $user = auth()->user();
         $respuesta = DataDev::$respuesta;
         $dataTarjetas = [
             "grupos" => 125,

@@ -18,12 +18,17 @@ class RoleSeeder extends Seeder
        $rolUno->nombre = "ADMINISTRADOR";
        $rolUno->save();
        
+       
        $rolDos = new Role();
        $rolDos->nombre = "GERENTE";
        $rolDos->save();
 
        $rolTres = new Role();
-       $rolTres->nombre = "CLIENTE";
+       $rolTres->nombre = "GERENTE COMERCIAL";
        $rolTres->save();
+
+       $rolCuatro = new Role();
+       $rolCuatro->nombre = "CLIENTE";
+       $rolCuatro->save();
     }
 }

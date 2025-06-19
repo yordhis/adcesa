@@ -73,7 +73,7 @@
                                 <td>
                                     @include('admin.roles.partials.modal-edit')
 
-                                    @if ($rol->id > 3)
+                                    @if ($rol->id > 4)
                                         @include('admin.roles.partials.modal-delete')
                                     @endif
                                 </td>
