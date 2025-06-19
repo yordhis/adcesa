@@ -10,5 +10,6 @@
     <!-- CAROUSEL -->
     @include('page.home.partials.carousel')
     @include('page.home.partials.we')
+    @include('page.home.partials.servicios')
 
 @endsection

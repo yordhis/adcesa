@@ -17,7 +17,7 @@ class PermisoSeeder extends Seeder
         $permisos = [
             "panel",
             "clientes",
-            "proveedores",
+            // "proveedores",
             "productos",
             "categorias",
             "marcas",

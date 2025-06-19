@@ -20,7 +20,7 @@ class RolPermisoSeeder extends Seeder
         $permisosDeAdminitrador = [
             "panel",
             "clientes",
-            "proveedores",
+            //"proveedores",
             "productos",
             "categorias",
             "marcas",
@@ -43,7 +43,7 @@ class RolPermisoSeeder extends Seeder
         $permisosDeGerenteComercial = [
             "panel",
             "clientes",
-            "proveedores",
+            //"proveedores",
             "productos",
             "categorias",
             "marcas",

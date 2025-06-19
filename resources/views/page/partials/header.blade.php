@@ -4,11 +4,21 @@
         <a class="navbar-brand" href="{{ route('page.index') }}">
             <img src="{{ asset('/assets/img/logo.png') }}" alt="logo" class="img-logo">
         </a>
+        <form class="w-50" role="search">
+            <div class="input-group">
+                <input class="form-control " type="search" name="buscar_producto_servicio"
+                    placeholder="Buscar producto o servicio" aria-label="Search" />
+                <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
 
+            </div>
+        </form>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+
+
 
         <div class="collapse navbar-collapse col-xs-12 nav justify-content-end text-end" id="navbarNav">
             <ul class="navbar-nav ">
@@ -21,16 +31,17 @@
                         aria-current="page" href="{{ route('page.index') }}">Servicio y productos</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle fs-5" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle fs-5" href="#" id="navbarScrollingDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         Nosotros
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                        <li><a class="dropdown-item fs-5" href="{{route('page.index')}}#historia">Historia</a></li>
-                        <li><a class="dropdown-item fs-5" href="{{route('page.index')}}#equipo">Equipo</a></li>
-                      <li><a class="dropdown-item fs-5" href="{{route('page.index')}}#vision">Visión</a></li>
-                      <li><a class="dropdown-item fs-5" href="{{route('page.index')}}#mision">Misión</a></li>
+                        <li><a class="dropdown-item fs-5" href="{{ route('page.index') }}#historia">Historia</a></li>
+                        <li><a class="dropdown-item fs-5" href="{{ route('page.index') }}#equipo">Equipo</a></li>
+                        <li><a class="dropdown-item fs-5" href="{{ route('page.index') }}#vision">Visión</a></li>
+                        <li><a class="dropdown-item fs-5" href="{{ route('page.index') }}#mision">Misión</a></li>
                     </ul>
-                  </li>
+                </li>
                 <li class="nav-item fs-5">
                     <a class="nav-link" href="#contactos">Contactos</a>
                 </li>

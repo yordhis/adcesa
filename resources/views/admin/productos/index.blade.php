@@ -149,8 +149,10 @@
                                     @include('admin.productos.partials.modal-show')
                                     @include('admin.productos.partials.modal-form-edit')
                                     @include('admin.productos.partials.modal-form-delete')
-                                    @include('admin.productos.partials.modal-form-create-variantes')
-                                    @include('admin.productos.partials.modal-form-asignar-insumo')
+                                    @if ($producto->tipo_producto)
+                                        @include('admin.productos.partials.modal-form-create-variantes')
+                                        @include('admin.productos.partials.modal-form-asignar-insumo')
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
