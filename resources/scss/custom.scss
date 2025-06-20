@@ -19,6 +19,11 @@ $theme-colors: (
   "dark":       $dark
 );
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Ajusta este valor a la altura de tu navbar */
+}
+
 $form-feedback-valid-color:         $success;
 $form-feedback-invalid-color:       $danger;
 

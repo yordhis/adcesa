@@ -11,18 +11,18 @@
 
      </figcaption>
  </figure>
- <div class="bg-primary text-white mb-5 mt-5 py-5">
+ <div class="bg-primary text-white mb-5 mt-5 py-5" style="background-image: url('{{ asset('assets/img/fondo-catalogo.png') }}'); 
+         background-position: center;">
      <div class="row row-cols-1 row-cols-md-3 g-4 mx-5 " id="servicios">
          @foreach ($productos as $producto)
              <div class="col">
-                 <div class="card ">
+                 <div class="card shadow-lg ">
                      <img src="{{ asset($producto->imagen) }}" class="card-img-top" style="height: 18rem;" alt="imagen-producto">
 
                      <div class="card-body">
                          <h5 class="card-title fs-3 fw-bold">{{ $producto->nombre }}</h5>
                          <p class="card-text">
                              <b>Descripción:</b> {{ $producto->descripcion . ' ' . $producto->tipo_duracion }} <br>
-                             <b>Tipo:</b> {{ $producto->tipo_producto ? 'SERVICIO' : '' }}
                          </p>
                          
                      </div>
