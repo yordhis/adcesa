@@ -48,7 +48,7 @@
                             aria-describedby="button-addon2">
 
                         <!-- Selector del categoria a listar en la tabla -->
-                        <select name="id_categoria" id="id_categoria" class="form-select">
+                        {{-- <select name="id_categoria" id="id_categoria" class="form-select">
                             <option disabled selected>Categoria</option>
                             <option value=" ">Todas las categorias</option>
                             @foreach ($categorias as $categoria)
@@ -59,11 +59,11 @@
                                 @endif
                                 <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
                             @endforeach
-                        </select>
+                        </select> --}}
 
 
                         <!-- Selector del categoria a listar en la tabla -->
-                        <select name="id_marca" id="id_marca" class="form-select">
+                        {{-- <select name="id_marca" id="id_marca" class="form-select">
                             <option disabled selected>Marca</option>
                              <option value=" ">Todas las marcas</option>
                             @foreach ($marcas as $marca)
@@ -75,7 +75,7 @@
 
                                 <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
                             @endforeach
-                        </select>
+                        </select> --}}
 
 
 

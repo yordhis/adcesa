@@ -30,9 +30,9 @@
             <div class="col-12 my-3">
                 <!-- Formulario de registro de pedidos -->
                 {{-- @include('admin.pedidos.partials.modal-form-create') --}}
-                <a href="{{ route('admin.pedidos.create') }}" class="btn btn-success ">
+                {{-- <a href="{{ route('admin.pedidos.create') }}" class="btn btn-success ">
                     <i class="bi bi-cart-check-fill"></i> Crear pedido
-                </a>
+                </a> --}}
 
             </div>
 

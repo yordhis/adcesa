@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Models\Helpers;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,20 +20,22 @@ class ValidarPermisos
     {
         if (Auth::check()) {
             $permisos = Helpers::getPermisosUsuario(Auth::user()->rol);
+            $nombreRol = Role::where('id', Auth::user()->rol)->first()->nombre;
             $path = explode('/', $request->path())[0];
 
+        
             if (!in_array($path, $permisos)) {
-                if (Auth::user()->rol < 3) {
-                    return redirect()->route('admin.panel.index')->with([
-                        "mensaje" => "No tiene autorización para acceder al modulo: " . $path,
-                        "estatus" => Response::HTTP_UNAUTHORIZED
-                    ]);
-                } else {
+
+                if ($nombreRol == 'CLIENTE') {
                     return redirect()->route('page.home')->with([
                         "mensaje" => "No tiene autorización para acceder a esa dirección: " . $path,
                         "estatus" => Response::HTTP_UNAUTHORIZED
                     ]);
                 }
+                return redirect()->route('admin.panel.index')->with([
+                    "mensaje" => "No tiene autorización para acceder al modulo: " . $path,
+                    "estatus" => Response::HTTP_UNAUTHORIZED
+                ]);
             }
         }
 

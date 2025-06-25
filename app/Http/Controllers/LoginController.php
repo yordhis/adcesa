@@ -37,7 +37,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             /** Redireccionamos al usaurio segun su rol */
-            if (Auth::user()->rol < 3) {
+            if (array_key_exists('panel', session('permisos'))) {
                 return redirect()->intended('panel');
             } else {
                 return redirect()->intended('home');
