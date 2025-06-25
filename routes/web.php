@@ -29,6 +29,7 @@ use App\Http\Controllers\{
 */
 
 Route::get('/', [PageController::class, 'index'])->name('page.index');
+Route::get('/tienda/crear/sesion', [PageController::class, 'crearSesion'])->name('page.clientes.crear.sesion');
 Route::get('/tienda/pedidos/{servicio_id}', [PageController::class, 'createPedido'])->name('page.crear.pedido');
 Route::post('/tienda/pedidos', [PageController::class, 'storePedido'])->name('page.store.pedido');
 Route::get('/tienda/agregar/carrito/{producto_id}', [PageController::class, 'agregarCarrito'])->name('page.agregar.carrito');

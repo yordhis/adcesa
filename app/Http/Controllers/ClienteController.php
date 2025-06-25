@@ -92,7 +92,7 @@ class ClienteController extends Controller
                 $request['foto'] = Helpers::setFile($request);
             }
 
-            /** Ejecutamos el guardado del insumo */
+            /** Ejecutamos el guardado del cliente */
             User::create($request->all());
 
             /** Configuramos el mensaje de respuesta para el usuario */
@@ -100,6 +100,11 @@ class ClienteController extends Controller
             $estatus = Response::HTTP_OK;
 
             /** fin */
+            if($request->input('desdeLaWeb', false)){
+                
+                return back()->with(compact('mensaje', 'estatus'));
+            }
+
             return back()->with(compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
             /** Mensaje de error en la misma vista */

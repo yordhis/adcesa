@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('foto', 255)->nullable();
             $table->string('fecha_nacimiento', 255)->nullable();
             $table->string('email')->unique();
+            $table->string('terminos_condiciones')->default('ACEPTO');
             $table->boolean('estatus')->default(true); // true: activo, false: inactivo
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

@@ -32,7 +32,7 @@ class PageController extends Controller
     public function createPedido(Request $request, $id)
     {
         try {
-             $medidas = Medida::orderBy('nombre', 'ASC')->get();
+            $medidas = Medida::orderBy('nombre', 'ASC')->get();
             $producto = Producto::findOrFail($id);
             $producto['variantes'] = Variante::where('id_producto', '=', $producto->id)->get();
             $producto['insumos'] = InsumoToProducto::where('id_producto', '=', $producto->id)->get();
@@ -54,5 +54,12 @@ class PageController extends Controller
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
         }
+    }
+
+    /** Crear sesion */
+    public function crearSesion(Request $request)
+    {
+        $respuesta = DataDev::$respuesta;
+        return view('page.clientes.index', compact('respuesta'));
     }
 }

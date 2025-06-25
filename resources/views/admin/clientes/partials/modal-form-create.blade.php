@@ -12,7 +12,8 @@
             </div>
             <div class="modal-body text-start">
                 <p class="text-primary bg-light p-3 rounded-5">
-                    <b>Nota:</b> El formulario de clientes le permite registrar y crear automaticamente una cuenta de cliente
+                    <b>Nota:</b> El formulario de clientes le permite registrar y crear automaticamente una cuenta de
+                    cliente
                     generando una contraseña por defecto que será enviada al correo registrado.
                 </p>
                 <form action="{{ route('admin.clientes.store') }}" method="post" class="row g-3 needs-validation"
@@ -89,13 +90,13 @@
 
                     <!-- Input Sexo -->
                     <div class="col-xs-12 col-sm-6">
-                        <label for="sexo" class="form-label">Sexo</label>
+                        <label for="sexo" class="form-label">Género</label>
                         <select name="sexo" class="form-select" id="sexo" required>
                             @if ($request->sexo)
                                 <option value="{{ $request->sexo }}" selected>{{ $request->sexo }}
                                 </option>
                             @endif
-                            <option value="">Seleccione sexo</option>
+                            <option value="">Seleccione género</option>
                             @if (old('sexo'))
                                 <option value="{{ old('sexo') }}" selected>{{ old('sexo') }}</option>
                             @endif

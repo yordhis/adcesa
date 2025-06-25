@@ -1,20 +1,20 @@
 <!-------------- Page Menu ------->
-<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-menu">
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-menu" id="header">
     <div class="container-fluid">
         <!-- Logo de la empresa -->
         <a class="navbar-brand" href="{{ route('page.index') }}">
-            <img src="{{ asset('/assets/img/logo.png') }}" alt="logo" class="img-logo">
+            <img src="{{ asset('/assets/img/logo.png') }}" alt="logo" class="img-logo ">
         </a>
 
         <!-- Buscador de productos -->
-        <form class="w-50" role="search">
+        {{-- <form class="w-50" role="search">
             <div class="input-group">
                 <input class="form-control " type="search" name="buscar_producto_servicio"
                     placeholder="Buscar producto o servicio" aria-label="Search" />
                 <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
 
             </div>
-        </form>
+        </form> --}}
 
         <!-- Botón de menú responsive -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -45,7 +45,8 @@
                         Nosotros
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                        <li><a class="dropdown-item fs-5" href="{{ route('page.index') }}#quienes_somos">¿Quiénes somos?</a></li>
+                        <li><a class="dropdown-item fs-5" href="{{ route('page.index') }}#quienes_somos">¿Quiénes
+                                somos?</a></li>
                         <li><a class="dropdown-item fs-5" href="{{ route('page.index') }}#mision">Misión</a></li>
                         <li><a class="dropdown-item fs-5" href="{{ route('page.index') }}#vision">Visión</a></li>
                     </ul>
@@ -56,8 +57,101 @@
                     <a class="nav-link" href="#contactos">Contactos</a>
                 </li>
 
-                <!-- Carrito de compras -->
+                @if (Auth::user())
+                    <!-- Profile Nav -->
+                    <li class="nav-item dropdown pt-0 pe-3 fs-5">
 
+                        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
+                            data-bs-toggle="dropdown">
+                            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                        </a><!-- End Profile Iamge Icon -->
+
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                            <li class="dropdown-header">
+                                <h6>Kevin Anderson</h6>
+                                <span>Web Designer</span>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <!-- Perfil -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                    <i class="bi bi-person"></i>
+                                    <span>Mi Perfil</span>
+                                </a>
+                            </li><!-- End perfil-->
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <!-- Pedidos -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                                    <i class="bi bi-cart"></i>
+                                    <span>Pedidos</span>
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <!-- Cerrar sesión-->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span class="text-danger">Cerrar sesión</span>
+                                </a>
+                            </li><!-- Fin Cerrar sesión-->
+
+                        </ul><!-- End Profile Dropdown Items -->
+                    </li><!-- End Profile Nav -->
+                @else
+                    <!-- Identificar me! -->
+                    <li class="nav-item dropdown pt-0 pe-3 fs-5">
+
+                        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
+                            data-bs-toggle="dropdown">
+
+                            <span class="d-none d-md-block dropdown-toggle ps-2">Iniciar o Registrar</span>
+                        </a><!-- End Profile Iamge Icon -->
+
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+
+                            <!-- Login -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{{route('login.index')}}">
+                                    <i class="bi bi-box-arrow-in-right text-primary"></i>
+                                    <span>Iniciar sesión</span>
+                                </a>
+                            </li><!-- End login-->
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <!-- Registro -->
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="{{route('page.clientes.crear.sesion')}}">
+                                    <i class="bi bi-person-add"></i>
+                                    <span>¡Registrate!</span>
+                                </a>
+                            </li>
+                        </ul><!-- End Identificar Dropdown Items -->
+                    </li><!-- End Identificar me! -->
+                @endif
+
+
+
+
+
+
+
+
+                <!-- Carrito de compras -->
                 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasRight_cart_shoping" aria-controls="offcanvasRight_cart_shoping">
                     <i class="bi bi-cart"></i>
@@ -73,7 +167,7 @@
 </nav>
 <!-------------- End Page Menu ------->
 
-<!-- Offcanvas para el carrito de compras -->
+<!-- Carrito de compras -->
 <!-- Si el carrito está vacío, mostrar un mensaje -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight_cart_shoping"
     aria-labelledby="offcanvasRightLabel">
@@ -89,7 +183,7 @@
     </div>
 </div>
 
-  {{-- <!-- ======= Header ======= -->
+{{-- <!-- ======= Header ======= -->
   <header id="header" class="header bg-white fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
