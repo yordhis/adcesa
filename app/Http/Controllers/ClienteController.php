@@ -10,8 +10,11 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Nette\Utils\Strings;
+
+
 
 class ClienteController extends Controller
 {
@@ -83,7 +86,7 @@ class ClienteController extends Controller
             $request['pais'] = Strings::upper($request->pais ?? '');
             $request['estado'] = Strings::upper($request->estado ?? '');
             $request['ciudad'] = Strings::upper($request->ciudad ?? '');
-            $request['password'] = Hash::make(12345678);
+            $request['password'] = $request->input('password', Hash::make(12345678));
             $request['rol'] = Role::where('nombre', 'CLIENTE')->first()->id;
 
 
@@ -100,9 +103,8 @@ class ClienteController extends Controller
             $estatus = Response::HTTP_OK;
 
             /** fin */
-            if($request->input('desdeLaWeb', false)){
-                
-                return back()->with(compact('mensaje', 'estatus'));
+            if ($request->input('desdeLaWeb', false)) {
+                return redirect()->route('login.index')->with(compact('mensaje', 'estatus'));
             }
 
             return back()->with(compact('mensaje', 'estatus'));
@@ -133,6 +135,17 @@ class ClienteController extends Controller
                         }
                     }
                 }
+                /** Validar cédula */
+                if ($request->cedula) {
+                    if ($request->cedula != $user->cedula) {
+                        $cedulaExiste = User::where('cedula', '=', $request->cedula)->first();
+                        if ($cedulaExiste) {
+                            $mensaje = "Cédula ya existe, por favor intente con otra!";
+                            $estatus = Response::HTTP_BAD_REQUEST;
+                            return back()->withInput($request->inputs)->with(compact('mensaje', 'estatus'));
+                        }
+                    }
+                }
 
                 /** Completar datos */
                 $request['nombres'] = Strings::upper($request->nombres);
@@ -145,7 +158,9 @@ class ClienteController extends Controller
 
                 /** Verificamos si enviaron una imagen nueva */
                 if ($request->file) {
-                    Helpers::removeFile($user->foto);
+                    if ($user->foto) {
+                        Helpers::removeFile($user->foto);
+                    }
                     $request['foto'] = Helpers::setFile($request);
                 }
 
@@ -160,7 +175,45 @@ class ClienteController extends Controller
                 return back()->with(compact('mensaje', 'estatus'));
             }
         } catch (\Throwable $th) {
-            $mensaje = Helpers::getMensajeError($th, 'Error al actualizar insumo');
+            $mensaje = Helpers::getMensajeError($th, 'Error al actualizar cliente');
+            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
+            return back()->with(compact('mensaje', 'estatus'));
+        }
+    }
+
+    /** Actualizar contraseña */
+    public function editPassword(Request $request, $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            
+            /** Validar que la contraseña actual sea valida */
+            if (!Auth::attempt([
+                "email" => $user->email,
+                "password" => $request->password_actual,
+            ])) {
+                $mensaje = "La contraseña ingresada como actual no coincide con nuestros registros!";
+                $estatus = Response::HTTP_BAD_REQUEST;
+                return back()->with(compact('mensaje', 'estatus'));
+            }
+            $request->session()->regenerate();
+
+            /** Validar que las nuevas contraseñas sean iguales */
+            if (!($request->new_password === $request->renew_password)) {
+                $mensaje = "Las contraseñas nuevas ingresadas no coincide!";
+                $estatus = Response::HTTP_BAD_REQUEST;
+                return back()->with(compact('mensaje', 'estatus'));
+            }
+
+            /** Actualizar la contraseña */
+            $user->update(['password' => $request->new_password]);
+
+            /** Enviar un correo notificando*/
+
+            /** Cerrar la sesión */
+            return redirect('logout');
+        } catch (\Throwable $th) {
+            $mensaje = Helpers::getMensajeError($th, 'Error al actualizar contraseña del cliente');
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
         }
@@ -200,6 +253,7 @@ class ClienteController extends Controller
         $estatus = Response::HTTP_NOT_FOUND;
         return redirect()->route('admin.clientes.index')->with(compact('mensaje', 'estatus'));
     }
+
     public function edit($userId)
     {
         $mensaje = "¡Ruta no disponible!";

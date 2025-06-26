@@ -8,6 +8,7 @@ use App\Models\Insumo;
 use App\Models\InsumoToProducto;
 use App\Models\Medida;
 use App\Models\Producto;
+use App\Models\User;
 use App\Models\Variante;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -56,10 +57,18 @@ class PageController extends Controller
         }
     }
 
-    /** Crear sesion */
+    /** Vista de registro de cliente */
     public function crearSesion(Request $request)
     {
         $respuesta = DataDev::$respuesta;
         return view('page.clientes.index', compact('respuesta'));
+    }
+
+    /** Vista del perfil del cliente */
+    public function mostraPerfil(Request $request, $id)
+    {
+        $cliente = User::find($id); 
+        $respuesta = DataDev::$respuesta;
+        return view('page.clientes.perfil', compact('respuesta', 'cliente'));
     }
 }

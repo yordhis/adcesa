@@ -29,7 +29,8 @@ use App\Http\Controllers\{
 */
 
 Route::get('/', [PageController::class, 'index'])->name('page.index');
-Route::get('/tienda/crear/sesion', [PageController::class, 'crearSesion'])->name('page.clientes.crear.sesion');
+Route::post('/tienda/crear/cuenta', [ClienteController::class, 'store'])->name('page.clientes.crear.cuenta');
+Route::get('/tienda/registro', [PageController::class, 'crearSesion'])->name('page.clientes.crear.sesion');
 Route::get('/tienda/pedidos/{servicio_id}', [PageController::class, 'createPedido'])->name('page.crear.pedido');
 Route::post('/tienda/pedidos', [PageController::class, 'storePedido'])->name('page.store.pedido');
 Route::get('/tienda/agregar/carrito/{producto_id}', [PageController::class, 'agregarCarrito'])->name('page.agregar.carrito');
@@ -37,6 +38,9 @@ Route::get('/tienda/agregar/carrito/{producto_id}', [PageController::class, 'agr
 /** Rutas de usuario cliente logeado */
 Route::middleware('auth')->group(function () {
     Route::get('/home', [PageController::class, 'index'])->name('page.home');
+    Route::get('/perfil/{idCliente}', [PageController::class, 'mostraPerfil'])->name('page.cliente.perfil');
+    Route::put('/perfil/{idCliente}', [ClienteController::class, 'update'])->name('page.clientes.update');
+    Route::put('/perfil/edit/password/{idCliente}', [ClienteController::class, 'editPassword'])->name('page.clientes.update.password');
 })->prefix('tienda');
 
 /*

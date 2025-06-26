@@ -3,14 +3,13 @@
     <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
             <div class="row justify-content-center">
-                <div class=" col-md-6 d-flex flex-column align-items-center justify-content-center">
-
+                <div class="col-md-6 col-xs-12 d-flex flex-column align-items-center justify-content-center">
+                    <!-- Bienvenido -->
                     <div class="d-flex justify-content-center py-4">
                         <a href="index.html" class="logo d-flex align-items-center w-auto">
-                            <img src="assets/img/logo.png" alt="">
-                            <span class="d-none d-lg-block">¡Bienvenido!</span>
+                            <span class="">¡Bienvenido!</span>
                         </a>
-                    </div><!-- End Logo -->
+                    </div><!-- End bienvenido -->
 
                     <div class="card mb-3">
                         <div class="card-body">
@@ -21,11 +20,11 @@
                             </div>
 
 
-                            <form action="{{ route('admin.clientes.store') }}" method="post"
+                            <form action="{{ route('page.clientes.crear.cuenta') }}" method="post"
                                 class="row g-3 needs-validation" enctype="multipart/form-data">
                                 @csrf
-                                @method('post')
-
+                                @method('POST')
+                                <input type="hidden" name="desdeLaWeb" value="true">
                                 <!-- Input E-mail -->
                                 <div class="col-12">
                                     <label for="email" class="form-label">E-mail</label>

@@ -3,6 +3,10 @@
 @section('title', 'Adcesa - Login')
 
 @section('content')
+    @if (session('mensaje'))
+        @include('partials.alert')
+    @endif
+    
     <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center ">
         <div class="container">
             <div class="row justify-content-center">
@@ -10,7 +14,8 @@
 
                     <div class="d-flex justify-content-center p-3">
                         <a href="{{ route('page.index') }}">
-                            <img src="{{ asset('/assets/img/logo.png') }}" class="w-75" alt="logo" id="logo">
+                            <img src="{{ asset('/assets/img/logo.png') }}" class="img" width="150" alt="logo"
+                                id="logo">
                         </a>
                     </div><!-- End Logo -->
 
@@ -28,17 +33,13 @@
                                 novalidate>
                                 @csrf
                                 @method('post')
+
                                 <div class="col-12">
                                     <label for="email" class="form-label">Email o Usuario</label>
                                     <div class="input-group has-validation">
                                         <input type="text" name="email" placeholder="Ingrese E-mail o usuario"
                                             class="form-control" id="email" required>
                                         <div class="invalid-feedback">Por favor, ingrese su nombre de usuario!</div>
-                                        @error('email')
-                                            <span class="text-danger">
-                                                {{ $message }}
-                                            </span>
-                                        @enderror
                                     </div>
                                 </div>
 

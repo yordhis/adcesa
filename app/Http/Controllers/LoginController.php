@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataDev;
 use App\Models\RolPermiso;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +13,8 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('login');
+        $respuesta = DataDev::$respuesta;
+        return view('login', compact('respuesta') );
     }
 
     /** Autenticación de usuario  */
@@ -26,14 +29,14 @@ class LoginController extends Controller
         if (Auth::attempt($credenciales, $recuerdame)) {
             /** Se regenera la seción o se crea */
             /** OPTENEMOS LOS PERMISOS DEL USUARIO */
-             $request->session()->put('permisos', RolPermiso::where('id_rol', Auth::user()->rol)
-             ->join('permisos', 'rol_permisos.id_permiso', '=', 'permisos.id')
-             ->select(
-                'rol_permisos.id_permiso',
-                'permisos.nombre',
-                'permisos.id',
-             )
-             ->pluck('permisos.id', 'permisos.nombre')->toArray());
+            $request->session()->put('permisos', RolPermiso::where('id_rol', Auth::user()->rol)
+                ->join('permisos', 'rol_permisos.id_permiso', '=', 'permisos.id')
+                ->select(
+                    'rol_permisos.id_permiso',
+                    'permisos.nombre',
+                    'permisos.id',
+                )
+                ->pluck('permisos.id', 'permisos.nombre')->toArray());
             $request->session()->regenerate();
 
             /** Redireccionamos al usaurio segun su rol */
@@ -41,11 +44,12 @@ class LoginController extends Controller
                 return redirect()->intended('panel');
             } else {
                 return redirect()->intended('home');
-            } 
+            }
         }
 
-        return back()->withErrors([
-            'nombre' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
+        return back()->with([
+            'mensaje' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
+            'estatus' => Response::HTTP_BAD_REQUEST,
         ]);
     }
 
@@ -56,6 +60,7 @@ class LoginController extends Controller
         session('permisos', null);
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return $redirect->to('login');
+        return $redirect->to('/');
+        // return $redirect->to('login');
     }
 }

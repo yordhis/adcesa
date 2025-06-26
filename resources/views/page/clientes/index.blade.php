@@ -7,7 +7,7 @@
         @include('partials.alert')
     @endif
 
-    <!-- CAROUSEL -->
+    <!-- Formulario -->
     @include('page.clientes.partials.form-cliente')
 
 
