@@ -202,6 +202,7 @@
                             </a>
                         </li><!-- End Components Nav | medidas -->
                     @endif
+
                     @if (array_key_exists('cuentas', session('permisos')))
                         <!-- Start Components Nav | cuentas -->
                         <li class="nav-item">
@@ -214,6 +215,19 @@
                                 </span>
                             </a>
                         </li><!-- End Components Nav | cuentas -->
+                    @endif
+                    @if (array_key_exists('tasas', session('permisos')))
+                        <!-- Start Components Nav | tasas -->
+                        <li class="nav-item">
+                            <a href="{{ route('admin.tasas.index') }}"
+                                class="nav-link  {{ url()->current() == route('admin.tasas.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                                <i
+                                    class="bi bi-currency-exchange fs-5 {{ url()->current() == route('admin.tasas.index') ? 'text-white' : 'text-primary' }}"></i>
+                                <span>
+                                    Tasas
+                                </span>
+                            </a>
+                        </li><!-- End Components Nav | tasas -->
                     @endif
                 </ul>
             </li><!-- End Components Nav | configuraciones -->

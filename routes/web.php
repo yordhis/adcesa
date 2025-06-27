@@ -19,6 +19,7 @@ use App\Http\Controllers\{
     PermisoController,
     ProductoController,
     RoleController,
+    TasaController,
     VarianteController
 };
 
@@ -109,7 +110,7 @@ Route::middleware(['admin'])->group(function () {
     Route::resource('/cuentas', CuentaController::class)->names('admin.cuentas');
 
     /** Rutas de Tasa */
-    Route::resource('/tasas', PagoController::class)->names('admin.tasas');
+    Route::resource('/tasas', TasaController::class)->names('admin.tasas');
 
     /** Rutas de Pedidos */
     Route::post('/pedidos/buscar-cliente', [PedidoController::class, 'buscarCliente'])->name('admin.pedidos.buscar.cliente');
