@@ -6,21 +6,23 @@
             <img src="{{ asset('/assets/img/logo.png') }}" alt="logo" class="img-logo ">
         </a>
 
-        <!-- Buscador de productos -->
-        {{-- <form class="w-50" role="search">
-            <div class="input-group">
-                <input class="form-control " type="search" name="buscar_producto_servicio"
-                    placeholder="Buscar producto o servicio" aria-label="Search" />
-                <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
-
-            </div>
-        </form> --}}
+        <!-- Carrito de compras para móvil (visible solo en xs, sm, md) -->
+        <button class="btn btn-primary position-relative p-2  d-inline d-lg-none" type="button"
+            data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight_cart_shoping"
+            aria-controls="offcanvasRight_cart_shoping">
+            <i class="bi bi-cart-fill fs-4"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ session('carrito') ? count(session('carrito')) : 0 }}
+            </span>
+        </button>
 
         <!-- Botón de menú responsive -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+
 
         <!-- Menú de navegación -->
         <div class="collapse navbar-collapse col-xs-12 nav justify-content-end text-end" id="navbarNav">
@@ -63,14 +65,15 @@
 
                         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                             data-bs-toggle="dropdown">
-                            <img src="{{ Auth::user()->foto ? asset(Auth::user()->foto) :  asset('assets/img/avatar-' . Auth::user()->sexo . '.png')}}" alt="Profile" width="20" class="rounded-circle">
-                            <span class="d-none d-md-block dropdown-toggle ps-2">{{Auth::user()->nombres}}</span>
+                            <img src="{{ Auth::user()->foto ? asset(Auth::user()->foto) : asset('assets/img/avatar-' . Auth::user()->sexo . '.png') }}"
+                                alt="Profile" width="20" class="rounded-circle">
+                            <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->nombres }}</span>
                         </a><!-- End Profile Iamge Icon -->
 
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                             <li class="dropdown-header">
-                                <h6>{{Auth::user()->nombres}}</h6>
-                                <span>{{Auth::user()->apellidos}}</span>
+                                <h6>{{ Auth::user()->nombres }}</h6>
+                                <span>{{ Auth::user()->apellidos }}</span>
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
@@ -78,7 +81,8 @@
 
                             <!-- Perfil -->
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{{route('page.cliente.perfil', Auth::user()->id)}}">
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('page.cliente.perfil', Auth::user()->id) }}">
                                     <i class="bi bi-person"></i>
                                     <span>Mi Perfil</span>
                                 </a>
@@ -90,7 +94,8 @@
 
                             <!-- Pedidos -->
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{{route('page.cliente.perfil', Auth::user()->id)}}">
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('page.cliente.perfil', Auth::user()->id) }}">
                                     <i class="bi bi-cart"></i>
                                     <span>Pedidos</span>
                                 </a>
@@ -101,7 +106,7 @@
 
                             <!-- Cerrar sesión-->
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{{route('logout')}}">
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}">
                                     <i class="bi bi-box-arrow-right"></i>
                                     <span class="text-danger">Cerrar sesión</span>
                                 </a>
@@ -123,7 +128,7 @@
 
                             <!-- Login -->
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{{route('login.index')}}">
+                                <a class="dropdown-item d-flex align-items-center" href="{{ route('login.index') }}">
                                     <i class="bi bi-box-arrow-in-right text-primary"></i>
                                     <span>Iniciar sesión</span>
                                 </a>
@@ -135,7 +140,8 @@
 
                             <!-- Registro -->
                             <li>
-                                <a class="dropdown-item d-flex align-items-center" href="{{route('page.clientes.crear.sesion')}}">
+                                <a class="dropdown-item d-flex align-items-center"
+                                    href="{{ route('page.clientes.crear.sesion') }}">
                                     <i class="bi bi-person-add"></i>
                                     <span>¡Registrate!</span>
                                 </a>
@@ -144,18 +150,25 @@
                     </li><!-- End Identificar me! -->
                 @endif
 
-
-
-
-
-
-
-
                 <!-- Carrito de compras -->
-                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                {{-- <button class="btn btn-none position-relative p-0 mx-3" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasRight_cart_shoping" aria-controls="offcanvasRight_cart_shoping">
-                    <i class="bi bi-cart"></i>
+                    <i class="bi bi-cart fs-4"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ session('carrito') ? count(session('carrito')) : 0}}
+                    </span>
+                </button> --}}
+
+                <!-- Carrito de compras para escritorio (visible en lg y más) -->
+                <button class="btn btn-none position-relative p-0 mx-3 d-none d-lg-inline" type="button"
+                    data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight_cart_shoping"
+                    aria-controls="offcanvasRight_cart_shoping">
+                    <i class="bi bi-cart fs-4"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ session('carrito') ? count(session('carrito')) : 0 }}
+                    </span>
                 </button>
+
 
 
 
@@ -168,7 +181,6 @@
 <!-------------- End Page Menu ------->
 
 <!-- Carrito de compras -->
-<!-- Si el carrito está vacío, mostrar un mensaje -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight_cart_shoping"
     aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
@@ -176,238 +188,62 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <p class="text-center">No hay productos en el carrito</p>
-        <div class="text-center">
-            <a href="{{ route('page.index') }}" class="btn btn-primary">Seguir comprando</a>
+        @if (session('carrito'))
+            @php
+                $totalPagar = 0;
+            @endphp
+            @foreach (session('carrito') as $producto)
+                @php
+                    $totalPagar = $totalPagar + $producto['subtotal'];
+                @endphp
+
+                <div class="card mb-3" >
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{ asset($producto['imagen']) }}" height="150" class="img-fluid rounded-start"
+                                alt="{{ $producto['nombre_producto'] }}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $producto['nombre_producto'] }}</h5>
+                                <p class="card-text">Cantidad: {{ $producto['cantidad'] }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-footer d-flex justify-content-between">
+                                <p class="card-text">Precio Unitario: {{ $producto['precio'] }}</p>
+                                <p class="card-text">Subtotal: {{ $producto['subtotal'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+            <!-- total a pagar -->
+            <div class="text-center m-2">
+                <hr>
+                <p>Total a pagar: {{ $totalPagar }} $</p>
+                <hr>
+            </div>
+        @else
+            <p class="text-center">No hay productos en el carrito</p>
+        @endif
+
+        <!-- botenes del carrito de compras -->
+        <div class="text-center m-2">
+            <a href="{{ route('page.index') }}/#servicios" class="btn btn-primary ">
+                <i class="bi bi-shop"></i>
+                Seguir comprando
+            </a>
+        </div>
+        <div class="text-center m-2">
+            <a href="{{ route('page.index') }}" class="btn btn-success ">
+                <i class="bi bi-paypal"></i>
+                Finalizar compra
+            </a>
+            <a href="{{ route('page.index') }}/#servicios" class="btn btn-warning ">
+                <i class="bi bi-cart-fill"></i>
+                Ver carrito
+            </a>
         </div>
     </div>
 </div>
-
-{{-- <!-- ======= Header ======= -->
-  <header id="header" class="header bg-white fixed-top d-flex align-items-center">
-
-    <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
-      </a>
-      <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
-
-    <div class="search-bar">
-      <form class="search-form d-flex align-items-center" method="POST" action="#">
-        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
-        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-      </form>
-    </div><!-- End Search Bar -->
-
-    <nav class="header-nav ms-auto">
-      <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
-          </a><!-- End Notification Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-            <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
-            </li>
-
-          </ul><!-- End Notification Dropdown Items -->
-
-        </li><!-- End Notification Nav -->
-
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a><!-- End Messages Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul><!-- End Messages Dropdown Items -->
-
-        </li><!-- End Messages Nav -->
-
-        <li class="nav-item dropdown pe-3">
-
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
-          </a><!-- End Profile Iamge Icon -->
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-            <li class="dropdown-header">
-              <h6>Kevin Anderson</h6>
-              <span>Web Designer</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Need Help?</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
-              </a>
-            </li>
-
-          </ul><!-- End Profile Dropdown Items -->
-        </li><!-- End Profile Nav -->
-
-      </ul>
-    </nav><!-- End Icons Navigation -->
-
-  </header><!-- End Header --> --}}

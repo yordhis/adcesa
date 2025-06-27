@@ -5,6 +5,7 @@ use App\Http\Controllers\{
     AlmacenController,
     CategoriaController,
     ClienteController,
+    CuentaController,
     UserController,
     DashboardController,
     PagoController,
@@ -32,8 +33,10 @@ Route::get('/', [PageController::class, 'index'])->name('page.index');
 Route::post('/tienda/crear/cuenta', [ClienteController::class, 'store'])->name('page.clientes.crear.cuenta');
 Route::get('/tienda/registro', [PageController::class, 'crearSesion'])->name('page.clientes.crear.sesion');
 Route::get('/tienda/pedidos/{servicio_id}', [PageController::class, 'createPedido'])->name('page.crear.pedido');
-Route::post('/tienda/pedidos', [PageController::class, 'storePedido'])->name('page.store.pedido');
-Route::get('/tienda/agregar/carrito/{producto_id}', [PageController::class, 'agregarCarrito'])->name('page.agregar.carrito');
+Route::post('/tienda/finalizar/pedido', [PageController::class, 'agregarAlCarrito'])->name('page.finalizar.pedido');
+Route::post('/tienda/agregar/carrito', [PageController::class, 'agregarAlCarrito'])->name('page.agregar.carrito');
+Route::get('/tienda/finalizar/pedido', [PageController::class, 'vistaFinalizarPedido'])->name('page.finalizar.pedido.vista');
+Route::get('/tienda/registrar/pedido', [PageController::class, 'storePedido'])->name('page.pedidos.store');
 
 /** Rutas de usuario cliente logeado */
 Route::middleware('auth')->group(function () {
@@ -101,6 +104,12 @@ Route::middleware(['admin'])->group(function () {
 
     /** Rutas de Pagos */
     Route::resource('/pagos', PagoController::class)->names('admin.pagos');
+
+    /** Rutas de Cuentas */
+    Route::resource('/cuentas', CuentaController::class)->names('admin.cuentas');
+
+    /** Rutas de Tasa */
+    Route::resource('/tasas', PagoController::class)->names('admin.tasas');
 
     /** Rutas de Pedidos */
     Route::post('/pedidos/buscar-cliente', [PedidoController::class, 'buscarCliente'])->name('admin.pedidos.buscar.cliente');

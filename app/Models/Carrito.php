@@ -18,6 +18,8 @@ class Carrito extends Model
         'tipo_producto',
         'alto_variante',
         'ancho_variante',
+        'mas_detalles',
+        'imagenes_adicionales',
         'medida_variante', // m, cm, u, etc.
         'cantidad',
         'precio',

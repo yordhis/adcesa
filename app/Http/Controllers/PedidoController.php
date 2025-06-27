@@ -82,64 +82,6 @@ class PedidoController extends Controller
         }
     }
 
-    /** 
-     * Método que busca un cliente
-     * y lo setea en una setea en sesion
-     */
-    public function buscarCliente(Request $request)
-    {
-        try {
-            $mensaje = "Cliente añadido al pedido con exito";
-            $estatus = 0;
-
-            /** buscar el cliente */
-            $cliente = User::where('cedula', $request->input('buscar_cliente'))->first();
-
-            /** 
-             * validar que si existe 
-             * Y lo añadimos a la sesion
-             */
-            $cliente ? session(['cliente' => $cliente])
-                : $mensaje = "El cliente con la cédula: {$request->input('buscar_cliente')} no existe!";
-            $cliente ? $estatus = Response::HTTP_OK
-                : $estatus = Response::HTTP_BAD_REQUEST;
-
-            return back()->with(compact('mensaje', 'estatus'));
-        } catch (\Throwable $th) {
-            $mensaje = 'Error al buscar cliente para añadirlo al pedido.';
-            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
-            return back()->with(compact('mensaje', 'estatus'));
-        }
-    }
-
-    /**
-     * Método para buscar producto 
-     * y cargarlo en la sesion carrito
-     */
-    public function buscarProducto(Request $request)
-    {
-        try {
-            $mensaje = "Producto añadido al carrito con exito";
-            $estatus = 0;
-
-            /** buscar el producto */
-            $productoEncontrados = Producto::where('nombre', "LIKE", "%{$request->input('buscar_producto')}%")->get();
-
-            /** validar que si existe y añadir la sesion los producto encontrados */
-            $productoEncontrados ? session(['productoEncontrados' => $productoEncontrados])
-                : $mensaje = "El producto con el nombre: {$request->input('buscar_producto')} no existe!";
-            $productoEncontrados ? $estatus = Response::HTTP_OK
-                : $estatus = Response::HTTP_BAD_REQUEST;
-
-            return back()->with(compact('mensaje', 'estatus'));
-        } catch (\Throwable $th) {
-            $mensaje = 'Error al buscar producto para añadirlo al carrito.';
-            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
-            return back()->with(compact('mensaje', 'estatus'));
-        }
-    }
-
-
       
 
     /**

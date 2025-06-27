@@ -6,6 +6,7 @@ import * as bootstrap from 'bootstrap';
 window.bootstrap = bootstrap;
 
 import '../css/style.css';
+import './pedidos.js'; 
 import './insumo.js'; 
 import './productos.js';
 import './utils/reset-filtro.js'

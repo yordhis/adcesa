@@ -76,13 +76,13 @@ class Helpers extends Model
     public static function getUsuarios()
     {
         $usuarios = User::join('roles', 'roles.id', '=', 'users.rol')
-        ->select(
-            'users.*',
-            'roles.nombre as rol_nombre'
-        )
-        ->where('roles.nombre', '!=', 'CLIENTE')
-        ->orderBy('users.created_at', 'desc')
-        ->get();
+            ->select(
+                'users.*',
+                'roles.nombre as rol_nombre'
+            )
+            ->where('roles.nombre', '!=', 'CLIENTE')
+            ->orderBy('users.created_at', 'desc')
+            ->get();
         foreach ($usuarios as $key => $usuario) {
             $usuarios[$key] = self::getUsuario($usuario->id);
         }
@@ -183,6 +183,21 @@ class Helpers extends Model
         return $array;
     }
 
+
+    public static function getArrayAssocInputs($request, $prefijo = "dif")
+    {
+        $array = null;
+        foreach ($request as $key => $value) {
+            $text = substr($key, 0, 3);
+
+            if ($text == $prefijo) : $array[substr($key, 4, 33)] = $value;
+                continue;
+            endif;
+        }
+
+        return $array;
+    }
+
     /**
      * Esta funcion retorna los checkbox activos de los elementos deseados
      * @param datos array
@@ -234,6 +249,19 @@ class Helpers extends Model
         return Storage::url(
             Storage::putFile('imgs', $request->file('file'), 'public')
         );
+    }
+
+    public static function setFiles($request)
+    {
+        $urls = [];
+        // Movemos la imagen a storage/app/public/imagenes
+        foreach ($request->file('files') as $imagen) {
+            $ruta = Storage::url(
+                Storage::putFile('imgs', $imagen, 'public')
+            );
+            array_push($urls, $ruta);
+        }
+        return $urls;
     }
 
     /**

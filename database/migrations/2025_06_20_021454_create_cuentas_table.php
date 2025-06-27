@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('codigo_banco')->nullable();
             $table->string('nombre_banco')->nullable();
-            $table->string('numero_cuenta')->unique();
-            $table->string('telefono');
+            $table->string('numero_cuenta')->nullable();
+            $table->string('telefono')->nullable();
             $table->string('titular')->nullable();
             $table->string('tipo_cuenta')->nullable(); // Ahorros, Corriente, etc.
             $table->string('metodo')->nullable(); // Transferencia, Deposito, etc.

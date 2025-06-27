@@ -23,16 +23,19 @@ class StorePedidoRequest extends FormRequest
     {
         return [
             'total_a_pagar' => 'required | numeric | max:9999999 | min:1',
-            'id_cliente' => 'required',
-            // 'nombres_cliente' => 'required | string | max:255',
-            // 'apellidos_cliente' => 'required | string | max:255',
-            // 'direccion_cliente' => 'required | string | max:255',
-            // 'nacionalidad_cliente' => 'required | string | max:2 | min:1',
-            'cedula_cliente' => 'required | numeric | max:99999999 | min:1',
-            'telefono_cliente' => 'required | string | max:55',
-            'email_cliente' => 'required | email',
-            'fecha_inicio' => 'required | date',
-            'fecha_entrega' => 'nullable | date',
+            'id_cliente' => 'nullable',
+            'nombres_cliente' => 'nullable | string | max:255',
+            'apellidos_cliente' => 'nullable | string | max:255',
+            'direccion_cliente' => 'nullable | string | max:255',
+            'nacionalidad_cliente' => 'nullable | string | max:2 | min:1',
+            'cedula_cliente' => 'nullable | numeric | max:99999999 | min:1',
+            'telefono_cliente' => 'nullable | string | max:55',
+            'email_cliente' => 'nullable | email',
+            // datos del pago
+            'id_cuenta' => 'required | numeric | max:9999999 | min:1',
+            'monto' => 'required | numeric | max:9999999 | min:1',
+            'file' => 'required | image | mimes:jpeg,png,jpg,gif,svg|max:2048', // comprobante
+            'referencia' => 'required | string | max:255',
         ];
     }
 }

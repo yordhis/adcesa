@@ -1,80 +1,44 @@
-<div class="container">
-    <div class="row border border-muted rounded-5 mt-5">
-        <div class="col-12 ">
-            <h2 class="fs-2 text-center">
-                Carrito
-            </h2>
+<div class="col-sm-6 col-xs-12">
+    <div class="card" >
+        <div class="card-header bg-primary p-0 m-0">
+            <p class="card-title fs-3 text-center text-white">Carrito de compra</p>
         </div>
-        <div class="col-sm-6 col-xs-12">
-            @if ($nivelSolicitado)
-                <div class="card mb-3" style="max-width: 540px;">
+        <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+            @php
+                $totalPagar = 0;
+            @endphp
+            @foreach (session('carrito') as $producto)
+                @php
+                    $totalPagar = $totalPagar + $producto['subtotal'];
+                @endphp
+
+                <div class="card mb-3">
                     <div class="row g-0">
                         <div class="col-md-4">
-                            <img src="{{ asset($nivelSolicitado->imagen) }}" class="img-fluid rounded-start"
-                                alt="img-nivel">
+                            <img src="{{ asset($producto['imagen']) }}" height="90" class="img-fluid rounded-start"
+                                alt="{{ $producto['nombre_producto'] }}">
                         </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title text-uppercase"><b>Nivel:</b> {{ $nivelSolicitado->nombre }}</h5>
-                                <p class="card-text">
-                                    <b>Precio:</b> {{ $nivelSolicitado->precio }} $
-                                </p>
+                        <div class="col-md-8" >
+                            <div class="card-body" >
+                                <h5 class="card-title">{{ $producto['nombre_producto'] }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card-footer d-flex justify-content-between">
+                                <p class="card-text">Precio Unitario: {{ $producto['precio'] }}</p>
+                                <p class="card-text">Cantidad: {{ $producto['cantidad'] }}</p>
+                                <p class="card-text">Subtotal: {{ $producto['subtotal'] }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endif
-            @if ($planSolicitado)
-                <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="{{ asset('assets/img/registro.png') }}" class="img-fluid rounded-start"
-                                alt="img-plan">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title text-uppercase"><b>Plan: </b>{{ $planSolicitado->nombre }}</h5>
-                                <p class="card-text">
-                                    <b>Descuento:</b> {{ $planSolicitado->porcentaje_descuento }} % <br>
-                                    <b>Cuotas:</b> {{ $planSolicitado->cantidad_cuotas }} <br>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-            @if (count($estudiantesRegistrados))
-                @foreach ($estudiantesRegistrados as $estudiante)
-                    <div class="card mb-3" style="max-width: 540px;">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="{{ asset($estudiante->foto) }}" class="img-fluid rounded-start"
-                                    alt="img-plan">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title text-uppercase"><b>Estudiante:</b> {{ $estudiante->nombre }}
-                                    </h5>
-                                    <p class="card-text">
-                                        <b>DNI:</b> {{ $estudiante->nacionalidad . '-' . $estudiante->cedula }} <br>
-                                        <b>Edad:</b> {{ $estudiante->edad }} <br>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            @endif
+            @endforeach
         </div>
-        <div class="col-sm-6 col-xs-12">
-            @if ($planSolicitado)
-                @if (!session('esMenorDeEdad'))
-                    @if (!($totalDeRegistros < $planSolicitado->cantidad_estudiantes))
-                        @include('page.partials.formularioDePago')
-                    @endif
-                @endif
-            @endif
+        <div class="card-footer bg-light">
+            <!-- total a pagar -->
+            <div class="text-center m-2 fs-5 text-success">
+                <p>Total a pagar: {{ $totalPagar }} $</p>
+            </div>
         </div>
     </div>
-
 </div>

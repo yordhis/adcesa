@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('alto_variante')->nullable();
             $table->string('ancho_variante')->nullable();
             $table->string('medida_variante')->nullable(); // m, cm, u, etc.
+            $table->text('imagenes_adicionales')->nullable();
+            $table->text('mas_detalles')->nullable();
             $table->double('cantidad')->default(1);
             $table->double('precio')->nullable();
             $table->double('sub_total')->nullable();

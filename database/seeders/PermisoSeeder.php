@@ -26,6 +26,7 @@ class PermisoSeeder extends Seeder
             "pedidos",
             "configuraciones",
             "cuentas",
+            "tasas",
             "users",
             "permisos",
             "roles",

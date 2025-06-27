@@ -202,6 +202,19 @@
                             </a>
                         </li><!-- End Components Nav | medidas -->
                     @endif
+                    @if (array_key_exists('cuentas', session('permisos')))
+                        <!-- Start Components Nav | cuentas -->
+                        <li class="nav-item">
+                            <a href="{{ route('admin.cuentas.index') }}"
+                                class="nav-link  {{ url()->current() == route('admin.cuentas.index') ? 'bg-primary text-white collapse' : 'collapsed' }}">
+                                <i
+                                    class="bi bi-bank fs-5 {{ url()->current() == route('admin.cuentas.index') ? 'text-white' : 'text-primary' }}"></i>
+                                <span>
+                                    Cuentas
+                                </span>
+                            </a>
+                        </li><!-- End Components Nav | cuentas -->
+                    @endif
                 </ul>
             </li><!-- End Components Nav | configuraciones -->
         @endif
