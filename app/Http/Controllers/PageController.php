@@ -3,18 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePedidoRequest;
+use App\Mail\RegistroEmail;
+use App\Models\Carrito;
+use App\Models\Cuenta;
 use App\Models\DataDev;
 use App\Models\Helpers;
 use App\Models\Insumo;
 use App\Models\InsumoToProducto;
 use App\Models\Medida;
+use App\Models\Pago;
 use App\Models\Pedido;
 use App\Models\Producto;
+use App\Models\Role;
+use App\Models\Tasa;
 use App\Models\User;
 use App\Models\Variante;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Nette\Utils\Strings;
 
 class PageController extends Controller
@@ -64,18 +71,49 @@ class PageController extends Controller
     public function storePedido(StorePedidoRequest $request)
     {
         try {
+
             return $request->all();
+            /** Sanear datos */
+            $request['nombres_cliente'] = Strings::upper($request->nombres_cliente);
+            $request['apellidos_cliente'] = Strings::upper($request->apellidos_cliente);
+            $request['direccion_cliente'] = Strings::upper($request->direccion_cliente);
+            $request['nacionalidad_cliente'] = Strings::upper($request->nacionalidad_cliente ?? '');
+            $request['estado_cliente'] = Strings::upper($request->estado_cliente ?? '');
+            $request['ciudad_cliente'] = Strings::upper($request->ciudad_cliente ?? '');
+
+            /** Clave por defecto */
+            $clavePorDefecto = Helpers::generarCodigoPedidoUnico('ADC');
+
+            $cliente = null;
+
             /** si el cliente esta autenticado */
             if (Auth::user()) {
                 // Consultamosal cliente
                 $cliente = User::findOrFail(Auth::user()->id);
+            } else {
+                /** Verificamos si desee crear su cuenta */
+                if ($request->input('crear_cuenta', false)) {
+                    /** Crear el usuario */
+                    $user = User::create([
+                        'email' => $request->email_cliente,
+                        'password' => $clavePorDefecto,
+                        'nombres' => $request->nombres_cliente,
+                        'apellidos' => $request->apellidos_cliente,
+                        'cedula'  => $request->cedula,
+                        'nacionalidad' => $request->nacionalidad_cliente,
+                        'telefono' => $request->telefono_cliente,
+                        'direccion' => $request->direccion_cliente,
+                        'rol' => Role::where('nombre', 'CLIENTE')->first()->id,
+                    ]);
+
+                    /** Enviamos correo de bienvenida y  su contraseña */
+                    Mail::to($user->email)
+                        ->queue(new RegistroEmail($user,  $clavePorDefecto));
+                }
             }
 
-            /** Registrar Pago */
-            /** Registrar Pedido */
-            /** Registrar Carrito */
             /** Generar codigo de pedido */
-            $request['codigo'] = Helpers::generarCodigoPedidoUnico();
+            $codigoPedido = Helpers::generarCodigoPedidoUnico();
 
             /** Validar que el codigo no se repita */
             $codigoExiste = Pedido::where('codigo', $request['codigo'])->first();
@@ -84,26 +122,74 @@ class PageController extends Controller
                 $estatus = Response::HTTP_CONFLICT;
                 return back()->with(compact('mensaje', 'estatus'));
             }
+            /** Guardar el comprobante */
+            $urlComprobante = Helpers::setFile($request);
 
-            /** Completar datos */
-            $request['nombres_cliente'] = Strings::upper($request->nombres_cliente);
-            $request['apellidos_cliente'] = Strings::upper($request->apellidos_cliente);
-            $request['direccion_cliente'] = Strings::upper($request->direccion_cliente);
-            $request['nacionalidad_cliente'] = Strings::upper($request->nacionalidad_cliente ?? '');
-            $request['estado_cliente'] = Strings::upper($request->estado_cliente ?? '');
-            $request['ciudad_cliente'] = Strings::upper($request->ciudad_cliente ?? '');
+            /** Obtener info del metodo de pago o cuenta bancaria */
+            $cuenta = Cuenta::find($request->id_cuenta);
 
+            /** Registrar Pago */
+            Pago::create([
+                'codigo_pedido' => $codigoPedido,
+                'id_cuenta' => $request->id_cuenta,
+                'monto' => $request->monto,
+                'fecha' => $request->fecha_pago,
+                'comprobante' => $urlComprobante,
+                'referencia' => $request->referencia,
+                'metodo_pago' => $cuenta->metodo,
+                'codigo_cuenta' => $cuenta->codigo_banco,
+                'titular_cuenta' => $cuenta->titular,
+                'cedula_titular' => $cuenta->cedula_titular,
+                'telefono_cuenta' => $cuenta->telefono ?? null,
+                'numero_cuenta' => $cuenta->numero_cuenta ?? null,
+                'nombre_cuenta' => $cuentas->nombre_banco,
+                'estatus',
+            ]);
 
-            /** Registrarmos el pedido */
-            Pedido::create($request->all());
+            /** Registrar Pedido */
+            Pedido::create([
+                'codigo' => $codigoPedido,
+                'total_a_pagar' => $request->monto,
+                'id_cliente' => $cliente ? $cliente->id : null,
+                'nombres_cliente' => $request->nombres_cliente,
+                'apellidos_cliente' => $request->apellidos_cliente,
+                'direccion_cliente' => $request->direccion_cliente,
+                'nacionalidad_cliente' => $request->nacionalidad_cliente,
+                'cedula_cliente' => $request->cedula_cliente,
+                'telefono_cliente' => $request->telefono_cliente,
+                'email_cliente' => $request->email_cliente,
+                'estatus' => 'PENDIENTE'
+            ]);
+
+            /** Registrar Carrito */
+            foreach (session('carrito') as $key => $productoEnCarrito) {
+                Carrito::create([
+                    'codigo_pedido' => $codigoPedido,
+                    'id_producto' => $productoEnCarrito->id_producto,
+                    'id_variante' => $productoEnCarrito->id_variante,
+                    'nombre_producto' => $productoEnCarrito->nombre_producto,
+                    'tipo_producto' => $productoEnCarrito->nombre_producto,
+                    'alto_variante' => $productoEnCarrito->alto_variante,
+                    'ancho_variante' => $productoEnCarrito->ancho_variante,
+                    'medida_variante' => $productoEnCarrito->medida_variante, 
+                    'mas_detalles' => json_encode($productoEnCarrito->mas_detalles),
+                    'imagenes_adicionales' => json_encode($productoEnCarrito->imagenes_adicionales),
+                    'cantidad' => $request->cantidad,
+                    'precio' => $request->precio,
+                    'sub_total' => $request->subtotal,
+                ]);
+            }
+
 
             /** Configuramos el mensaje de respuesta para el usuario */
-            $mensaje = "Pedido creado correctamente";
+            $mensaje = "Su pedido se a registrado con exito!";
             $estatus = Response::HTTP_OK;
 
             /** fin */
             return view('page.fin', compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
+
+
             $mensaje = $th->getMessage() ?? 'Error al registrar el pedido verifique los datos suministrados!';
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'))->withInput($request->all());
@@ -240,8 +326,11 @@ class PageController extends Controller
     public function vistaFinalizarPedido(Request $request)
     {
         try {
+            // return session('carrito');
             $respuesta = DataDev::$respuesta;
-            return view('page.pagos.index', compact('respuesta'));
+            $tasa = Tasa::find(1);
+            $cuentas = Cuenta::where('estatus', '=', 1)->get();
+            return view('page.pagos.index', compact('respuesta', 'cuentas', 'tasa'));
         } catch (\Throwable $th) {
             $mensaje = $th->getMessage() ?? 'Error al configurar el pedido verifique los datos suministrados!';
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('metodo_pago', 255)->nullable();
             $table->string('codigo_cuenta', 255)->nullable();
             $table->string('titular_cuenta', 255)->nullable();
+            $table->string('cedula_titular', 255)->nullable();
             $table->string('telefono_cuenta', 255)->nullable();
             $table->string('numero_cuenta', 255)->nullable();
             $table->string('nombre_cuenta', 255)->nullable();

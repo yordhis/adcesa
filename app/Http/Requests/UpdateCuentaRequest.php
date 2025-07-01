@@ -29,6 +29,8 @@ class UpdateCuentaRequest extends FormRequest
             'numero_cuenta' => 'nullable | min:20 | max:22 ',
             'telefono' => 'nullable | min:11 | max:15 ',
             'titular' => 'required | min:4 | max:255 ',
+            'cedula_titular' => 'required | max:255 ',
+            'nacionalidad' => 'required | string | in:V,E,J',
         ];
     }
 }

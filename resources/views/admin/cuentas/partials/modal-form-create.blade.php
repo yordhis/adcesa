@@ -21,7 +21,7 @@
                         <label for="metodo" class="form-label">Método</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
-                                  <i class="bi bi-fonts"></i>
+                                <i class="bi bi-fonts"></i>
                             </span>
                             <input type="text" name="metodo" class="form-control" id="metodo"
                                 placeholder="Ingrese nombre del metodo de pago" value="{{ old('metodo') ?? '' }}"
@@ -82,21 +82,53 @@
                         @enderror
                     </div>
 
+                    <!-- Input cedula_Titular -->
+                    <div class="col-12">
+                        <label for="cedula_titular" class="form-label">Cédula del titular</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
+                                <i class="bi bi-person-vcard"></i>
+                            </span>
+                            <!-- Select Nacionalidad -->
+                            <select name="nacionalidad" class="form-select" id="nacionalidad" required>
+                                <option value="">Seleccione Nacionalidad</option>
+                                @if (old('nacionalidad'))
+                                    <option value="{{ old('nacionalidad') }}" selected>{{ old('nacionalidad') }}
+                                    </option>
+                                @endif
+                                <option value="V">V</option>
+                                <option value="E">E</option>
+                                <option value="J">J</option>
+                            </select>
+
+                            <input type="text" name="cedula_titular" class="form-control" id="cedula_titular"
+                                placeholder="Ingrese nombre del cedula_titular"
+                                value="{{ old('cedula_titular') ?? '' }}" required>
+                            <div class="invalid-feedback">Por favor, ingrese cedula titular de la cuenta! </div>
+                        </div>
+                        @error('cedula_titular')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <!-- Input Tipo cuenta -->
                     <div class="col-12">
                         <label for="tipo_cuenta" class="form-label">Tipo de cuenta</label>
                         <div class="input-group has-validation">
-                            <select class="form-select form-select-lg mb-3" name="tipo_cuenta" aria-label="Large select example">
-                                <option disabled selected>Seleccione tipo de cuenta</option>
-                                <option value="CORRIENTE" {{ old('tipo_cuenta') == 'CORRIENTE' ? 'selected': ''}}>CORRIENTE</option>
-                                <option value="AHORRO" {{ old('tipo_cuenta') == 'AHORRO' ? 'selected': ''}}>AHORRO</option>
+                            <select class="form-select form-select-lg mb-3" name="tipo_cuenta"
+                                aria-label="Large select example">
+                                <option value="">Seleccione tipo de cuenta</option>
+                                <option value="CORRIENTE" {{ old('tipo_cuenta') == 'CORRIENTE' ? 'selected' : '' }}>
+                                    CORRIENTE</option>
+                                <option value="AHORRO" {{ old('tipo_cuenta') == 'AHORRO' ? 'selected' : '' }}>AHORRO
+                                </option>
                             </select>
                         </div>
                         @error('tipo_cuenta')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Input N° cuenta -->
                     <div class="col-12">
                         <label for="numero_cuenta" class="form-label">Número de cuenta</label>
@@ -112,7 +144,7 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <!-- Input Télefono -->
                     <div class="col-12">
                         <label for="telefono" class="form-label">Número de télefono</label>

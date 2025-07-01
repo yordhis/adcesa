@@ -55,10 +55,11 @@
                         <label for="nombre_banco" class="form-label">Nombre del banco</label>
                         <div class="input-group has-validation">
                             <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
-                               <i class="bi bi-bank"></i>
+                                <i class="bi bi-bank"></i>
                             </span>
                             <input type="text" name="nombre_banco" class="form-control" id="nombre_banco"
-                                placeholder="Ingrese nombre del banco" value="{{ old('nombre_banco') ?? $cuenta->nombre_banco }}" required>
+                                placeholder="Ingrese nombre del banco"
+                                value="{{ old('nombre_banco') ?? $cuenta->nombre_banco }}" required>
                             <div class="invalid-feedback">Por favor, ingrese nombre_banco de la cuenta! </div>
                         </div>
                         @error('nombre_banco')
@@ -74,10 +75,44 @@
                                 <i class="bi bi-people"></i>
                             </span>
                             <input type="text" name="titular" class="form-control" id="titular"
-                                placeholder="Ingrese nombre del titular" value="{{ old('titular') ?? $cuenta->titular }}" required>
+                                placeholder="Ingrese nombre del titular"
+                                value="{{ old('titular') ?? $cuenta->titular }}" required>
                             <div class="invalid-feedback">Por favor, ingrese titular de la cuenta! </div>
                         </div>
                         @error('titular')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Input cedula_Titular -->
+                    <div class="col-12">
+                        <label for="cedula_titular" class="form-label">Cédula del titular o rif</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text text-white bg-primary" id="inputGroupPrepend">
+                                <i class="bi bi-person-vcard"></i>
+                            </span>
+                            <!-- Select Nacionalidad -->
+                            <select name="nacionalidad" class="form-select" id="nacionalidad" required>
+                                @if ($cuenta->nacionalidad)
+                                    <option value="{{ $cuenta->nacionalidad }}" selected>
+                                        {{ $cuenta->nacionalidad }}
+                                    </option>
+                                @endif
+                                <option value="">Seleccione Nacionalidad</option>
+                                @if (old('nacionalidad'))
+                                    <option value="{{ old('nacionalidad') }}" selected>{{ old('nacionalidad') }}
+                                    </option>
+                                @endif
+                                <option value="V">V</option>
+                                <option value="E">E</option>
+                                <option value="J">J</option>
+                            </select>
+                            <input type="text" name="cedula_titular" class="form-control" id="cedula_titular"
+                                placeholder="Ingrese nombre del cedula_titular"
+                                value="{{ old('cedula_titular') ?? $cuenta->cedula_titular }}" required>
+                            <div class="invalid-feedback">Por favor, ingrese cedula titular de la cuenta! </div>
+                        </div>
+                        @error('cedula_titular')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
@@ -89,9 +124,12 @@
                             <select class="form-select form-select-lg mb-3" name="tipo_cuenta"
                                 aria-label="Large select example">
                                 <option disabled selected>Seleccione tipo de cuenta</option>
-                                <option value="CORRIENTE" {{ (old('tipo_cuenta') == 'CORRIENTE' | $cuenta->nombre_banco == 'CORRIENTE') ? 'selected' : '' }}>
+                                <option value="CORRIENTE"
+                                    {{ (old('tipo_cuenta') == 'CORRIENTE') | ($cuenta->nombre_banco == 'CORRIENTE') ? 'selected' : '' }}>
                                     CORRIENTE</option>
-                                <option value="AHORRO" {{ (old('tipo_cuenta') == 'AHORRO' | $cuenta->nombre_banco == 'AHORRO') ? 'selected' : '' }}>AHORRO
+                                <option value="AHORRO"
+                                    {{ (old('tipo_cuenta') == 'AHORRO') | ($cuenta->nombre_banco == 'AHORRO') ? 'selected' : '' }}>
+                                    AHORRO
                                 </option>
                             </select>
                         </div>
@@ -108,7 +146,8 @@
                                 <i class="bi bi-hash"></i>
                             </span>
                             <input type="text" name="numero_cuenta" class="form-control" id="numero_cuenta"
-                                placeholder="Ingrese número de cuenta" value="{{ old('numero_cuenta') ?? $cuenta->numero_cuenta }}">
+                                placeholder="Ingrese número de cuenta"
+                                value="{{ old('numero_cuenta') ?? $cuenta->numero_cuenta }}">
                             <div class="invalid-feedback">Por favor, ingrese numero cuenta de la cuenta! </div>
                         </div>
                         @error('numero_cuenta')
@@ -124,7 +163,8 @@
                                 <i class="bi bi-phone"></i>
                             </span>
                             <input type="text" name="telefono" class="form-control" id="telefono"
-                                placeholder="Ingrese número de cuenta" value="{{ old('telefono') ?? $cuenta->telefono }}">
+                                placeholder="Ingrese número de cuenta"
+                                value="{{ old('telefono') ?? $cuenta->telefono }}">
                             <div class="invalid-feedback">Por favor, ingrese numero cuenta de la cuenta! </div>
                         </div>
                         @error('telefono')

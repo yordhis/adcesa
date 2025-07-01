@@ -21,8 +21,22 @@ class InsumoToProductoController extends Controller
     public function store(StoreInsumoToProductoRequest $request)
     {
         try {
+            /** Validar que no se añada el mismo insumo dos vesces */
+            $asignacionExiste = InsumoToProducto::where('id_producto', $request->input('id_producto'))
+                ->where('id_insumo', $request->input('id_insumo'))->first();
+            if ($asignacionExiste) {
+                $mensaje = "El producto ya tiene asignado el insumo, por favor intente con otro.";
+                $estatus = Response::HTTP_CONFLICT;
+                return back()->with(compact('mensaje', 'estatus'));
+            }
+
+            /** Asignar el insumo a la tabla pibote */
             InsumoToProducto::create($request->all());
+
+            /** Actualizar el estatus del producto para publicarlo */
             Producto::where('id', $request->input('id_producto'))->update(["estatus" => "ACTIVO"]);
+
+            /** Respuesta */
             $mensaje = "Insumo asignado correctamente";
             $estatus = Response::HTTP_OK;
             return back()->with(compact('mensaje', 'estatus'));
@@ -55,7 +69,7 @@ class InsumoToProductoController extends Controller
      * Método que elimina la variante
      * si no esta relacionada
      */
-    public function destroy( $id )
+    public function destroy($id)
     {
         try {
             $insumoToProducto = InsumoToProducto::find($id);

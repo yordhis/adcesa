@@ -103,8 +103,11 @@
                                 <td>{{ $cuenta->metodo }}</td>
                                 <td>{{ $cuenta->codigo_banco }}</td>
                                 <td>{{ $cuenta->nombre_banco }}</td>
-                                <td>{{ $cuenta->titular }}</td>
-                                <td>{{ $cuenta->tipo_cuenta }}</td>
+                                <td>
+                                    {{ $cuenta->titular }} <br>
+                                    <b>DNI: </b>{{ $cuenta->nacionalidad . "-" . $cuenta->cedula_titular }} <br>
+                                </td>
+                                <td>{{ $cuenta->tipo_cuenta ?? 'No asignado' }}</td>
                                 <td>
                                     @if ($cuenta->numero_cuenta)
                                         {{ preg_replace('/^(\d{4})(\d{4})(\d{2})(\d{10})$/', '$1-$2-$3-$4', $cuenta->numero_cuenta) }}

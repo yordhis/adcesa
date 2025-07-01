@@ -34,7 +34,7 @@
             <div class="col-sm-4 col-xs-12">
                 <div class="d-flex flex-column flex-fill bd-highlight mb-3 text-white">
                     <div class="p-2 bd-highlight fs-3">
-                        <b>Constactos</b>
+                        <b>Contactos</b>
                     </div>
                     <div class="p-2 bd-highlight">
                         <i class="bi bi-phone text-white">+58 424-5104676</i>

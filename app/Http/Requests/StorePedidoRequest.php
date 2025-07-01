@@ -22,7 +22,7 @@ class StorePedidoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'total_a_pagar' => 'required | numeric | max:9999999 | min:1',
+            'monto' => 'required | numeric | max:9999999 | min:1',
             'id_cliente' => 'nullable',
             'nombres_cliente' => 'nullable | string | max:255',
             'apellidos_cliente' => 'nullable | string | max:255',
@@ -34,6 +34,7 @@ class StorePedidoRequest extends FormRequest
             // datos del pago
             'id_cuenta' => 'required | numeric | max:9999999 | min:1',
             'monto' => 'required | numeric | max:9999999 | min:1',
+            'fecha_pago' => 'required|string|max:100',
             'file' => 'required | image | mimes:jpeg,png,jpg,gif,svg|max:2048', // comprobante
             'referencia' => 'required | string | max:255',
         ];

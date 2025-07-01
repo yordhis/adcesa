@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'Adcesa')
+@section('title', 'Adcesa - Pago')
 
 @section('content')
     @if (session('mensaje'))

@@ -236,7 +236,7 @@
             </a>
         </div>
         <div class="text-center m-2">
-            <a href="{{ route('page.index') }}" class="btn btn-success ">
+            <a href="{{ route('page.finalizar.pedido.vista') }}" class="btn btn-success ">
                 <i class="bi bi-paypal"></i>
                 Finalizar compra
             </a>

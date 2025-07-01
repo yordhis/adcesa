@@ -16,6 +16,8 @@ class Cuenta extends Model
         'numero_cuenta',
         'telefono',
         'titular',
+        'cedula_titular',
+        'nacionalidad',
         'tipo_cuenta', // Ahorros, Corriente, etc.
         'metodo', // Transferencia, Deposito, etc.
         'estatus', // 1: Activo, 0: Inactivo

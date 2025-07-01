@@ -105,10 +105,11 @@
                     </div>
 
                     <!-- Activar para crear cuenta -->
-                    <div class="col-12">
-                        <input class="form-check-input" type="checkbox" name="crear_cuenta" value="true"
-                            id="crear_cuenta" />
-                        <label class="form-check-label" for=""> Click en check si deseas crear cuenta con
+                    <div class="col-12 border p-2 mx-2 w-75 rounded-5">
+                        <input class="form-check-input border-2 border-success" type="checkbox" name="crear_cuenta"
+                            value="true" id="crear_cuenta" />
+                        <label class="form-check-label" for=""> Click aquí si deseas crear una cuenta de usuario
+                            con
                             estos datos
                         </label>
                     </div>
@@ -135,25 +136,98 @@
                     </ul>
                 @endif
 
-                <p class="fs-4 mt-5"><b>Informaciòn de pago</b></p>
+                <p class="fs-4 mt-5"><b>Información de pago</b></p>
+
+
+                {{-- Selector de metodos de pago --}}
+                <div class="col-12 ">
+                    <label for="id_cuenta" class="form-label">Método de pago</label>
+                    <select name="id_cuenta" class="form-select" id="id_cuenta" required>
+                        <option value="">Seleccione método</option>
+                        @foreach ($cuentas as $cuenta)
+                            @if (old('id_cuenta'))
+                                @if (old('id_cuenta') == $cuenta->id)
+                                    <option value="{{ old('id_cuenta') }}" selected>
+                                        {{ $cuenta->metodo }} - {{ $cuenta->nombre_banco }}</option>
+                                @endif
+                            @endif
+                            <option value="{{ $cuenta->id }}">{{ $cuenta->metodo }} - {{ $cuenta->nombre_banco }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <div class="invalid-feedback">
+                        Por favor, ingresar nacionalidad!
+                    </div>
+                    @error('id_cuenta')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Tarjetas de Informacion de los metodos de pago seleccionado --}}
+                <div class="col-12">
+                    @foreach ($cuentas as $cuenta)
+                        <ul class="list-group list-group-flush cuentas-info d-none" id="{{ $cuenta->id }}">
+                            <li class="list-group-item fs-4">
+                                <b>({{ $cuenta->codigo_banco }}) {{ $cuenta->nombre_banco }}</b>
+                            </li>
+                            <li class="list-group-item">
+                                🙍 <b>Titular:</b>
+                                {{ $cuenta->titular }} <br>
+                                💳 <b>Cédula:</b>
+                                {{ $cuenta->nacionalidad }}-{{ $cuenta->cedula_titular }}
+                            </li>
+
+                            @if ($cuenta->telefono)
+                                <li class="list-group-item">
+                                    📲 <b>Teléfono:</b>
+                                    {{ preg_replace('/^(\d{4})(\d{3})(\d{4})$/', '($1)-$2-$3', $cuenta->telefono) }}
+                                </li>
+                            @endif
+                            @if ($cuenta->numero_cuenta)
+                                <li class="list-group-item">
+                                    🏦 <b>Número de cuenta:</b> <br>
+                                    {{ $cuenta->tipo_cuenta }}:
+                                    #{{ preg_replace('/^(\d{4})(\d{4})(\d{2})(\d{10})$/', '$1-$2-$3-$4', $cuenta->numero_cuenta) }}
+                                </li>
+                            @endif
+
+
+                        </ul>
+                    @endforeach
+                </div>
+
+                {{-- Referencia  --}}
                 <div class="mb-1">
                     <label for="" class="form-label">Referencia</label>
                     <input type="text" class="form-control" name="referencia" value="{{ old('referencia') }}"
                         placeholder="Ingrese número de referencia" />
                 </div>
+
+                {{-- Fecha de pago  --}}
+                <div class="mb-1">
+                    <label for="fecha_pago" class="form-label">Fecha de pago</label>
+                    <input type="date" class="form-control" name="fecha_pago" value="{{ old('fecha_pago') }}"
+                        placeholder="Ingrese fecha de pago" />
+                </div>
+
+                {{-- Monto del pago --}}
                 <div class="mb-3">
                     <label for="" class="form-label">Monto</label>
                     @php
                         $totalPagar = 0;
+                        $totalAdicional = 0;
                     @endphp
                     @foreach (session('carrito') as $producto)
                         @php
                             $totalPagar = $totalPagar + $producto['subtotal'];
+                            $totalAdicional = $totalAdicional + $producto['precio_adicional'];
                         @endphp
                     @endforeach
                     <input type="number" class="form-control" name="monto" min="0"
-                        value="{{ $totalPagar }}" readonly />
+                        value="{{ $totalPagar + $totalAdicional }}" readonly />
                 </div>
+
+                {{-- Comprobante --}}
                 <div class="mb-3">
                     <label for="" class="form-label">Comprobante</label>
                     <input type="file" class="form-control" name="file" value="{{ old('file') ?? '' }}" />
