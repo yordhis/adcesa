@@ -2,7 +2,6 @@
 
 namespace App\Mail;
 
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RegistroEmail extends Mailable
+class PedidoEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,8 +17,12 @@ class RegistroEmail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public $user,
-        public $clavePorDefecto,
+        public $titulo,
+        public $cliente,
+        public $pedido,
+        public $carrito,
+        public $tasa,
+        public $tipoDeReceptor,
     ){}
 
     /**
@@ -28,7 +31,7 @@ class RegistroEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Bienvenido a Adcesa Publicidad',
+            subject: 'Notificación de pedido',
         );
     }
 
@@ -38,7 +41,7 @@ class RegistroEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.registros',
+            view: 'emails.pedido',
         );
     }
 

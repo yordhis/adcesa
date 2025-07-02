@@ -71,11 +71,11 @@
 
                     <!-- Input Cédula -->
                     <div class="col-sm-6 col-xs-12">
-                        <label for="cedula" class="form-label">Cédula</label>
-                        <input type="number" name="cedula" class="form-control" id="cedula"
-                            placeholder="Ingrese número de cédula" value="{{ old('cedula') ?? '' }}" required>
+                        <label for="cedula_cliente" class="form-label">Cédula</label>
+                        <input type="number" name="cedula_cliente" class="form-control" id="cedula_cliente"
+                            placeholder="Ingrese número de cédula" value="{{ old('cedula_cliente') ?? '' }}" required>
                         <div class="invalid-feedback">Por favor, Ingrese número de cédula valido!</div>
-                        @error('cedula')
+                        @error('cedula_cliente')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
@@ -200,7 +200,7 @@
                 <div class="mb-1">
                     <label for="" class="form-label">Referencia</label>
                     <input type="text" class="form-control" name="referencia" value="{{ old('referencia') }}"
-                        placeholder="Ingrese número de referencia" />
+                        placeholder="Ingrese número de referencia" required>
                 </div>
 
                 {{-- Fecha de pago  --}}
@@ -230,7 +230,7 @@
                 {{-- Comprobante --}}
                 <div class="mb-3">
                     <label for="" class="form-label">Comprobante</label>
-                    <input type="file" class="form-control" name="file" value="{{ old('file') ?? '' }}" />
+                    <input type="file" class="form-control" name="file" value="{{ old('file') ?? '' }}" required>
                 </div>
 
 

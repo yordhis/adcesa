@@ -23,18 +23,32 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
+                                    <div class="sticky-top text-end">
+                                        <form action="{{ route('page.remover.producto.carrito')}}" method="post">
+                                            @csrf
+                                            @method('POST')
+                                            <input type="hidden" name="id_producto"
+                                                value="{{ $producto['id_producto'] }}">
+                                            <button type="submit" class="btn btn-none" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                data-bs-title="Eliminar producto del carrito de compra">
+                                                <i class="bi bi-trash text-danger fs-5"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                     <h5 class="card-title">{{ $producto['nombre_producto'] }}</h5>
+
                                     @if ($producto['tipo_producto'])
                                         <div class="accordion accordion-flush" id="accordionFlushExample">
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header border p-1">
                                                     <button class="accordion-button collapsed" type="button"
-                                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                                        aria-expanded="false" aria-controls="flush-collapseOne">
-                                                        Detalledes del pedido:
+                                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne{{$producto['id_producto']}}"
+                                                        aria-expanded="false" aria-controls="flush-collapseOne{{$producto['id_producto']}}">
+                                                        Detalles del pedido:
                                                     </button>
                                                 </h2>
-                                                <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                                <div id="flush-collapseOne{{$producto['id_producto']}}" class="accordion-collapse collapse"
                                                     data-bs-parent="#accordionFlushExample">
                                                     <div class="accordion-body">
                                                         <p class="card-text">
@@ -68,7 +82,7 @@
                             <div class="col-md-12">
                                 <div class="card-footer d-flex justify-content-between">
                                     <p class="card-text">Precio C/U: {{ $producto['precio'] }} $</p>
-                                    <p class="card-text text-danger">Adicional: {{ $producto['precio_adicional'] }}
+                                    <p class="card-text text-danger">Adicional: {{ $producto['precio_adicional'] ?? 0 }}
                                         $</p>
                                     <p class="card-text">Cantidad: {{ $producto['cantidad'] }}</p>
                                     <p class="card-text">Subtotal:
@@ -83,7 +97,7 @@
         <div class="card-footer bg-light">
             <!-- total a pagar -->
             <div class="text-center m-2 fs-5 text-success">
-                <p>Total a pagar: {{ $totalPagar +  $totalAdicional }} $</p>
+                <p>Total a pagar: {{ $totalPagar + $totalAdicional }} $</p>
             </div>
         </div>
     </div>

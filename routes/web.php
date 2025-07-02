@@ -36,6 +36,7 @@ Route::get('/tienda/registro', [PageController::class, 'crearSesion'])->name('pa
 Route::get('/tienda/pedidos/{servicio_id}', [PageController::class, 'createPedido'])->name('page.crear.pedido');
 Route::post('/tienda/finalizar/pedido', [PageController::class, 'agregarAlCarrito'])->name('page.finalizar.pedido');
 Route::post('/tienda/agregar/carrito', [PageController::class, 'agregarAlCarrito'])->name('page.agregar.carrito');
+Route::post('/tienda/remover/carrito', [PageController::class, 'removerDelCarrito'])->name('page.remover.producto.carrito');
 Route::get('/tienda/finalizar/pedido', [PageController::class, 'vistaFinalizarPedido'])->name('page.finalizar.pedido.vista');
 Route::post('/tienda/registrar/pedido', [PageController::class, 'storePedido'])->name('page.pedidos.store');
 

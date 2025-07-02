@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserWebRequest;
 use App\Http\Requests\UpdateUserWebRequest;
+use App\Mail\RegistroEmail;
 use App\Models\DataDev;
 use App\Models\Helpers;
 use App\Models\Role;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Nette\Utils\Strings;
 
 
@@ -78,7 +80,8 @@ class ClienteController extends Controller
     public function store(StoreUserWebRequest $request)
     {
         try {
-
+            /** Generamos una clave aleatoria */
+            $claveGenerada = $request->input('password', Hash::make(Helpers::generarCodigoPedidoUnico('ADC')));
             /** Completar datos */
             $request['nombres'] = Strings::upper($request->nombres);
             $request['apellidos'] = Strings::upper($request->apellidos);
@@ -86,7 +89,7 @@ class ClienteController extends Controller
             $request['pais'] = Strings::upper($request->pais ?? '');
             $request['estado'] = Strings::upper($request->estado ?? '');
             $request['ciudad'] = Strings::upper($request->ciudad ?? '');
-            $request['password'] = $request->input('password', Hash::make(12345678));
+            $request['password'] = $claveGenerada;
             $request['rol'] = Role::where('nombre', 'CLIENTE')->first()->id;
 
 
@@ -96,7 +99,11 @@ class ClienteController extends Controller
             }
 
             /** Ejecutamos el guardado del cliente */
-            User::create($request->all());
+            $user = User::create($request->all());
+
+            /** ENVIAR CORREO */
+            Mail::to($user)
+                ->send(new RegistroEmail($user,  $claveGenerada));
 
             /** Configuramos el mensaje de respuesta para el usuario */
             $mensaje = "Cuenta de usuario creada correctamente";

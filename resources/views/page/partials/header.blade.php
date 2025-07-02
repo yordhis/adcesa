@@ -191,10 +191,12 @@
         @if (session('carrito'))
             @php
                 $totalPagar = 0;
+                $precioAdicional = 0;
             @endphp
             @foreach (session('carrito') as $producto)
                 @php
                     $totalPagar = $totalPagar + $producto['subtotal'];
+                    $precioAdicional = $precioAdicional + $producto['precio_adicional'];
                 @endphp
 
                 <div class="card mb-3" >
@@ -211,8 +213,10 @@
                         </div>
                         <div class="col-md-12">
                             <div class="card-footer d-flex justify-content-between">
-                                <p class="card-text">Precio Unitario: {{ $producto['precio'] }}</p>
-                                <p class="card-text">Subtotal: {{ $producto['subtotal'] }}</p>
+                                <p class="card-text">Precio U/C: {{ $producto['precio'] }}$</p>
+
+                                <p class="card-text">Adicional: {{ $producto['precio_adicional'] ?? 0 }}$</p>
+                                <p class="card-text">Subtotal: {{ $producto['subtotal'] + $producto['precio_adicional'] }}$</p>
                             </div>
                         </div>
                     </div>
@@ -221,7 +225,7 @@
             <!-- total a pagar -->
             <div class="text-center m-2">
                 <hr>
-                <p>Total a pagar: {{ $totalPagar }} $</p>
+                <p>Total a pagar: {{ $totalPagar + $precioAdicional }} $</p>
                 <hr>
             </div>
         @else
@@ -240,10 +244,7 @@
                 <i class="bi bi-paypal"></i>
                 Finalizar compra
             </a>
-            <a href="{{ route('page.index') }}/#servicios" class="btn btn-warning ">
-                <i class="bi bi-cart-fill"></i>
-                Ver carrito
-            </a>
+          
         </div>
     </div>
 </div>

@@ -39,4 +39,11 @@ class StorePedidoRequest extends FormRequest
             'referencia' => 'required | string | max:255',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'monto.min' => 'El carrito de compra esta vacio y el monto a pagar debe ser mayor a 0.'
+        ];
+    }
 }

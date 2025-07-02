@@ -22,32 +22,28 @@ class PedidoController extends Controller
         try {
             $respuesta = DataDev::$respuesta;
             $pedidos = [];
-            if ($request->filtro || $request->order) {
-                $pedidos = Pedido::where('rol', '=', 3)
-                    ->where('nombres', 'like',  "%$request->filtro%")
-                    ->orderBy('nombres', $request->input('order', 'ASC'))
+            if ($request->filtro) {
+                $pedidos = Pedido::where('codigo', $request->filtro)
+                    ->orderBy('created_at', $request->input('order', 'DESC'))
                     ->paginate($request->input('limit', 12));
 
                 if (!count($pedidos)) {
-                    $pedidos = Pedido::where('rol', '=', 3)
-                        ->where('apellidos', 'like',  "%$request->filtro%")
+                    $pedidos = Pedido::where('nombres', 'like',  "%$request->filtro%")
                         ->orderBy('nombres', $request->input('order', 'ASC'))
                         ->paginate($request->input('limit', 12));
                 }
                 if (!count($pedidos)) {
-                    $pedidos = Pedido::where('rol', '=', 3)
-                        ->where('email', 'like',  "%$request->filtro%")
+                    $pedidos = Pedido::where('email', 'like',  "%$request->filtro%")
                         ->orderBy('nombres', $request->input('order', 'ASC'))
                         ->paginate($request->input('limit', 12));
                 }
                 if (!count($pedidos)) {
-                    $pedidos = Pedido::where('rol', '=', 3)
-                        ->where('cedula', 'like',  "%$request->filtro%")
+                    $pedidos = Pedido::where('cedula', $request->filtro)
                         ->orderBy('nombres', $request->input('order', 'ASC'))
                         ->paginate($request->input('limit', 12));
                 }
             } else {
-                $pedidos = Pedido::orderBy('fecha', 'DESC')
+                $pedidos = Pedido::orderBy('created_at', 'DESC')
                     ->paginate($request->input('limit', 12));
             }
 
@@ -82,7 +78,7 @@ class PedidoController extends Controller
         }
     }
 
-      
+
 
     /**
      * Método que crea cuentas de pedidos

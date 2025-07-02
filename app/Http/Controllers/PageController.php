@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePedidoRequest;
+use App\Mail\PedidoEmail;
 use App\Mail\RegistroEmail;
 use App\Models\Carrito;
 use App\Models\Cuenta;
@@ -21,7 +22,9 @@ use App\Models\Variante;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Nette\Utils\Strings;
 
 class PageController extends Controller
@@ -70,13 +73,21 @@ class PageController extends Controller
 
     public function storePedido(StorePedidoRequest $request)
     {
-        try {
+        /** Generar codigo de pedido */
+        $codigoPedido = Helpers::generarCodigoPedidoUnico();
 
-            return $request->all();
+        try {
+            /** Validamos que tenga el carrito de compra con productos */
+            if (!count(session('carrito'))) {
+                $mensaje = 'El carrito de compra esta vacio, por favor agregue un producto.';
+                $estatus = Response::HTTP_CONFLICT;
+                return back()->with(compact('mensaje', 'estatus'))->withInput($request->all());
+            }
+
             /** Sanear datos */
-            $request['nombres_cliente'] = Strings::upper($request->nombres_cliente);
-            $request['apellidos_cliente'] = Strings::upper($request->apellidos_cliente);
-            $request['direccion_cliente'] = Strings::upper($request->direccion_cliente);
+            $request['nombres_cliente'] = Strings::upper($request->nombres_cliente ?? '');
+            $request['apellidos_cliente'] = Strings::upper($request->apellidos_cliente ?? '');
+            $request['direccion_cliente'] = Strings::upper($request->direccion_cliente ?? '');
             $request['nacionalidad_cliente'] = Strings::upper($request->nacionalidad_cliente ?? '');
             $request['estado_cliente'] = Strings::upper($request->estado_cliente ?? '');
             $request['ciudad_cliente'] = Strings::upper($request->ciudad_cliente ?? '');
@@ -93,13 +104,22 @@ class PageController extends Controller
             } else {
                 /** Verificamos si desee crear su cuenta */
                 if ($request->input('crear_cuenta', false)) {
+                    $clienteExiste = User::where('email', $request->email)->first();
+
+                    /** Validar si el cliente existe */
+                    if ($clienteExiste) {
+                        $mensaje = "El E-mail ya esta registrado!";
+                        $estatus = Response::HTTP_OK;
+                        return back()->with(compact('mensaje', 'estatus'))->withInput($request->all());
+                    }
+
                     /** Crear el usuario */
-                    $user = User::create([
+                    $cliente = User::create([
                         'email' => $request->email_cliente,
-                        'password' => $clavePorDefecto,
+                        'password' => Hash::make($clavePorDefecto),
                         'nombres' => $request->nombres_cliente,
                         'apellidos' => $request->apellidos_cliente,
-                        'cedula'  => $request->cedula,
+                        'cedula'  => $request->cedula_cliente,
                         'nacionalidad' => $request->nacionalidad_cliente,
                         'telefono' => $request->telefono_cliente,
                         'direccion' => $request->direccion_cliente,
@@ -107,21 +127,19 @@ class PageController extends Controller
                     ]);
 
                     /** Enviamos correo de bienvenida y  su contraseña */
-                    Mail::to($user->email)
-                        ->queue(new RegistroEmail($user,  $clavePorDefecto));
+                    Mail::to($cliente->email)
+                        ->send(new RegistroEmail($cliente,  $clavePorDefecto));
                 }
             }
 
-            /** Generar codigo de pedido */
-            $codigoPedido = Helpers::generarCodigoPedidoUnico();
-
             /** Validar que el codigo no se repita */
-            $codigoExiste = Pedido::where('codigo', $request['codigo'])->first();
+            $codigoExiste = Pedido::where('codigo', $codigoPedido)->first();
             if ($codigoExiste) {
                 $mensaje = "El código de pedido ya existe.";
                 $estatus = Response::HTTP_CONFLICT;
-                return back()->with(compact('mensaje', 'estatus'));
+                return back()->with(compact('mensaje', 'estatus'))->withInput($request->all());
             }
+
             /** Guardar el comprobante */
             $urlComprobante = Helpers::setFile($request);
 
@@ -142,22 +160,22 @@ class PageController extends Controller
                 'cedula_titular' => $cuenta->cedula_titular,
                 'telefono_cuenta' => $cuenta->telefono ?? null,
                 'numero_cuenta' => $cuenta->numero_cuenta ?? null,
-                'nombre_cuenta' => $cuentas->nombre_banco,
-                'estatus',
+                'nombre_cuenta' => $cuenta->nombre_banco,
+                'estatus' => 0,
             ]);
 
             /** Registrar Pedido */
-            Pedido::create([
+            $pedido = Pedido::create([
                 'codigo' => $codigoPedido,
                 'total_a_pagar' => $request->monto,
                 'id_cliente' => $cliente ? $cliente->id : null,
-                'nombres_cliente' => $request->nombres_cliente,
-                'apellidos_cliente' => $request->apellidos_cliente,
-                'direccion_cliente' => $request->direccion_cliente,
-                'nacionalidad_cliente' => $request->nacionalidad_cliente,
-                'cedula_cliente' => $request->cedula_cliente,
-                'telefono_cliente' => $request->telefono_cliente,
-                'email_cliente' => $request->email_cliente,
+                'nombres_cliente' => $cliente->nombres ?? $request->nombres_cliente,
+                'apellidos_cliente' => $cliente->apellidos ?? $request->apellidos_cliente,
+                'direccion_cliente' => $cliente->direccion ?? $request->direccion_cliente,
+                'nacionalidad_cliente' => $cliente->nacionalidad ?? $request->nacionalidad_cliente,
+                'cedula_cliente' => $cliente->cedula ?? $request->cedula_cliente,
+                'telefono_cliente' => $cliente->telefono ?? $request->telefono_cliente,
+                'email_cliente' => $cliente->email ?? $request->email_cliente,
                 'estatus' => 'PENDIENTE'
             ]);
 
@@ -165,31 +183,69 @@ class PageController extends Controller
             foreach (session('carrito') as $key => $productoEnCarrito) {
                 Carrito::create([
                     'codigo_pedido' => $codigoPedido,
-                    'id_producto' => $productoEnCarrito->id_producto,
-                    'id_variante' => $productoEnCarrito->id_variante,
-                    'nombre_producto' => $productoEnCarrito->nombre_producto,
-                    'tipo_producto' => $productoEnCarrito->nombre_producto,
-                    'alto_variante' => $productoEnCarrito->alto_variante,
-                    'ancho_variante' => $productoEnCarrito->ancho_variante,
-                    'medida_variante' => $productoEnCarrito->medida_variante, 
-                    'mas_detalles' => json_encode($productoEnCarrito->mas_detalles),
-                    'imagenes_adicionales' => json_encode($productoEnCarrito->imagenes_adicionales),
-                    'cantidad' => $request->cantidad,
-                    'precio' => $request->precio,
-                    'sub_total' => $request->subtotal,
+                    'id_producto' => $productoEnCarrito['id_producto'],
+                    'id_variante' => $productoEnCarrito['id_variante'],
+                    'nombre_producto' => $productoEnCarrito['nombre_producto'],
+                    'tipo_producto' => $productoEnCarrito['tipo_producto'],
+                    'alto_variante' => $productoEnCarrito['alto_variante'],
+                    'ancho_variante' => $productoEnCarrito['ancho_variante'],
+                    'medida_variante' => $productoEnCarrito['medida_variante'],
+                    'mas_detalles' => json_encode($productoEnCarrito['mas_detalles']),
+                    'imagenes_adicionales' => json_encode($productoEnCarrito['imagenes_adicionales']),
+                    'cantidad' => $productoEnCarrito['cantidad'],
+                    'precio' => $productoEnCarrito['precio'],
+                    'sub_total' => $productoEnCarrito['subtotal'],
                 ]);
             }
 
+            /** Enviamos de resumen del pedido al cliente y de nuevo pedido a la empresa */
+            $tasa = Tasa::find(1);
+            $carrito = Carrito::where('codigo_pedido', $pedido->codigo)->get();
+            foreach ($carrito as $key => $car) {
+                $carrito[$key]['imagenes_adicionales'] = json_decode($car->imagenes_adicionales);
+                $carrito[$key]['mas_detalles'] = json_decode($car->mas_detalles);
+            }
+            Mail::to($cliente->email)
+                ->send(new PedidoEmail(
+                    '¡Gracias por tu Pedido!',
+                    $cliente,
+                    $pedido,
+                    $carrito,
+                    $tasa,
+                    'CLIENTE',
+                ));
+
+            Mail::to(env('MAIL_FROM_ADDRESS', "adcesapublicidad@adcesa.com"))
+                ->send(new PedidoEmail(
+                    '¡TIENES UN NUEVO PEDIDO!',
+                    $cliente,
+                    $pedido,
+                    $carrito,
+                    $tasa,
+                    'EMPRESA',
+                ));
 
             /** Configuramos el mensaje de respuesta para el usuario */
             $mensaje = "Su pedido se a registrado con exito!";
             $estatus = Response::HTTP_OK;
 
+            /** reseteamos el carrito de compra */
+            session(['carrito' => []]);
+
             /** fin */
             return view('page.fin', compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
-
-
+            /** En caso de fallar eliminar el pedido de la db si se registro  */
+            $pedidoExiste = Pedido::where('codigo', $codigoPedido)->first();
+            if ($pedidoExiste) $pedidoExiste->delete();
+            $carritoExiste = Carrito::where('codigo_pedido', $codigoPedido)->first();
+            if ($carritoExiste) $carritoExiste->delete();
+            $pagoExiste = Pago::where('codigo_pedido', $codigoPedido)->first();
+            if ($pagoExiste) {
+                $pagoExiste->comprobante ? Helpers::removeFile($pagoExiste->comprobante) : null;
+                $pagoExiste->delete();
+            }
+            /** Respuesta del error*/
             $mensaje = $th->getMessage() ?? 'Error al registrar el pedido verifique los datos suministrados!';
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'))->withInput($request->all());
@@ -251,7 +307,7 @@ class PageController extends Controller
             $banderaDeProductoEnCarrito = false;
             if ($request->tipo_producto == 0) {
                 foreach ($carritoWeb as $key => $productoEnCarrito) {
-                    if ($productoEnCarrito['id_poducto'] == $request->id_producto) {
+                    if ($productoEnCarrito['id_producto'] == $request->id_producto) {
                         $banderaDeProductoEnCarrito = true;
                         $productoEnCarrito['cantidad'] = $productoEnCarrito['cantidad'] + 1;
                         $productoEnCarrito['subtotal'] = $productoEnCarrito['precio'] * $productoEnCarrito['cantidad'];
@@ -268,7 +324,7 @@ class PageController extends Controller
                     $medida = Medida::findOrFail($variante->id_medida);
 
                     array_push($carritoWeb, [
-                        "id_poducto" => $request->id_producto,
+                        "id_producto" => $request->id_producto,
                         "id_variante"  => $request->id_variante,
                         "nombre_producto" => $producto->nombre,
                         "imagen" => $producto->imagen,
@@ -285,7 +341,7 @@ class PageController extends Controller
                     ]);
                 } else {
                     array_push($carritoWeb, [
-                        "id_poducto" => $request->id_producto,
+                        "id_producto" => $request->id_producto,
                         "nombre_producto" => $producto->nombre,
                         "imagen" => $producto->imagen,
                         "tipo_producto" => $producto->tipo_producto,
@@ -315,6 +371,35 @@ class PageController extends Controller
             }
         } catch (\Throwable $th) {
             $mensaje = $th->getMessage() ?? 'Error al configurar el pedido verifique los datos suministrados!';
+            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
+            return back()->with(compact('mensaje', 'estatus'))->withInput($request->all());
+        }
+    }
+
+    /** Remover producto del carrito de compra */
+    public function removerDelCarrito(Request $request)
+    {
+        try {
+            if (session('carrito')) {
+                $carrito = session('carrito');
+                foreach ($carrito as $key => $producto) {
+                    if ($producto['id_producto'] == $request->id_producto) {
+                        unset($carrito[$key]); // Elimina el producto del array
+                        break;
+                    }
+                }
+
+                session(['carrito' => $carrito]); // Actualiza la sesión
+                $mensaje = "Producto eliminado del carrito correctamente.";
+                $estatus = Response::HTTP_OK;
+                return back()->with(compact('mensaje', 'estatus'));
+            } else {
+                $mensaje = "El carrito de compra esta vacio.";
+                $estatus = Response::HTTP_OK;
+                return back()->with(compact('mensaje', 'estatus'));
+            }
+        } catch (\Throwable $th) {
+            $mensaje = $th->getMessage() ?? 'Error al remover producto del carrito de compra.';
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'))->withInput($request->all());
         }

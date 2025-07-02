@@ -27,15 +27,6 @@
     <section class="section">
         <div class="row">
 
-            <div class="col-12 my-3">
-                <!-- Formulario de registro de pedidos -->
-                {{-- @include('admin.pedidos.partials.modal-form-create') --}}
-                {{-- <a href="{{ route('admin.pedidos.create') }}" class="btn btn-success ">
-                    <i class="bi bi-cart-check-fill"></i> Crear pedido
-                </a> --}}
-
-            </div>
-
             <!-- Filtro de pedidos  -->
             <div class="col-12">
                 <form action="{{ route('admin.pedidos.index') }}" method="post" id="filtro">
@@ -72,6 +63,7 @@
                             <option value="ASC">A-Z</option>
                             <option value="DESC">Z-A</option>
                         </select>
+
                         <button class="btn btn-primary" type="submit" id="button-addon2">
                             <i class="bi bi-search"></i>
                         </button>
@@ -90,12 +82,9 @@
                     <thead>
                         <tr class="table-dark text-white">
                             <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Descripción</th>
+                            <th scope="col">Código del pedido</th>
+                            <th scope="col">Cliente</th>
                             <th scope="col">Precio</th>
-                            <th scope="col">Tipo de pedido</th>
-                            <th scope="col">Existencia Real</th>
-                            <th scope="col">Categoria</th>
                             <th scope="col">Estatus</th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -106,19 +95,29 @@
                             <tr>
                                 <th scope="row">{{ ($pedidos->currentPage() - 1) * $pedidos->perPage() + $key + 1 }}
                                 </th>
-                                <td>{{ $pedido->nombre }}</td>
-                                <td>{{ $pedido->descripcion }}</td>
-                                <td>{{ $pedido->precio }}</td>
-                                <td>{{ $pedido->tipo_pedido ? 'Compuesto' : 'No Compuesto' }}</td>
-                                <td>{{ $pedido->stock }}</td>
-                                <td>{{ $pedido->categoria ?? 'SIN CATEGORÍA' }}</td>
-                                <td>{{ $pedido->estatus }}</td>
+                                <td>{{ $pedido->codigo }}</td>
+                                <td>
+                                    {{ $pedido->nombres_cliente .' '. $pedido->apellidos_cliente  }} <br>
+                                    {{ $pedido->nacionalidad_cliente .'-'. $pedido->cedula_cliente }}
+
+                                </td>
+                                <td>{{ $pedido->total_a_pagar }}</td>
+                                <td
+                                    class="
+                                    {{ $pedido->estatus == 'PENDIENTE' ? 'table-danger' : '' }}
+                                    {{ $pedido->estatus == 'RECHAZADO' ? 'table-danger' : '' }}
+                                    {{ $pedido->estatus == 'EN PROCESO' ? 'table-warning' : '' }}
+                                    {{ $pedido->estatus == 'APROBADO' ? 'table-success' : '' }}
+                                    {{ $pedido->estatus == 'ENTREGADO' ? 'table-prymary' : '' }}
+                                    "
+                                >{{ $pedido->estatus }}</td>
+                           
 
                                 <td>
-                                    @include('admin.pedidos.partials.modal-show')
+                                    {{-- @include('admin.pedidos.partials.modal-show') --}}
                                     {{-- @include('admin.pedidos.partials.modal-form-edit') --}}
-                                    @include('admin.pedidos.partials.modal-form-delete')
-                                    @include('admin.pedidos.partials.modal-form-procesar-pago')
+                                    {{-- @include('admin.pedidos.partials.modal-form-delete') --}}
+                                    {{-- @include('admin.pedidos.partials.modal-form-procesar-pago') --}}
                                     {{-- @include('admin.pedidos.partials.modal-form-asignar-insumo') --}}
                                 </td>
                             </tr>

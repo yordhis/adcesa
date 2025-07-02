@@ -21,6 +21,7 @@ class Pago extends Model
         'metodo_pago',
         'codigo_cuenta',
         'titular_cuenta',
+        'cedula_titular',
         'telefono_cuenta',
         'numero_cuenta',
         'nombre_cuenta',
