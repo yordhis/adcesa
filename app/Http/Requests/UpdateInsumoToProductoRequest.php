@@ -23,7 +23,8 @@ class UpdateInsumoToProductoRequest extends FormRequest
     {
         return [
             "id_producto" => 'required',
-            "id_insumo" => 'required'
+            "id_insumo" => 'required',
+             "cantidad_requerida" => 'required | numeric | max:9999999',
         ];
     }
 }

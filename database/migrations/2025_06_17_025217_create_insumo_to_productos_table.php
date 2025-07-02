@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('id_producto');
             $table->string('id_insumo');
+            $table->string('cantidad_requerida');
             $table->timestamps();
         });
     }

@@ -13,8 +13,6 @@ use Illuminate\Http\Response;
 class InsumoToProductoController extends Controller
 {
 
-
-
     /**
      * Método que crea las variantes
      */
