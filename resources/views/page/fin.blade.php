@@ -1,6 +1,6 @@
 @extends('layouts.page')
 
-@section('title', 'MARYLAND')
+@section('title', 'Adcesa')
 
 @section('content')
     @if (session('mensaje'))
@@ -9,7 +9,7 @@
 
     <div class="d-flex justify-content-center">
         <div class="card m-5 text-center" style="width: 30rem">
-            <img src="{{ asset('assets/img/registro.png') }}" class="card-img-top" alt="banner_fin">
+            <img src="{{ asset('assets/img/ok.png') }}" class="card-img-top" alt="banner_fin">
             <div class="card-body">
                 {{-- <h5 class="card-title fs-3">{{ $mensaje }}</h5> --}}
                 <p class="card-text">¡Gracias por su compra!</p>

@@ -50,13 +50,7 @@
                                     <div class="invalid-feedback">Por favor, ingrese su contraseña!</div>
                                 </div>
 
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="rememberMe" value="true"
-                                            id="rememberMe">
-                                        <label class="form-check-label" for="rememberMe">Acuérdate de mí</label>
-                                    </div>
-                                </div>
+                             
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100" type="submit">Entrar</button>
                                 </div>
