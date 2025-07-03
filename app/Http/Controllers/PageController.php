@@ -434,7 +434,35 @@ class PageController extends Controller
     public function mostraPerfil(Request $request, $id)
     {
         $cliente = User::find($id);
+
+        $pedidos = Pedido::where('id_cliente', $cliente->id)
+            ->orderBy('created_at', $request->input('order', 'DESC'))
+            ->paginate($request->input('limit', 12));
+
+        foreach ($pedidos as $key => $pedido) {
+            /** obtenmos el carrito de compra del pedido */
+            $carrito = Carrito::where('codigo_pedido', $pedido->codigo)->get();
+            foreach ($carrito as $key => $item) {
+                $item->mas_detalles = json_decode($item->mas_detalles);
+                $item->imagenes_adicionales = json_decode($item->imagenes_adicionales);
+
+                /** obtener los insumos del servicio */
+                if ($item->tipo_producto) {
+                    $item['insumos'] = InsumoToProducto::where('id_producto', $item->id_producto)->get();
+                    foreach ($item['insumos'] as $key => $insumoToProducto) {
+                        $item['insumos'][$key] = Insumo::find($insumoToProducto->id_insumo);
+                        $item['insumos'][$key]['medida'] = Medida::find($item['insumos'][$key]->id_medida);
+                    }
+                }
+            }
+            $pedido['carrito'] = $carrito;
+
+            /** Obtenemos el pago del pedido */
+            $pago = Pago::where('codigo_pedido', $pedido->codigo)->first();
+            $pago['cuenta'] = Cuenta::find($pago->id_cuenta) ?? null;
+            $pedido['pago'] = $pago;
+        }
         $respuesta = DataDev::$respuesta;
-        return view('page.clientes.perfil', compact('respuesta', 'cliente'));
+        return view('page.clientes.perfil', compact('respuesta', 'cliente', 'pedidos', 'request'));
     }
 }
