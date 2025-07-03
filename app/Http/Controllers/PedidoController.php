@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePedidoRequest;
 use App\Http\Requests\UpdatePedidoRequest;
+use App\Models\Carrito;
+use App\Models\Cuenta;
 use App\Models\DataDev;
 use App\Models\Helpers;
+use App\Models\Pago;
 use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\User;
@@ -28,23 +31,39 @@ class PedidoController extends Controller
                     ->paginate($request->input('limit', 12));
 
                 if (!count($pedidos)) {
-                    $pedidos = Pedido::where('nombres', 'like',  "%$request->filtro%")
-                        ->orderBy('nombres', $request->input('order', 'ASC'))
+                    $pedidos = Pedido::where('nombres_cliente', 'like',  "%$request->filtro%")
+                        ->orderBy('nombres_cliente', $request->input('order', 'ASC'))
                         ->paginate($request->input('limit', 12));
                 }
                 if (!count($pedidos)) {
-                    $pedidos = Pedido::where('email', 'like',  "%$request->filtro%")
-                        ->orderBy('nombres', $request->input('order', 'ASC'))
+                    $pedidos = Pedido::where('email_cliente', 'like',  "%$request->filtro%")
+                        ->orderBy('nombres_cliente', $request->input('order', 'ASC'))
                         ->paginate($request->input('limit', 12));
                 }
                 if (!count($pedidos)) {
-                    $pedidos = Pedido::where('cedula', $request->filtro)
-                        ->orderBy('nombres', $request->input('order', 'ASC'))
+                    $pedidos = Pedido::where('cedula_cliente', $request->filtro)
+                        ->orderBy('nombres_cliente', $request->input('order', 'ASC'))
                         ->paginate($request->input('limit', 12));
                 }
             } else {
-                $pedidos = Pedido::orderBy('created_at', 'DESC')
+                $pedidos = Pedido::orderBy('created_at', $request->input('order', 'DESC'))
                     ->paginate($request->input('limit', 12));
+            }
+
+            foreach ($pedidos as $key => $pedido) {
+                /** obtenmos el carrito de compra del pedido */
+                $carrito = Carrito::where('codigo_pedido', $pedido->codigo)->get();
+                foreach ($carrito as $key => $item) {
+                    $item->mas_detalles = json_decode($item->mas_detalles);
+                    $item->imagenes_adicionales = json_decode($item->imagenes_adicionales);
+                }
+                $pedido['carrito'] = $carrito;
+                
+                /** Obtenemos el pago del pedido */
+                $pago = Pago::where('codigo_pedido', $pedido->codigo)->first();
+                $pago['cuenta'] = Cuenta::find($pago->id_cuenta) ?? null;
+                $pedido['pago'] = $pago;
+
             }
 
             return view('admin.pedidos.index', compact('pedidos', 'request', 'respuesta'));

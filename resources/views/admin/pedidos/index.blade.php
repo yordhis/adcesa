@@ -97,28 +97,41 @@
                                 </th>
                                 <td>{{ $pedido->codigo }}</td>
                                 <td>
-                                    {{ $pedido->nombres_cliente .' '. $pedido->apellidos_cliente  }} <br>
-                                    {{ $pedido->nacionalidad_cliente .'-'. $pedido->cedula_cliente }}
+                                    {{ $pedido->nombres_cliente . ' ' . $pedido->apellidos_cliente }} <br>
+                                    {{ $pedido->nacionalidad_cliente . '-' . $pedido->cedula_cliente }}
 
                                 </td>
-                                <td>{{ $pedido->total_a_pagar }}</td>
+                                <td>{{ number_format($pedido->total_a_pagar, 2, ',', '.') }}$</td>
                                 <td
-                                    class="
-                                    {{ $pedido->estatus == 'PENDIENTE' ? 'table-danger' : '' }}
-                                    {{ $pedido->estatus == 'RECHAZADO' ? 'table-danger' : '' }}
-                                    {{ $pedido->estatus == 'EN PROCESO' ? 'table-warning' : '' }}
-                                    {{ $pedido->estatus == 'APROBADO' ? 'table-success' : '' }}
-                                    {{ $pedido->estatus == 'ENTREGADO' ? 'table-prymary' : '' }}
-                                    "
-                                >{{ $pedido->estatus }}</td>
-                           
+                                    class=" text-center
+                                    {{ $pedido->estatus == 'PENDIENTE' ? 'btn-danger' : '' }}    
+                                    {{ $pedido->estatus == 'APROBADO' ? 'btn-success' : '' }}    
+                                    {{ $pedido->estatus == 'PAGO VERIFICADO' ? 'btn-success' : '' }}    
+                                    {{ $pedido->estatus == 'EN PROCESO' ? 'btn-warning' : '' }}    
+                                    {{ $pedido->estatus == 'ENTREGADO' ? 'btn-primary' : '' }}    
+                                    {{ $pedido->estatus == 'RECHAZADO' ? 'btn-secondary' : '' }}  
+                                    ">
+                                    <button
+                                        class="fw-bold btn
+                                        {{ $pedido->estatus == 'PENDIENTE' ? 'btn-danger' : '' }}    
+                                        {{ $pedido->estatus == 'APROBADO' ? 'btn-success' : '' }}    
+                                        {{ $pedido->estatus == 'PAGO VERIFICADO' ? 'btn-success' : '' }}    
+                                        {{ $pedido->estatus == 'EN PROCESO' ? 'btn-warning' : '' }}    
+                                        {{ $pedido->estatus == 'ENTREGADO' ? 'btn-primary' : '' }}    
+                                        {{ $pedido->estatus == 'RECHAZADO' ? 'btn-secondary' : '' }}    
+                            ">
+                                        {{ $pedido->estatus }}
+                                    </button>
+                                </td>
+
 
                                 <td>
-                                    {{-- @include('admin.pedidos.partials.modal-show') --}}
+                                    @include('admin.pedidos.partials.modal-show')
                                     {{-- @include('admin.pedidos.partials.modal-form-edit') --}}
                                     {{-- @include('admin.pedidos.partials.modal-form-delete') --}}
-                                    {{-- @include('admin.pedidos.partials.modal-form-procesar-pago') --}}
-                                    {{-- @include('admin.pedidos.partials.modal-form-asignar-insumo') --}}
+                                    
+                                    @include('admin.pedidos.partials.modal-verificar-pago')
+                                    {{-- @include('admin.pedidos.partials.modal-form-atender-pedido') --}}
                                 </td>
                             </tr>
                         @endforeach
