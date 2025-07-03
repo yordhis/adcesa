@@ -118,6 +118,13 @@
                                                 <form action="{{ route('admin.pagos.update', $pedido->pago->id) }}" method="post">
                                                     @csrf
                                                     @method('PUT')
+                                                    <input type="hidden" name="estatus" value="0">
+                                                    <button type="submit" class="btn btn-outline-secondary m-3" >Dejar como pendiente</button>
+                                                </form>
+
+                                                <form action="{{ route('admin.pagos.update', $pedido->pago->id) }}" method="post">
+                                                    @csrf
+                                                    @method('PUT')
                                                     <input type="hidden" name="estatus" value="2">
                                                     <button type="submit" class="btn btn-outline-danger m-3" >Rechazar pago</button>
                                                 </form>

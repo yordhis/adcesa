@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePedidoRequest;
 use App\Http\Requests\UpdatePedidoRequest;
+use App\Mail\StatusMail;
 use App\Models\Carrito;
 use App\Models\Cuenta;
 use App\Models\DataDev;
 use App\Models\Helpers;
+use App\Models\Insumo;
+use App\Models\InsumoToProducto;
+use App\Models\Medida;
 use App\Models\Pago;
 use App\Models\Pedido;
 use App\Models\Producto;
@@ -15,6 +19,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Nette\Utils\Strings;
 
 class PedidoController extends Controller
@@ -56,16 +61,24 @@ class PedidoController extends Controller
                 foreach ($carrito as $key => $item) {
                     $item->mas_detalles = json_decode($item->mas_detalles);
                     $item->imagenes_adicionales = json_decode($item->imagenes_adicionales);
+
+                    /** obtener los insumos del servicio */
+                    if ($item->tipo_producto) {
+                        $item['insumos'] = InsumoToProducto::where('id_producto', $item->id_producto)->get();
+                        foreach ($item['insumos'] as $key => $insumoToProducto) {
+                            $item['insumos'][$key] = Insumo::find($insumoToProducto->id_insumo);
+                            $item['insumos'][$key]['medida'] = Medida::find($item['insumos'][$key]->id_medida);
+                        }
+                    }
                 }
                 $pedido['carrito'] = $carrito;
-                
+
                 /** Obtenemos el pago del pedido */
                 $pago = Pago::where('codigo_pedido', $pedido->codigo)->first();
                 $pago['cuenta'] = Cuenta::find($pago->id_cuenta) ?? null;
                 $pedido['pago'] = $pago;
-
             }
-
+            // return $pedidos;
             return view('admin.pedidos.index', compact('pedidos', 'request', 'respuesta'));
         } catch (\Throwable $th) {
             $mensaje = 'Error al listar pedido.';
@@ -148,23 +161,47 @@ class PedidoController extends Controller
      */
     public function update(UpdatePedidoRequest $request, Pedido $pedido)
     {
+        $insumosRequeridos = [];
         try {
-            return $pedido;
-            // $pedido = Pedido::findOrFail($id);
+            /** Configurar los insumos a debitar del inventario de insumos*/
+            foreach ($request->all() as $key => $value) {
+                if ($request[$key]) {
+                    if (str_contains($key, 'cantidad')) {
+                        /** obtener el id del insumo */
+                        $id = explode('_', $key)[0];
+                        $cantidad = $request[$key];
+
+                        array_push($insumosRequeridos, [
+                            'id_insumo' => $id,
+                            'cantidad' => $cantidad,
+                        ]);
+                    }
+                } else {
+                    $mensaje = "No puedes aprobar un pedido sino asignas los insumos a descontar en el inventario de insumos.";
+                    $estatus = Response::HTTP_NOT_FOUND;
+                    return back()->with(compact('mensaje', 'estatus'));
+                }
+            }
+
+            /** descontar del inventario insumos */
+            foreach ($insumosRequeridos as $key => $insumo) {
+                $insumoActual = Insumo::find($insumo['id_insumo']);
+                $insumoActual->update([
+                    'stock' => $insumoActual->stock - $insumo['cantidad']
+                ]);
+            }
+
             if ($pedido) {
-
-                /** Completar datos */
-                $request['nombres_cliente'] = Strings::upper($request->nombres_cliente);
-                $request['apellidos_cliente'] = Strings::upper($request->apellidos_cliente);
-                $request['direccion_cliente'] = Strings::upper($request->direccion_cliente);
-                $request['nacionalidad_cliente'] = Strings::upper($request->nacionalidad_cliente ?? '');
-                $request['estado_cliente'] = Strings::upper($request->estado_cliente ?? '');
-                $request['ciudad_cliente'] = Strings::upper($request->ciudad_cliente ?? '');
-
-
                 /** ejecutar la actualización */
-                $pedido->update($request->all());
-                $mensaje = "Datos actualizados correctamente";
+                $pedido->update([
+                    'estatus' => $request->estatus
+                ]);
+
+                /** Notificar al cliente por correo */
+                Mail::to($pedido->email_cliente)
+                    ->send(new StatusMail($pedido));
+
+                $mensaje = "El pedido fue aprobado y se descontaron los insumos correctamente";
                 $estatus = Response::HTTP_OK;
                 return back()->with(compact('mensaje', 'estatus'));
             } else {
@@ -173,7 +210,74 @@ class PedidoController extends Controller
                 return back()->with(compact('mensaje', 'estatus'));
             }
         } catch (\Throwable $th) {
+            /** devolver los insumos debitados */
+            if (count($insumosRequeridos)) {
+                foreach ($insumosRequeridos as $key => $insumo) {
+                    $insumoActual = Insumo::find($insumo['id_insumo']);
+                    $insumoActual->update([
+                        'stock' => $insumoActual->stock + $insumo['cantidad']
+                    ]);
+                }
+            }
+            /** respuesta de falla */
             $mensaje = Helpers::getMensajeError($th, 'Error al actualizar insumo');
+            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
+            return back()->with(compact('mensaje', 'estatus'));
+        }
+    }
+
+    /** Metodo Configurar fechas de inicio y de entrega */
+    public function configurarFechas(Request $request)
+    {
+        try {
+      
+            $pedido = Pedido::find($request->id_pedido);
+
+            /** ejecutar la actualización */
+            $pedido->update([
+                'estatus' => $request->estatus,
+                'fecha_inicio' => $request->fecha_inicio,
+                'fecha_entrega' => $request->fecha_entrega,
+            ]);
+
+            /** Notificar al cliente por correo */
+            Mail::to($pedido->email_cliente)
+                ->send(new StatusMail($pedido));
+
+            $mensaje = "El pedido fue puesto en marcha correctamente";
+            $estatus = Response::HTTP_OK;
+            return back()->with(compact('mensaje', 'estatus'));
+        } catch (\Throwable $th) {
+            /** respuesta de falla */
+            $mensaje = Helpers::getMensajeError($th, 'Error al configurar fecha y actualizar a proceso el pedido');
+            $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
+            return back()->with(compact('mensaje', 'estatus'));
+        }
+    }
+
+    /** Metodo marcar como entregado */
+    public function marcarComoEntregado(Request $request)
+    {
+        try {
+         
+            $pedido = Pedido::find($request->id_pedido);
+
+            /** ejecutar la actualización */
+            $pedido->update([
+                'estatus' => $request->estatus,
+                'fecha_entrega' => $request->fecha_entrega,
+            ]);
+
+            /** Notificar al cliente por correo */
+            Mail::to($pedido->email_cliente)
+                ->send(new StatusMail($pedido));
+
+            $mensaje = "El pedido se entrego, pedido finalizado correctamente.";
+            $estatus = Response::HTTP_OK;
+            return back()->with(compact('mensaje', 'estatus'));
+        } catch (\Throwable $th) {
+            /** respuesta de falla */
+            $mensaje = Helpers::getMensajeError($th, 'Error al entregar el pedido');
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
         }

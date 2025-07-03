@@ -11,8 +11,13 @@ use App\Models\{
     Estudiante,
     Grupo,
     GrupoEstudiante,
+    Insumo,
     Pago,
-    Profesore
+    Pedido,
+    Producto,
+    Profesore,
+    Role,
+    User
 };
 use Illuminate\Container\Attributes\Auth;
 
@@ -23,15 +28,16 @@ class DashboardController extends Controller
     {
         // return session('permisos');
         // return $user = auth()->user();
+        $rolCliente = Role::where('nombre', 'CLIENTE')->first()->id;
         $respuesta = DataDev::$respuesta;
         $dataTarjetas = [
-            "grupos" => 125,
-            "estudiantes" => 300,
-            "profesores" => 555,
-            "cuotas" => 10,
-            "pagos" => 100
+            "productos" => Producto::count(),
+            "insumos" => Insumo::count(),
+            "clientes" => User::where('rol', $rolCliente)->count(),
+            "pedidos" => Pedido::where('estatus', 'PENDIENTE')->count(),
+            "pedidos_entregado" => Pedido::where('estatus', 'ENTREGADO')->count(),
+            "pedidos_enproceso" => Pedido::where('estatus', 'EN PROCESO')->count(),
         ];
-
         return view('admin.dashboard', compact('dataTarjetas', 'respuesta'));
     }
 }

@@ -8,6 +8,7 @@ window.bootstrap = bootstrap;
 import '../css/style.css';
 import './pagos.js'; 
 import './pedidos.js'; 
+import './pedidos-admin.js'; 
 import './insumo.js'; 
 import './productos.js';
 import './utils/reset-filtro.js'

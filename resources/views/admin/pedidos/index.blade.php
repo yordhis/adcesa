@@ -85,7 +85,7 @@
                             <th scope="col">Código del pedido</th>
                             <th scope="col">Cliente</th>
                             <th scope="col">Precio</th>
-                            <th scope="col">Estatus</th>
+                            <th scope="col" class="text-center">Estatus</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
@@ -104,12 +104,13 @@
                                 <td>{{ number_format($pedido->total_a_pagar, 2, ',', '.') }}$</td>
                                 <td
                                     class=" text-center
-                                    {{ $pedido->estatus == 'PENDIENTE' ? 'btn-danger' : '' }}    
-                                    {{ $pedido->estatus == 'APROBADO' ? 'btn-success' : '' }}    
-                                    {{ $pedido->estatus == 'PAGO VERIFICADO' ? 'btn-success' : '' }}    
-                                    {{ $pedido->estatus == 'EN PROCESO' ? 'btn-warning' : '' }}    
-                                    {{ $pedido->estatus == 'ENTREGADO' ? 'btn-primary' : '' }}    
-                                    {{ $pedido->estatus == 'RECHAZADO' ? 'btn-secondary' : '' }}  
+                                    {{ $pedido->estatus == 'PENDIENTE' ? 'table-danger' : '' }}    
+                                    {{ $pedido->estatus == 'APROBADO' ? 'table-success' : '' }}    
+                                    {{ $pedido->estatus == 'PAGO VERIFICADO' ? 'table-success' : '' }}    
+                                    {{ $pedido->estatus == 'EN PROCESO' ? 'table-warning' : '' }}    
+                                    {{ $pedido->estatus == 'ENTREGADO' ? 'table-primary' : '' }}    
+                                    {{ $pedido->estatus == 'RECHAZADO' ? 'table-secondary' : '' }}  
+                                    {{ $pedido->estatus == 'PAGO RECHAZADO' ? 'table-danger' : '' }}  
                                     ">
                                     <button
                                         class="fw-bold btn
@@ -119,6 +120,7 @@
                                         {{ $pedido->estatus == 'EN PROCESO' ? 'btn-warning' : '' }}    
                                         {{ $pedido->estatus == 'ENTREGADO' ? 'btn-primary' : '' }}    
                                         {{ $pedido->estatus == 'RECHAZADO' ? 'btn-secondary' : '' }}    
+                                        {{ $pedido->estatus == 'PAGO RECHAZADO' ? 'btn-danger' : '' }}    
                             ">
                                         {{ $pedido->estatus }}
                                     </button>
@@ -131,7 +133,9 @@
                                     {{-- @include('admin.pedidos.partials.modal-form-delete') --}}
                                     
                                     @include('admin.pedidos.partials.modal-verificar-pago')
-                                    {{-- @include('admin.pedidos.partials.modal-form-atender-pedido') --}}
+                                    @include('admin.pedidos.partials.modal-form-atender-pedido')
+                                    @include('admin.pedidos.partials.modal-form-en-proceso')
+                                    @include('admin.pedidos.partials.modal-form-marcar-entregado')
                                 </td>
                             </tr>
                         @endforeach

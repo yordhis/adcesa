@@ -24,7 +24,7 @@
                                         <i class="bi bi-people-fill text-primary"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{ $dataTarjetas['grupos'] }}</h6>
+                                        <h6>{{ $dataTarjetas['clientes'] }}</h6>
                                         <span class="text-muted small pt-2 ps-1">Activos</span>
                                         {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
@@ -47,7 +47,7 @@
                                         <i class="bi bi-box text-dark"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{ $dataTarjetas['estudiantes'] }}</h6>
+                                        <h6>{{ $dataTarjetas['productos'] }}</h6>
                                         <span class="text-muted small pt-2 ps-1">Activos</span>
                                         {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
@@ -70,8 +70,8 @@
                                         <i class="bi bi-cart-check-fill text-success"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{ $dataTarjetas['profesores'] }}</h6>
-                                        <span class="text-muted small pt-2 ps-1">Activos</span>
+                                        <h6>{{ $dataTarjetas['pedidos_entregado'] }}</h6>
+                                        <span class="text-muted small pt-2 ps-1">Pedidos entregados</span>
                                         {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
                                     </div>
@@ -93,9 +93,9 @@
                                         <i class="bi bi-ui-checks-grid text-danger"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{ $dataTarjetas['cuotas'] }}</h6>
+                                        <h6>{{ $dataTarjetas['pedidos'] }}</h6>
                                         <span class="text-muted small pt-2 ps-1">
-                                            <a href="/cuotas" target="_self">
+                                            <a href="{{ route('admin.pedidos.index') }}">
                                                 Ver lista
                                             </a>
                                         </span>
@@ -120,8 +120,8 @@
                                         <i class="bi bi-truck text-dark"></i>
                                     </div>
                                     <div class="ps-3">
-                                        <h6>{{ $dataTarjetas['pagos'] }}</h6>
-                                        <span class="text-muted small pt-2 ps-1">Activos</span>
+                                        <h6>{{ $dataTarjetas['pedidos_enproceso'] }}</h6>
+                                        <span class="text-muted small pt-2 ps-1">En proceso</span>
                                         {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> --}}
 
                                     </div>
@@ -134,7 +134,7 @@
                     <!-- Tarjeta de Atender pedido -->
                     <div class="col-sm-4">
                         <div class="card info-card sales-card bg-primary rounded-3">
-                            <a href="{{ route('admin.clientes.index') }}">
+                            <a href="{{ route('admin.pedidos.index') }}">
                                 <div class="card-body">
                                     <h5 class="card-title"></span></h5>
 

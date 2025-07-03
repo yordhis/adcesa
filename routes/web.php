@@ -114,8 +114,8 @@ Route::middleware(['admin'])->group(function () {
     Route::resource('/tasas', TasaController::class)->names('admin.tasas');
 
     /** Rutas de Pedidos */
-    Route::post('/pedidos/buscar-cliente', [PedidoController::class, 'buscarCliente'])->name('admin.pedidos.buscar.cliente');
-    Route::post('/pedidos/buscar-producto', [PedidoController::class, 'buscarProducto'])->name('admin.pedidos.buscar.producto');
+    Route::post('/pedidos/configurar/fechas', [PedidoController::class, 'configurarFechas'])->name('admin.pedidos.configurar.fechas');
+    Route::post('/pedidos/marcar/como/entregado', [PedidoController::class, 'marcarComoEntregado'])->name('admin.pedidos.marcar.como.entregado');
     Route::resource('/pedidos', PedidoController::class)->names('admin.pedidos');
 
 });
