@@ -85,7 +85,7 @@
                                     <tr>
                                         <td class="table-dark fw-bold">Tasa del día</td>
                                         <td colspan="4">
-                                            {{ number_format(107, 2,',','.') }} Bs
+                                            {{ number_format($pedido->tasa, 2,',','.') }} Bs
                                         </td>
                                     </tr>
                                     <tr>
@@ -94,7 +94,7 @@
                                             {{ number_format($pedido->pago->monto, 2,',','.') }} $
                                         </td>
                                         <td colspan="2">
-                                            {{ number_format($pedido->pago->monto * 107, 2,',','.') }} Bs
+                                            {{ number_format($pedido->pago->monto * $pedido->tasa, 2,',','.') }} Bs
                                         </td>
                                     </tr>
                                     <tr>

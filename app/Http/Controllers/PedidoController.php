@@ -78,7 +78,7 @@ class PedidoController extends Controller
                 $pago['cuenta'] = Cuenta::find($pago->id_cuenta) ?? null;
                 $pedido['pago'] = $pago;
             }
-            // return $pedidos;
+          
             return view('admin.pedidos.index', compact('pedidos', 'request', 'respuesta'));
         } catch (\Throwable $th) {
             $mensaje = 'Error al listar pedido.';
@@ -286,11 +286,33 @@ class PedidoController extends Controller
     /**
      * Método que eliminas cuentas de usuarios pedidos
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         try {
             $pedido = pedido::findOrFail($id);
+            $carrito = Carrito::where('codigo_pedido', $pedido->codigo)->get();
+            $pago = Pago::where('codigo_pedido', $pedido->codigo)->first();
+
+            /** Borramos las imagenes adicionales */
+            foreach ($carrito as $key => $producto) {
+                if($producto->tipo_producto){
+                    $imagenesAdicionalesExiste = json_decode( $producto->imagenes_adicionales );
+                    if (count($imagenesAdicionalesExiste)) {
+                        foreach ($imagenesAdicionalesExiste as $key => $imagen) {
+                            Helpers::removeFile($imagen);
+                        }
+                    }
+                }
+            }
+
+            /** Barramos el comprobante */
+            if ($pago->comprobante) {
+                Helpers::removeFile($pago->comprobante);
+            }
+
+            $pago->delete();
             $pedido->delete();
+            Carrito::where('codigo_pedido', $pedido->codigo)->delete();            
 
             $mensaje = 'pedido eliminado correctamente.';
             $estatus = Response::HTTP_OK;

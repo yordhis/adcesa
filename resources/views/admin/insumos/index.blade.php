@@ -46,38 +46,6 @@
                             placeholder="Buscar por: Descripcion o código de barra" aria-label="Filtrar"
                             aria-describedby="button-addon2">
 
-                        <!-- Selector del categoria a listar en la tabla -->
-                        {{-- <select name="id_categoria" id="id_categoria" class="form-select">
-                            <option disabled selected>Categoria</option>
-                            <option value=" ">Todas las categorias</option>
-                            @foreach ($categorias as $categoria)
-                                @if ($request->id_categoria)
-                                    @if ($request->id_categoria == $categoria->id)
-                                        <option value="{{ $categoria->id }}" selected>{{ $categoria->nombre }}</option>
-                                    @endif
-                                @endif
-                                <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
-                            @endforeach
-                        </select> --}}
-
-
-                        <!-- Selector del categoria a listar en la tabla -->
-                        {{-- <select name="id_marca" id="id_marca" class="form-select">
-                            <option disabled selected>Marca</option>
-                             <option value=" ">Todas las marcas</option>
-                            @foreach ($marcas as $marca)
-                                @if ($request->id_marca)
-                                    @if ($request->id_marca == $marca->id)
-                                        <option value="{{ $marca->id }}" selected>{{ $marca->nombre }}</option>
-                                    @endif
-                                @endif
-
-                                <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
-                            @endforeach
-                        </select> --}}
-
-
-
                         <!-- Selector del limite a listar en la tabla -->
                         <select name="limit" id="limit" class="form-select">
                             @if ($request->limit)

@@ -1,7 +1,9 @@
 <!-- Vertically centered Modal -->
-<a type="button" class="mb-3" data-bs-toggle="modal" data-bs-target="#modalVer{{ $pedido->id }}">
-    <i class="bi bi-eye fs-4"></i>
-</a>
+
+<button type="button" class="btn btn-outline-info fw-bold mb-3" data-bs-toggle="modal"
+    data-bs-target="#modalVer{{ $pedido->id }}">
+    Ver 
+</button>
 
 <div class="modal fade" id="modalVer{{ $pedido->id }}" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -151,10 +153,10 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="text-end fw-bold">Tasa:</td>
-                                        <td class="text-start ">{{ number_format(107, 2, ',', '.') }} Bs</td>
+                                        <td class="text-start ">{{ number_format($pedido->tasa, 2, ',', '.') }} Bs</td>
                                         <td class="text-end fw-bold">Total a pagar:</td>
                                         <td class="text-end">
-                                            {{ number_format($pedido->total_a_pagar * 107, 2, ',', '.') }} Bs</td>
+                                            {{ number_format($pedido->total_a_pagar * $pedido->tasa, 2, ',', '.') }} Bs</td>
                                     </tr>
                                 </tfoot>
                             </table>

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('email_cliente')->nullable();
             $table->string('fecha_inicio')->nullable();
             $table->string('fecha_entrega')->nullable();
+            $table->string('tasa')->default(0);
             $table->string('estatus')->nullable(); 
             // Ejemplo: 'pendiente', 'presupuesto_enviado', 'rechazado', 'completado', 'pago_recibido', 'procesando_pedido', 'entregado'
             $table->timestamps();

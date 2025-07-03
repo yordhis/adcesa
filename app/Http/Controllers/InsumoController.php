@@ -74,13 +74,12 @@ class InsumoController extends Controller
 
             foreach ($medidas as $key => $medida) {
                 foreach ($insumos as $key => $insumo) {
-                    if ($insumo->medida == $medida['id']) {
+                    if ($insumo->id_medida == $medida['id']) {
                         $insumo['nombre_medida'] = $medida['nombre'];
                         $insumo['simbolo'] = $medida['simbolo'];
                     }
                 }
             }
-
             return view('admin.insumos.index', compact('insumos', 'almacenes', 'medidas', 'categorias', 'marcas', 'request', 'respuesta'));
         } catch (\Throwable $th) {
             $mensaje = Helpers::getMensajeError($th, 'Error al retornar la vista de insumo');

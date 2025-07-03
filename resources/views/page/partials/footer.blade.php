@@ -25,8 +25,8 @@
                     </div>
                     <div class="p-2 bd-highlight">
                         Lunes a Domingo:
-                        8:00am - 5:00pm 
-                       
+                        8:00am - 5:00pm
+
                     </div>
 
                 </div>
@@ -58,6 +58,24 @@
         </div>
     </div>
 </footer>
+
+<!-- Loading Global -->
+<div id="global-loading"
+    style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;background:rgba(255,255,255,0.85);display:flex;align-items:center;justify-content:center;">
+    <div style="text-align:center;">
+        <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <div style="margin-top: 1rem; font-size: 1.2rem; color: #333;">Cargando...</div>
+    </div>
+</div>
+
+<!-- Opcional: Ocultar el loading cuando la página esté lista -->
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('global-loading').style.display = 'none';
+    });
+</script>
 
 {{-- boton de whatsapp --}}
 <a href="https://wa.me/584245104676?text=Hola me gustaria saber más sobre sus servicio publicitarios" target="_blank"

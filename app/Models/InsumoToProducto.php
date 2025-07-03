@@ -13,7 +13,6 @@ class InsumoToProducto extends Model
      protected $fillable = [
         "id_producto",
         "id_insumo",
-        "cantidad_requerida",
     ];
 
     protected $table = 'insumo_to_productos';

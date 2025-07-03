@@ -23,6 +23,7 @@ class Pedido extends Model
         'email_cliente',
         'fecha_inicio',
         'fecha_entrega',
+        'tasa',
         'estatus'
     ];
 }

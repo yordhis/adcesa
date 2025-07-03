@@ -77,6 +77,13 @@ class PageController extends Controller
         $codigoPedido = Helpers::generarCodigoPedidoUnico();
 
         try {
+            /** validar si la referencia */
+            $referenciaExite = Pago::where('referencia', $request->referencia)->first();
+            if ($referenciaExite) {
+                $mensaje = 'Referencia Existe, por favor ingrese una referencia valida!.';
+                $estatus = Response::HTTP_CONFLICT;
+                return back()->with(compact('mensaje', 'estatus'))->withInput($request->all());
+            }
             /** Validamos que tenga el carrito de compra con productos */
             if (!count(session('carrito'))) {
                 $mensaje = 'El carrito de compra esta vacio, por favor agregue un producto.';
@@ -164,6 +171,8 @@ class PageController extends Controller
                 'estatus' => 0,
             ]);
 
+            $tasa = Tasa::find(1)->tasa;
+
             /** Registrar Pedido */
             $pedido = Pedido::create([
                 'codigo' => $codigoPedido,
@@ -176,6 +185,7 @@ class PageController extends Controller
                 'cedula_cliente' => $cliente->cedula ?? $request->cedula_cliente,
                 'telefono_cliente' => $cliente->telefono ?? $request->telefono_cliente,
                 'email_cliente' => $cliente->email ?? $request->email_cliente,
+                'tasa' => $tasa,
                 'estatus' => 'PENDIENTE'
             ]);
 
@@ -413,7 +423,7 @@ class PageController extends Controller
         try {
             // return session('carrito');
             $respuesta = DataDev::$respuesta;
-            $tasa = Tasa::find(1);
+            $tasa = Tasa::find(1)->tasa;
             $cuentas = Cuenta::where('estatus', '=', 1)->get();
             return view('page.pagos.index', compact('respuesta', 'cuentas', 'tasa'));
         } catch (\Throwable $th) {

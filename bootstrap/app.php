@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\validarPerfil;
 use App\Http\Middleware\ValidarPermisos;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate;
@@ -22,6 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('admin', [
             Authenticate::class,
             ValidarPermisos::class,
+        ]);
+        $middleware->appendToGroup('perfil', [
+            Authenticate::class,
+            ValidarPerfil::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

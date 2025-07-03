@@ -22,7 +22,13 @@ use App\Http\Controllers\{
     TasaController,
     VarianteController
 };
-
+use App\Models\DataDev;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,12 +47,71 @@ Route::get('/tienda/finalizar/pedido', [PageController::class, 'vistaFinalizarPe
 Route::post('/tienda/registrar/pedido', [PageController::class, 'storePedido'])->name('page.pedidos.store');
 
 /** Rutas de usuario cliente logeado */
-Route::middleware('auth')->group(function () {
+Route::middleware(['perfil'])->group(function () {
     Route::get('/home', [PageController::class, 'index'])->name('page.home');
     Route::get('/perfil/{idCliente}', [PageController::class, 'mostraPerfil'])->name('page.cliente.perfil');
     Route::put('/perfil/{idCliente}', [ClienteController::class, 'update'])->name('page.clientes.update');
     Route::put('/perfil/edit/password/{idCliente}', [ClienteController::class, 'editPassword'])->name('page.clientes.update.password');
 })->prefix('tienda');
+
+/*
+|--------------------------------------------------------------------------
+| Restaurar contraseña
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/recuperar-calve', function () {
+    $respuesta = DataDev::$respuesta;
+    return view('recuperarcalve', compact('respuesta'));
+})->middleware('guest')->name('recuperar.clave');
+
+
+
+
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+
+    return $status === Password::ResetLinkSent
+        ? back()->with(['status' => __($status)])
+        : back()->withErrors(['email' => __($status)]);
+})->middleware('guest')->name('password.email');
+
+Route::get('/reset-password/{token}', function (string $token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
+
+
+
+
+Route::post('/reset-password', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function (User $user, string $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+
+            $user->save();
+
+            event(new PasswordReset($user));
+        }
+    );
+
+    return $status === Password::PasswordReset
+        ? redirect()->route('login')->with('status', __($status))
+        : back()->withErrors(['email' => [__($status)]]);
+})->middleware('guest')->name('password.update');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -117,5 +182,4 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/pedidos/configurar/fechas', [PedidoController::class, 'configurarFechas'])->name('admin.pedidos.configurar.fechas');
     Route::post('/pedidos/marcar/como/entregado', [PedidoController::class, 'marcarComoEntregado'])->name('admin.pedidos.marcar.como.entregado');
     Route::resource('/pedidos', PedidoController::class)->names('admin.pedidos');
-
 });

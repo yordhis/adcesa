@@ -32,13 +32,6 @@
                                 <label for="floatingSelectGrid">Asignar Insumos</label>
                             </div>
                         </div>
-                        <!-- insumo -->
-                        <div class="col-md">
-                            <div class="form-floating">
-                               <input name="cantidad_requerida" type="number" step="any" class="form-control" required>
-                                <label for="floatingSelectGrid">Cantidad requerida</label>
-                            </div>
-                        </div>
 
                         <!-- Botón de agregar Variante -->
                         <div class="col-md">
@@ -57,7 +50,6 @@
                         <tr class="table-dark text-white">
                             
                             <th scope="col">Nombre</th>
-                            <th scope="col">Cantidad Requerida</th>
                             <th scope="col">Acciones</th>
                         </tr>
                     </thead>
@@ -67,7 +59,6 @@
                             <tr>
 
                                 <td>{{ $insumo->nombre }}</td>
-                                <td>{{ $insumo->cantidad_requerida }}</td>
                                 <td>
                                     <form action="{{ route('admin.insumostoproductos.destroy', $insumo->id) }}" method="POST" class="d-inline">
                                         @csrf

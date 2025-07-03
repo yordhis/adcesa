@@ -38,7 +38,7 @@ class ValidarPermisos
                 ]);
             }
         }
-
+        
         return $next($request);
     }
 }

@@ -212,7 +212,10 @@
 
                 {{-- Monto del pago --}}
                 <div class="mb-3">
-                    <label for="" class="form-label">Monto</label>
+                    <div class="d-flex justify-content-between">
+                    <label for="" class="form-label">Monto divisas</label>
+                    <label for="" class="form-label">Monto Bolívares</label>
+                    </div>
                     @php
                         $totalPagar = 0;
                         $totalAdicional = 0;
@@ -223,8 +226,18 @@
                             $totalAdicional = $totalAdicional + $producto['precio_adicional'];
                         @endphp
                     @endforeach
-                    <input type="number" class="form-control" name="monto" min="0"
-                        value="{{ $totalPagar + $totalAdicional }}" readonly />
+                    <div class="d-flex justify-content-between">
+                        <input type="number" class="form-control m-2 w-75" step="any" name="monto" min="0"
+                            value="{{ $totalPagar + $totalAdicional }}" readonly />
+
+                            @php
+                                $montoEnBolivares = (($totalPagar + $totalAdicional) * $tasa)
+                            @endphp
+                        <p class="m-2 fs-4">
+                            {{ number_format($montoEnBolivares, 2) }}</p>
+
+                    </div>
+
                 </div>
 
                 {{-- Comprobante --}}
