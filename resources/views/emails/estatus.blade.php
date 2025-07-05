@@ -4,94 +4,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estatus del pedido</title>
+    <title>Pedido</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
-            color: #333333;
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
-            width: 100%;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 30px auto;
             background-color: #ffffff;
-            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
         }
 
         .header {
+            background-color: #007bff;
+            /* Color principal de Adcesa, ajusta si es diferente */
+            color: #ffffff;
+            padding: 30px 25px;
             text-align: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #3410a0;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
         }
 
         .header h1 {
-            color: #333333;
             margin: 0;
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: 700;
         }
 
         .content {
-            padding: 20px 0;
+            padding: 25px;
+            line-height: 1.6;
+            color: #555;
         }
 
         .content p {
-            line-height: 1.6;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 16px;
         }
 
-        .order-details {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-            border: 1px solid #eeeeee;
-        }
-
-        .order-details ul {
+        .content ul {
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin: 20px 0;
         }
 
-        .order-details ul li {
-            margin-bottom: 8px;
+        .content ul li {
+            background-color: #e9f7ff;
+            /* Un azul claro para destacar */
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+            font-size: 15px;
         }
 
-        .order-details ul li strong {
+        .button_details-container {
+            text-align: center;
+            padding: 10px 25px 25px;
+        }
+
+        .button_details {
             display: inline-block;
-            width: 100%;
-            /* Adjust as needed for alignment */
+            background-color: #00ffbf;
+            color: #ffffff;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .button_details:hover {
+            background-color: #c7d8dc;
         }
 
         .button-container {
             text-align: center;
-            padding-top: 20px;
+            padding: 10px 25px 25px;
         }
 
         .button {
             display: inline-block;
-            padding: 10px 20px;
-            margin: 10px 0;
-            background-color: #007bff;
+            background-color: #28a745;
+            /* Un verde vibrante para el botón, ajusta si es necesario */
             color: #ffffff;
-            text-decoration: none;
+            padding: 12px 25px;
             border-radius: 5px;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #218838;
         }
 
         .footer {
+            background-color: #f8f9fa;
+            color: #777;
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #eeeeee;
-            font-size: 12px;
-            color: #777777;
+            padding: 20px 25px;
+            font-size: 13px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-top: 1px solid #eee;
         }
 
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .logo {
+            margin-bottom: 20px;
+            max-width: 150px;
+            /* Ajusta el tamaño del logo */
+        }
+
+        /** Btn estatus */
         .btn-status {
             display: inline-block;
             padding: 4px 14px;
@@ -127,147 +173,49 @@
         .btn-status.pago-rechazado {
             background: #2b2f2cd7;
         }
-
-
-        /** estillos para las tablas */
-
-        /* Estilos generales para el contenedor de la tabla */
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-            /* Permite desplazamiento horizontal en pantallas pequeñas */
-            margin: 20px 0;
-            border-radius: 8px;
-            /* Bordes ligeramente redondeados para el contenedor */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            /* Sombra suave para elevación */
-            background-color: #ffffff;
-            /* Fondo blanco para el contenedor */
-        }
-
-        /* Estilos para la tabla en sí */
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-            /* Colapsa los bordes de las celdas */
-            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-            /* Fuentes modernas */
-            color: #333;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        /* Estilos para el encabezado de la tabla (thead) */
-        .orders-table thead {
-            background-color: #f8f9fa;
-            /* Fondo ligeramente gris para el encabezado */
-            border-bottom: 2px solid #e9ecef;
-            /* Borde inferior para separar del cuerpo */
-        }
-
-        /* Estilos para las celdas del encabezado (th) */
-        .orders-table th {
-            padding: 12px 15px;
-            /* Espaciado interno */
-            text-align: left;
-            /* Alineación del texto a la izquierda */
-            font-weight: 600;
-            /* Texto seminegrita */
-            color: #555;
-            /* Color de texto más oscuro */
-            text-transform: uppercase;
-            /* Texto en mayúsculas */
-            letter-spacing: 0.5px;
-            /* Espaciado entre letras */
-        }
-
-        /* Estilos para las filas del cuerpo de la tabla (tbody tr) */
-        .orders-table tbody tr {
-            border-bottom: 1px solid #dee2e6;
-            /* Borde inferior para cada fila */
-            transition: background-color 0.2s ease;
-            /* Transición suave al pasar el ratón */
-        }
-
-        /* Efecto hover para las filas del cuerpo */
-        .orders-table tbody tr:hover {
-            background-color: #f1f3f5;
-            /* Fondo ligeramente más oscuro al pasar el ratón */
-        }
-
-        /* Estilos para las celdas del cuerpo (td) */
-        .orders-table td {
-            padding: 12px 15px;
-            /* Espaciado interno */
-            vertical-align: middle;
-            /* Alineación vertical al medio */
-        }
-
-        /* Estilos para la última fila si es un total o resumen */
-        .orders-table tfoot tr {
-            background-color: #e9ecef;
-            font-weight: bold;
-            border-top: 2px solid #dee2e6;
-        }
-
-        .orders-table tfoot td {
-            padding: 12px 15px;
-            text-align: right;
-            /* Alinea el total a la derecha */
-            color: #222;
-        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <div class="header">
-            {{-- <h1>{{¡Gracias por tu Pedido!}}</h1> --}}
-            <h1>Estatus del pedido</h1>
+            <h1>{{ $titulo ?? 'Pedido'}} # {{ $pedido->codigo }}</h1>
+
         </div>
         <div class="content">
-            <p>Hola <b>{{ $pedido->nombres_cliente . ' ' . $pedido->apellidos_cliente }}</b>.</p>
-            <p>Tu pedido a cambiado de estatus, ver los siguientes detalles:</p>
+            <p>Estimado/a cliente <b>{{ $pedido->nombres_cliente . ' ' . $pedido->apellidos_cliente }}</b></p>
+            <p>Gracias por confiar en nosotros para potenciar tu marca y alcanzar tus objetivos de comunicación.</p>
 
-            <div class="order-details">
-                <ul>
-                    <li><strong>Código de Pedido:</strong> # {{ $pedido->codigo }}</li>
-                    <li><strong>Estatus del pedido:</strong>
-                        {{-- <button
-                            class="fw-bold btn
-                                        {{ $pedido->estatus == 'PENDIENTE' ? 'btn-danger' : '' }}    
-                                        {{ $pedido->estatus == 'APROBADO' ? 'btn-success' : '' }}    
-                                        {{ $pedido->estatus == 'PAGO VERIFICADO' ? 'btn-success' : '' }}    
-                                        {{ $pedido->estatus == 'EN PROCESO' ? 'btn-warning' : '' }}    
-                                        {{ $pedido->estatus == 'ENTREGADO' ? 'btn-primary' : '' }}    
-                                        {{ $pedido->estatus == 'RECHAZADO' ? 'btn-secondary' : '' }}    
-                                        {{ $pedido->estatus == 'PAGO RECHAZADO' ? 'btn-danger' : '' }}    
-                            ">
-                            {{ $pedido->estatus }}
-                        </button> --}}
-                        <button class="btn-status {{ strtolower(str_replace(' ', '-', $pedido->estatus)) }}">
-                            {{ $pedido->estatus }}
-                        </button>
+            <h3>Detalles de su pedido:</h3>
+            <ul>
+                <li>Estatus del pedido:
+                    <button class="btn-status {{ strtolower(str_replace(' ', '-', $pedido->estatus)) }}">
+                        {{ $pedido->estatus }}
+                    </button>
+                </li>
+                <li>
+                    @if ($pedido->id_cliente)
+                        <a href="{{ route('page.cliente.perfil', $pedido->id_cliente) }}" class="button_details">Ver detalle del
+                            pedido</a>
+                    @endif
+                </li>
+                @if ($pedido->fecha_inicio)
+                    <li><strong>Fecha de inicio de atención de su solicitud:</strong>
+                        {{ \Carbon\Carbon::parse($pedido->fecha_inicio)->format('d-m-Y') }}</li>
+                @endif
+
+                @if ($pedido->fecha_entrega)
+                    <li>
+                        @if ($pedido->estatus == 'ENTREGADO')
+                            <strong>Pedido entregado la fecha:</strong>
+                        @else
+                            <strong>Fecha de entrega del producto o servicio solicitado:</strong>
+                        @endif
+                        {{ \Carbon\Carbon::parse($pedido->fecha_entrega)->format('d-m-Y') }}
                     </li>
-                    @if ($pedido->fecha_inicio)
-                        <li><strong>Fecha de inicio de atención de su solicitud:</strong>
-                            {{ \Carbon\Carbon::parse($pedido->fecha_inicio)->format('d-m-Y') }}</li>
-                    @endif
+                @endif
+            </ul>
 
-                    @if ($pedido->fecha_entrega)
-                        <li>
-                            @if ($pedido->estatus == 'ENTREGADO')
-                                <strong>Pedido entregado la fecha:</strong>
-                            @else
-                                <strong>Fecha de entrega del producto o servicio solicitado:</strong>
-                            @endif
-                            {{ \Carbon\Carbon::parse($pedido->fecha_entrega)->format('d-m-Y') }}
-                        </li>
-                    @endif
-
-
-                </ul>
-            </div>
 
             @if ($pedido->estatus == 'ENTREGADO')
                 <p>
@@ -282,21 +230,28 @@
                     o contactarnos por Whatsapp.</p>
             @endif
 
-            @if ($pedido->id_cliente)
-                <div class="button-container">
-                    <a href="{{ route('page.cliente.perfil', $pedido->id_cliente) }}" class="button">Ver Detalles de tu
-                        Pedido</a>
-                </div>
-            @endif
+        </div>
+        <div class="button-container">
+            <p>¿Necesitas algo o tienes alguna pregunta?</p>
+            <a href="https://wa.me/584245104676?text=Hola me gustaria saber más sobre sus servicio publicitarios"
+                class="button">Contáctanos por Whatsapp</a>
 
-            <p>Gracias por elegirnos.</p>
+        </div>
+        <div class="content">
+            <p>Para empezar, te invitamos a explorar:</p>
+            <p>
+                <a href="{{ route('page.index') }}#servicios" style="color: #007bff; text-decoration: none;">Nuestros
+                    Servicios y productos</a><br>
+
+            </p>
+            <p>¡Esperamos construir una relación duradera y exitosa contigo!</p>
             <p>Saludos cordiales,</p>
-            <p>El equipo de Adcesa Publicidad C,A.</p>
+            <p>El Equipo de **Adcesa Publicidad**</p>
         </div>
         <div class="footer">
-            <p>&copy; 2025 Adcesa Publicidad C,A. Todos los derechos reservados.</p>
-            <p><a href="{{ asset('assets/documentos/terminos_y_condiciones.pdf') }}" target="_blank"
-                    style="color: #007bff; text-decoration: none;">Términos y Condiciones</a></p>
+            <p>&copy; 2025 Adcesa Publicidad. Todos los derechos reservados.</p>
+            <p>Visita nuestro sitio web: <a href="{{ route('page.index') }}">{{ route('page.index') }}</a></p>
+            <p>Síguenos en <a href="https://www.instagram.com/adcesapublicidad?igsh=cGh3b3dqZ3RlZWZq">Instagram</a></p>
         </div>
     </div>
 </body>

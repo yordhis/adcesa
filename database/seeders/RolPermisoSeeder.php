@@ -20,7 +20,7 @@ class RolPermisoSeeder extends Seeder
         $permisosDeAdminitrador = [
             "panel",
             "clientes",
-            //"proveedores",
+            "salidas",
             "productos",
             "categorias",
             "marcas",

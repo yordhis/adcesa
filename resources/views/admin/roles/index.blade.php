@@ -33,7 +33,7 @@
 
             <div class="col-sm-6 col-xs-12 ">
                 @include('admin.roles.partials.modal-form-create-rol')
-                @include('admin.roles.partials.modal-form-create-permisos')
+                {{-- @include('admin.roles.partials.modal-form-create-permisos') --}}
             </div>
 
             <!-- Filtro de clientes -->

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserWebRequest;
 use App\Http\Requests\UpdateUserWebRequest;
+use App\Mail\BienvenidaClienteEmail;
 use App\Mail\RegistroEmail;
 use App\Models\DataDev;
 use App\Models\Helpers;
+use App\Models\Pedido;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -80,6 +82,13 @@ class ClienteController extends Controller
     public function store(StoreUserWebRequest $request)
     {
         try {
+            $cedulaExiste = User::where('cedula', $request->cedula)->first();
+            if ($cedulaExiste) {
+                $mensaje = "El número de cedulo o rif ya esta registrado!";
+                $estatus = Response::HTTP_UNAUTHORIZED;
+                return back()->withInput($request->inputs)->with(compact('mensaje', 'estatus'));
+            }
+
             /** Generamos una clave aleatoria */
             $claveGenerada = $request->input('password', Hash::make(Helpers::generarCodigoPedidoUnico('ADC')));
             /** Completar datos */
@@ -102,8 +111,8 @@ class ClienteController extends Controller
             $user = User::create($request->all());
 
             /** ENVIAR CORREO */
-            Mail::to($user)
-                ->send(new RegistroEmail($user,  $claveGenerada));
+            Mail::to($user->email)
+                ->send(new BienvenidaClienteEmail($user));
 
             /** Configuramos el mensaje de respuesta para el usuario */
             $mensaje = "Cuenta de usuario creada correctamente";
@@ -171,6 +180,11 @@ class ClienteController extends Controller
                     $request['foto'] = Helpers::setFile($request);
                 }
 
+                /** En caso de que edite el correo se debe actualizar el correo del cliente en todos suspedidos */
+                if($user->email != $request->email){
+                    Pedido::where('email_cliente', $user->email)->update(['email_cliente' => $request->email]);
+                }
+                
                 /** ejecutar la actualización */
                 $user->update($request->all());
                 $mensaje = "Datos actualizados correctamente";
@@ -193,7 +207,7 @@ class ClienteController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            
+
             /** Validar que la contraseña actual sea valida */
             if (!Auth::attempt([
                 "email" => $user->email,

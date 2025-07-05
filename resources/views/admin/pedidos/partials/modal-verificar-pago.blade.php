@@ -98,6 +98,12 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td class="table-dark fw-bold">Referencia bancaria</td>
+                                        <td colspan="2">
+                                            {{ $pedido->pago->referencia }}
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td class="table-dark fw-bold">Comprobante</td>
                                         <td colspan="4">
                                             <img src="{{ asset($pedido->pago->comprobante) }}" class="img w-100" alt="comprobante">

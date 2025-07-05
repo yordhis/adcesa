@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Pedido;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -17,7 +18,8 @@ class StatusMail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public $pedido
+        public Pedido $pedido,
+        public $titulo
     ){}
 
     /**
@@ -26,7 +28,7 @@ class StatusMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Estatus del pedido',
+            subject: $this->titulo,
         );
     }
 

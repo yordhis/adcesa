@@ -78,7 +78,7 @@ class PedidoController extends Controller
                 $pago['cuenta'] = Cuenta::find($pago->id_cuenta) ?? null;
                 $pedido['pago'] = $pago;
             }
-          
+
             return view('admin.pedidos.index', compact('pedidos', 'request', 'respuesta'));
         } catch (\Throwable $th) {
             $mensaje = 'Error al listar pedido.';
@@ -109,9 +109,6 @@ class PedidoController extends Controller
             return back()->with(compact('mensaje', 'estatus'));
         }
     }
-
-
-
     /**
      * Método que crea cuentas de pedidos
      */
@@ -162,6 +159,7 @@ class PedidoController extends Controller
     public function update(UpdatePedidoRequest $request, Pedido $pedido)
     {
         $insumosRequeridos = [];
+        $estatusActual = $pedido->estatus;
         try {
             /** Configurar los insumos a debitar del inventario de insumos*/
             foreach ($request->all() as $key => $value) {
@@ -183,11 +181,13 @@ class PedidoController extends Controller
                 }
             }
 
+
             /** descontar del inventario insumos */
             foreach ($insumosRequeridos as $key => $insumo) {
                 $insumoActual = Insumo::find($insumo['id_insumo']);
+                $nuevoStock = doubleval($insumoActual->stock) - doubleval($insumo['cantidad']);
                 $insumoActual->update([
-                    'stock' => $insumoActual->stock - $insumo['cantidad']
+                    'stock' => $nuevoStock
                 ]);
             }
 
@@ -197,9 +197,13 @@ class PedidoController extends Controller
                     'estatus' => $request->estatus
                 ]);
 
-                /** Notificar al cliente por correo */
+                /** Eviar correo de notificacion de cambio de estatus al cliente */
                 Mail::to($pedido->email_cliente)
-                    ->send(new StatusMail($pedido));
+                    ->cc(config('mail.from.address'))
+                    ->send(new StatusMail(
+                        $pedido,
+                        'Pedido cambio de estatus ' . $pedido->estatus
+                    ));
 
                 $mensaje = "El pedido fue aprobado y se descontaron los insumos correctamente";
                 $estatus = Response::HTTP_OK;
@@ -219,6 +223,10 @@ class PedidoController extends Controller
                     ]);
                 }
             }
+            /** dejarlo en el estatus anterior */
+            $pedido->update([
+                'estatus' => $estatusActual
+            ]);
             /** respuesta de falla */
             $mensaje = Helpers::getMensajeError($th, 'Error al actualizar insumo');
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
@@ -230,7 +238,7 @@ class PedidoController extends Controller
     public function configurarFechas(Request $request)
     {
         try {
-      
+
             $pedido = Pedido::find($request->id_pedido);
 
             /** ejecutar la actualización */
@@ -240,9 +248,13 @@ class PedidoController extends Controller
                 'fecha_entrega' => $request->fecha_entrega,
             ]);
 
-            /** Notificar al cliente por correo */
+            /** Eviar correo de notificacion de cambio de estatus al cliente */
             Mail::to($pedido->email_cliente)
-                ->send(new StatusMail($pedido));
+                ->cc(config('mail.from.address'))
+                ->send(new StatusMail(
+                    $pedido,
+                    'Pedido cambio de estatus ' . $pedido->estatus
+                ));
 
             $mensaje = "El pedido fue puesto en marcha correctamente";
             $estatus = Response::HTTP_OK;
@@ -259,7 +271,7 @@ class PedidoController extends Controller
     public function marcarComoEntregado(Request $request)
     {
         try {
-         
+
             $pedido = Pedido::find($request->id_pedido);
 
             /** ejecutar la actualización */
@@ -269,8 +281,13 @@ class PedidoController extends Controller
             ]);
 
             /** Notificar al cliente por correo */
+            /** Eviar correo de notificacion de cambio de estatus al cliente */
             Mail::to($pedido->email_cliente)
-                ->send(new StatusMail($pedido));
+                ->cc(config('mail.from.address'))
+                ->send(new StatusMail(
+                    $pedido,
+                    'Pedido cambio de estatus ' . $pedido->estatus
+                ));
 
             $mensaje = "El pedido se entrego, pedido finalizado correctamente.";
             $estatus = Response::HTTP_OK;
@@ -295,8 +312,8 @@ class PedidoController extends Controller
 
             /** Borramos las imagenes adicionales */
             foreach ($carrito as $key => $producto) {
-                if($producto->tipo_producto){
-                    $imagenesAdicionalesExiste = json_decode( $producto->imagenes_adicionales );
+                if ($producto->tipo_producto) {
+                    $imagenesAdicionalesExiste = json_decode($producto->imagenes_adicionales);
                     if (count($imagenesAdicionalesExiste)) {
                         foreach ($imagenesAdicionalesExiste as $key => $imagen) {
                             Helpers::removeFile($imagen);
@@ -312,7 +329,7 @@ class PedidoController extends Controller
 
             $pago->delete();
             $pedido->delete();
-            Carrito::where('codigo_pedido', $pedido->codigo)->delete();            
+            Carrito::where('codigo_pedido', $pedido->codigo)->delete();
 
             $mensaje = 'pedido eliminado correctamente.';
             $estatus = Response::HTTP_OK;

@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class RegistroEmail extends Mailable
+class BienvenidaClienteEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,8 +18,8 @@ class RegistroEmail extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public $user,
-        public $clavePorDefecto,
+        public User $user,
+        public $clave = null,
     ){}
 
     /**
@@ -28,7 +28,7 @@ class RegistroEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Bienvenido a Adcesa Publicidad',
+            subject: 'Bienvenido/a Cliente',
         );
     }
 

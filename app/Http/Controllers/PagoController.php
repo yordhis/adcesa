@@ -55,6 +55,7 @@ class PagoController extends Controller
 
     public function update(UpdatePagoRequest $request, Pago $pago)
     {
+        $estatusKey = 'PENDIENTE';
         try {
             // 1: aprobado | 2: rechazado | 0: pendiente
             $pago->update([
@@ -62,15 +63,14 @@ class PagoController extends Controller
             ]);
 
             /** cambiar el estatus al pedido */
-            $estatusKey = 'PENDIENTE';
             switch ($request->estatus) {
                 case 0: // por verificar
                     Pedido::where('codigo', $pago->codigo_pedido)->update([
-                        'estatus' => 'PENDIENTE'
+                        'estatus' => $estatusKey
                     ]);
                     break;
                 case 1: // aprobado (Pago verificado)
-                     $estatusKey = 'PAGO VERIFICADO';
+                    $estatusKey = 'PAGO VERIFICADO';
                     Pedido::where('codigo', $pago->codigo_pedido)->update([
                         'estatus' => $estatusKey
                     ]);
@@ -90,20 +90,30 @@ class PagoController extends Controller
             }
             /** Obtener pedido */
             $pedido = Pedido::where('codigo', $pago->codigo_pedido)->first();
-            /** Obtener cliente */
-            
 
-            /** Eviar correo de notificacion de cambio de estatus al cliente */
+            /** Eviar correo de notificacion de cambio de estatus al cliente y a la empresa */
             Mail::to($pedido->email_cliente)
+            ->cc(config('mail.from.address'))
             ->send(new StatusMail(
-                $pedido
+                $pedido,
+                'Pedido cambio de estatus ' . $pedido->estatus
             ));
-
+            
             $mensaje = "Pago cambio de estatus correctamente.";
             $estatus = Response::HTTP_OK;
             return back()->with(compact('mensaje', 'estatus'));
         } catch (\Throwable $th) {
-            $mensaje = Helpers::getMensajeError($th, 'Error al actualizar marca');
+            /** Si algo falla devolver al estatus a anterior */
+            Pedido::where('codigo', $pago->codigo_pedido)->update([
+                'estatus' => $estatusKey
+            ]);
+         
+            if (str_contains($th->getFile(), 'Smtp')) {
+                $mensaje = Helpers::getMensajeError($th,"El servicio de correo llego al limite, por favor revise su servicio SMTP del proveedor");
+            }else{
+                $mensaje = Helpers::getMensajeError($th, 'Error al actualizar estatus de pago');
+            }
+
             $estatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             return back()->with(compact('mensaje', 'estatus'));
         }

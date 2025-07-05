@@ -22,20 +22,20 @@ class StoreUserWebRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombres' => 'required|string|max:255',
-            'apellidos' => 'required|string|max:255',
+            'nombres' => 'required|string|max:155',
+            'apellidos' => 'required|string|max:155',
             'cedula' => 'required|string|max:20',
             'nacionalidad' => 'required|string|max:20',
             'sexo' => 'required|string|max:20',
             'telefono' => ['required', 'string', 'regex:/^0(4(12|14|16|24|26))[0-9]{7}$/', 'min:11', 'max:20'],
-            'direccion' => 'required|string|max:255',
+            'direccion' => 'required|string|max:155',
             'fecha_nacimiento' => 'required|string|max:100',
-            'email' => 'required|string|max:255|unique:users',
-            'password' => 'nullable|string|min:6',
+            'email' => 'required|string|max:155|unique:users',
+            'password' => 'nullable|string|min:6|max:12',
             // Datos opcionales
-            'ciudad' => 'nullable|string|max:100',
-            'estado' => 'nullable|string|max:100',
-            'pais' => 'nullable|string|max:100',
+            'ciudad' => 'nullable|string|max:75',
+            'estado' => 'nullable|string|max:75',
+            'pais' => 'nullable|string|max:75',
             'file' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }

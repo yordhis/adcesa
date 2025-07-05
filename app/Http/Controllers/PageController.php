@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePedidoRequest;
+use App\Mail\BienvenidaClienteEmail;
 use App\Mail\PedidoEmail;
 use App\Mail\RegistroEmail;
 use App\Models\Carrito;
@@ -135,7 +136,8 @@ class PageController extends Controller
 
                     /** Enviamos correo de bienvenida y  su contraseña */
                     Mail::to($cliente->email)
-                        ->send(new RegistroEmail($cliente,  $clavePorDefecto));
+                        ->cc(config('mail.from.address'))
+                        ->send(new BienvenidaClienteEmail($cliente,  $clavePorDefecto));
                 }
             }
 
@@ -225,7 +227,7 @@ class PageController extends Controller
                     'CLIENTE',
                 ));
 
-            Mail::to(env('MAIL_FROM_ADDRESS', "adcesapublicidad@adcesa.com"))
+            Mail::to(config('mail.from.address'))
                 ->send(new PedidoEmail(
                     '¡TIENES UN NUEVO PEDIDO!',
                     $cliente,
