@@ -70,10 +70,20 @@
     </div>
 </div>
 
-<!-- Opcional: Ocultar el loading cuando la página esté lista -->
 <script>
     window.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('global-loading').style.display = 'none';
+        setTimeout(() => {
+            document.getElementById('global-loading').style.display = 'none';
+
+        }, 1000);
+
+        // Captura el submit de todos los formularios
+        const formularios = document.forms;
+        for (const form of formularios) {
+            form.addEventListener('submit', function() {
+                document.getElementById('global-loading').style.display = 'flex';
+            });
+        }
     });
 </script>
 
