@@ -93,7 +93,7 @@
                         <select class="form-select" name="id_medida" id="medida-edit" required>
                             <option selected disabled value="">Seleccione medida </option>
                             @foreach ($medidas as $medida)
-                                @if (old('medida') == $medida['id'] || $insumo->medida == $medida['id'])
+                                @if (old('medida') == $medida['id'] || $insumo->id_medida == $medida['id'])
                                     <option value="{{ $medida['id'] }}" selected>{{ $medida['simbolo'] . ' - ' . $medida['nombre'] }}</option>
                                 @endif
                                 <option value="{{ $medida['id'] }}">{{ $medida['simbolo'] . ' - ' . $medida['nombre'] }}</option>
