@@ -99,7 +99,7 @@
                                 
                                 <td>{{ $variante->ancho }}</td>
                                 <td>{{ $variante->alto }}</td>
-                                <td>{{ $variante->alto * $variante->ancho }} {{ $variante->simbolo ?? '' }} ^2</td>
+                                <td>{{ $variante->alto * $variante->ancho }} {{ $variante->simbolo ?? '' }}</td>
                                 <td>{{ $variante->precio }}</td>
                                 <td>
                                     <form action="{{ route('admin.variantes.destroy', $variante->id) }}" method="POST" class="d-inline">
