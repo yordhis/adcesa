@@ -1,6 +1,6 @@
 <!-- Vertically centered Modal -->
 <a type="button" class="mb-3" data-bs-toggle="modal" data-bs-target="#modalAsignarInsumo{{ $producto->id }}">
-    <i class="bi bi-database-fill-add fs-4 text-success"> Asignar insumos </i>
+    <i class="bi bi-database-fill-add fs-6 text-success"> Asignar insumos </i>
 </a>
 
 <div class="modal fade" id="modalAsignarInsumo{{ $producto->id }}" tabindex="-1">

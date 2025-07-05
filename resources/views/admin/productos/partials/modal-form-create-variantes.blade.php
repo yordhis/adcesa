@@ -1,6 +1,6 @@
 <!-- Vertically centered Modal -->
 <a type="button" class="mb-3" data-bs-toggle="modal" data-bs-target="#modalCrearVariante{{ $producto->id }}">
-    <i class="bi bi-node-plus fs-4">Crear varientes</i>
+    <i class="bi bi-node-plus fs-6">Crear varientes</i>
 </a>
 
 <div class="modal fade" id="modalCrearVariante{{ $producto->id }}" tabindex="-1">
