@@ -95,7 +95,7 @@ if (window.location.pathname.includes('productos')) {
         }
         
         formularioVariante[7].value =  (formularioVariante[3].value *  formularioVariante[4].value) + ' ' 
-        + medida.innerText + ' ^2 ' ;
+        + medida.innerText;
     }
     /** Calcular área */
     inputAncho.forEach(input => {
