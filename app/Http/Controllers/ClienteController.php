@@ -112,6 +112,7 @@ class ClienteController extends Controller
 
             /** ENVIAR CORREO */
             Mail::to($user->email)
+                ->cc(config('mail.from.address'))
                 ->send(new BienvenidaClienteEmail($user));
 
             /** Configuramos el mensaje de respuesta para el usuario */
@@ -181,10 +182,10 @@ class ClienteController extends Controller
                 }
 
                 /** En caso de que edite el correo se debe actualizar el correo del cliente en todos suspedidos */
-                if($user->email != $request->email){
+                if ($user->email != $request->email) {
                     Pedido::where('email_cliente', $user->email)->update(['email_cliente' => $request->email]);
                 }
-                
+
                 /** ejecutar la actualización */
                 $user->update($request->all());
                 $mensaje = "Datos actualizados correctamente";
