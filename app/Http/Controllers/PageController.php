@@ -7,6 +7,7 @@ use App\Mail\BienvenidaClienteEmail;
 use App\Mail\PedidoEmail;
 use App\Mail\RegistroEmail;
 use App\Models\Carrito;
+use App\Models\Chat;
 use App\Models\Cuenta;
 use App\Models\DataDev;
 use App\Models\Helpers;
@@ -474,7 +475,10 @@ class PageController extends Controller
             $pago['cuenta'] = Cuenta::find($pago->id_cuenta) ?? null;
             $pedido['pago'] = $pago;
         }
+
+        /** obtenr los mensajes */
+        $mensajes = Chat::where('id_emisor', $cliente->id)->orWhere('id_receptor', $cliente->id)->orderBy('created_at')->get();
         $respuesta = DataDev::$respuesta;
-        return view('page.clientes.perfil', compact('respuesta', 'cliente', 'pedidos', 'request'));
+        return view('page.clientes.perfil', compact('respuesta', 'cliente', 'pedidos', 'request', 'mensajes'));
     }
 }

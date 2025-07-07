@@ -9,4 +9,12 @@ class Salida extends Model
 {
     /** @use HasFactory<\Database\Factories\SalidaFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'codigo_pedido',
+        'nombre_cliente',
+        'id_insumo',
+        'nombre_insumo',
+        'cantidad_insumo',
+    ];
 }

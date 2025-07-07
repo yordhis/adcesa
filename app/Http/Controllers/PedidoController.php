@@ -6,6 +6,7 @@ use App\Http\Requests\StorePedidoRequest;
 use App\Http\Requests\UpdatePedidoRequest;
 use App\Mail\StatusMail;
 use App\Models\Carrito;
+use App\Models\Chat;
 use App\Models\Cuenta;
 use App\Models\DataDev;
 use App\Models\Helpers;
@@ -16,6 +17,7 @@ use App\Models\Pago;
 use App\Models\Pedido;
 use App\Models\Producto;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -77,6 +79,20 @@ class PedidoController extends Controller
                 $pago = Pago::where('codigo_pedido', $pedido->codigo)->first();
                 $pago['cuenta'] = Cuenta::find($pago->id_cuenta) ?? null;
                 $pedido['pago'] = $pago;
+
+                $now = Carbon::now();
+
+                // Clonar la instancia actual para no modificarla y establecer la hora a las 7 AM
+                $sevenAmToday = $now->copy()->setTime(7, 0, 0);
+
+            
+                /** Obtener los mensaje del cliente */
+                if ($pedido->id_cliente) {
+                    $mensajes = Chat::where('id_emisor', $pedido->id_cliente)->orWhere('id_receptor', $pedido->id_cliente)->orderBy('created_at')->get();
+                    $ultimoMensaje = Chat::where('id_emisor', $pedido->id_cliente)->where('created_at', '>=',  $sevenAmToday)->latest()->first();
+                    $pedido['ultimo_mensaje'] = $ultimoMensaje;
+                    $pedido['mensajes'] = $mensajes;
+                }
             }
 
             return view('admin.pedidos.index', compact('pedidos', 'request', 'respuesta'));

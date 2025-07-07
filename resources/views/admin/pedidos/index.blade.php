@@ -130,11 +130,14 @@
                                 <td>
                                     @include('admin.pedidos.partials.modal-show')
                                     {{-- @include('admin.pedidos.partials.modal-form-edit') --}}
-                                    
+
                                     @include('admin.pedidos.partials.modal-verificar-pago')
                                     @include('admin.pedidos.partials.modal-form-atender-pedido')
                                     @include('admin.pedidos.partials.modal-form-en-proceso')
                                     @include('admin.pedidos.partials.modal-form-marcar-entregado')
+                                    @if ($pedido->id_cliente)
+                                        @include('admin.pedidos.partials.modal-chat')
+                                    @endif
                                     @include('admin.pedidos.partials.modal-form-delete')
                                 </td>
                             </tr>

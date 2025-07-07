@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('salidas', function (Blueprint $table) {
+        Schema::create('chats', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo_pedido')->nullable();
-            $table->string('nombre_cliente')->nullable();
-            $table->string('id_insumo')->nullable();
-            $table->string('nombre_insumo')->nullable();
-            $table->string('cantidad_insumo')->nullable();
+            $table->double('id_emisor', 11);
+            $table->double('id_receptor', 11);
+            $table->string('mensaje', 255);
+            $table->enum('estatus', ['1','0']); // chat abierto o cerrado
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('salidas');
+        Schema::dropIfExists('chats');
     }
 };

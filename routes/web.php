@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     AlmacenController,
     CategoriaController,
+    ChatController,
     ClienteController,
     CuentaController,
     UserController,
@@ -53,6 +54,8 @@ Route::middleware(['perfil'])->group(function () {
     Route::get('/perfil/{idCliente}', [PageController::class, 'mostraPerfil'])->name('page.cliente.perfil');
     Route::put('/perfil/{idCliente}', [ClienteController::class, 'update'])->name('page.clientes.update');
     Route::put('/perfil/edit/password/{idCliente}', [ClienteController::class, 'editPassword'])->name('page.clientes.update.password');
+    /** Chat (Mensajeria instantanea) */
+    Route::post('/enviar/mensaje', [ChatController::class, 'store'])->name('chat.enviar.mensaje');
 })->prefix('tienda');
 
 /*
@@ -186,4 +189,8 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/pedidos/configurar/fechas', [PedidoController::class, 'configurarFechas'])->name('admin.pedidos.configurar.fechas');
     Route::post('/pedidos/marcar/como/entregado', [PedidoController::class, 'marcarComoEntregado'])->name('admin.pedidos.marcar.como.entregado');
     Route::resource('/pedidos', PedidoController::class)->names('admin.pedidos');
+
+    /** Chat (Mensajeria instantanea) */
+    Route::get('/panel/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/panel/chat', [ChatController::class, 'store'])->name('chat.store');
 });
